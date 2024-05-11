@@ -19,133 +19,140 @@ class LoginScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Image.asset(ImageConstants.loginBanner),
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.elliptical(
+                    MediaQuery.of(context).size.width / 2, 50),
+                bottomRight: Radius.elliptical(
+                    MediaQuery.of(context).size.width / 2, 50),
+              ),
+              child: Image.asset(ImageConstants.loginBanner),
+            ),
             Form(
-                key: context.read<LoginController>().formKey,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 10),
-                      Text(
-                        'Welcome!',
-                        style:
-                            Theme.of(context).textTheme.displayMedium!.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).primaryColor,
-                                ),
+              key: context.read<LoginController>().formKey,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10),
+                    Text(
+                      'Welcome!',
+                      style:
+                          Theme.of(context).textTheme.displayMedium!.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).primaryColor,
+                              ),
+                    ),
+                    const SizedBox(height: 15),
+                    TextFormField(
+                      controller:
+                          context.read<LoginController>().emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email',
+                        isDense: true,
                       ),
-                      const SizedBox(height: 15),
-                      TextFormField(
+                      validator: context.read<LoginController>().emailValidator,
+                    ),
+                    const SizedBox(height: 15),
+                    Consumer<LoginController>(
+                      builder: (BuildContext context, value, Widget? child) =>
+                          TextFormField(
                         controller:
-                            context.read<LoginController>().emailController,
-                        decoration: const InputDecoration(
-                          labelText: 'Email',
+                            context.read<LoginController>().passwordController,
+                        obscureText: value.obscurePassword,
+                        decoration: InputDecoration(
+                          labelText: 'Password',
                           isDense: true,
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              value.togglePasswordVisibility();
+                            },
+                            icon: Icon(
+                              value.obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                            ),
+                          ),
                         ),
                         validator:
-                            context.read<LoginController>().emailValidator,
+                            context.read<LoginController>().passwordValidator,
                       ),
-                      const SizedBox(height: 15),
-                      Consumer<LoginController>(
-                        builder: (BuildContext context, value, Widget? child) =>
-                            TextFormField(
-                          controller: context
-                              .read<LoginController>()
-                              .passwordController,
-                          obscureText: value.obscurePassword,
-                          decoration: InputDecoration(
-                            labelText: 'Password',
-                            isDense: true,
-                            suffixIcon: IconButton(
-                              onPressed: () {
-                                value.togglePasswordVisibility();
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text('Forgot Password?'),
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    Consumer<LoginController>(
+                      builder: (BuildContext context, value, Widget? child) =>
+                          InkWell(
+                        onTap: value.loading
+                            ? null
+                            : () {
+                                value.loginClicked(context);
                               },
-                              icon: Icon(
-                                value.obscurePassword
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                              ),
-                            ),
+                        borderRadius: BorderRadius.circular(50),
+                        child: Ink(
+                          width: double.infinity,
+                          height: 50,
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: value.loading
+                                ? ColorConstants.primaryBlack.withOpacity(0.5)
+                                : ColorConstants.primaryColor,
+                            borderRadius: BorderRadius.circular(50),
                           ),
-                          validator:
-                              context.read<LoginController>().passwordValidator,
-                        ),
-                      ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {},
-                          child: const Text('Forgot Password?'),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      Consumer<LoginController>(
-                        builder: (BuildContext context, value, Widget? child) =>
-                            InkWell(
-                          onTap: value.loading
-                              ? null
-                              : () {
-                                  value.loginClicked(context);
-                                },
-                          borderRadius: BorderRadius.circular(50),
-                          child: Ink(
-                            width: double.infinity,
-                            height: 50,
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: value.loading
-                                  ? ColorConstants.primaryBlack.withOpacity(0.5)
-                                  : ColorConstants.primaryColor,
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            child: Center(
-                              child: value.loading
-                                  ? const SizedBox(
-                                      height: 24,
-                                      width: 24,
-                                      child: CircularProgressIndicator())
-                                  : Text(
-                                      'Login',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium!
-                                          .copyWith(
-                                            color: ColorConstants.primaryWhite,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                    ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text('Dont\'t have an account?'),
-                          const SizedBox(width: 2),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ChangeNotifierProvider(
-                                    create: (BuildContext context) =>
-                                        RegistrationController(),
-                                    child: const RegisterScreen(),
+                          child: Center(
+                            child: value.loading
+                                ? const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator())
+                                : Text(
+                                    'Login',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium!
+                                        .copyWith(
+                                          color: ColorConstants.primaryWhite,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                   ),
-                                ),
-                              );
-                            },
-                            child: const Text('Sign Up'),
-                          )
-                        ],
+                          ),
+                        ),
                       ),
-                    ],
-                  ),
-                ))
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Dont\'t have an account?'),
+                        const SizedBox(width: 2),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChangeNotifierProvider(
+                                  create: (BuildContext context) =>
+                                      RegistrationController(),
+                                  child: const RegisterScreen(),
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Text('Sign Up'),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

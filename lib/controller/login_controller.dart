@@ -3,6 +3,10 @@ import 'dart:developer';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/view/splash_screen/splash_screen.dart';
+
+import '../utils/functions/functions.dart';
+import '../view/home_screen/home_screen.dart';
 
 class LoginController extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -45,15 +49,33 @@ class LoginController extends ChangeNotifier {
           email: emailController.text,
           password: passwordController.text,
         );
+        if (context.mounted) {
+          showSuccessSnackBar(context: context, content: 'Login successful.');
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SplashScreen(),
+            ),
+            (route) => false,
+          );
+        }
       } on FirebaseAuthException catch (e) {
         log(e.code.toString());
-        if (e.code == 'invalid-credential') {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text('Entered Email or Password is incorrect!')));
-          log('No user found for that email.');
-        } else if (e.code == 'wrong-password') {
-          log('Wrong password provided for that user.');
+
+        if (!context.mounted) {
+          return;
         }
+        String snackBarMessage = 'Something went wrong!';
+        switch (e.code) {
+          case 'invalid-credential':
+            snackBarMessage = 'Entered Email or Password is incorrect!';
+            log(snackBarMessage);
+            break;
+        }
+        showErrorSnackBar(
+          context: context,
+          content: snackBarMessage,
+        );
       }
       loading = false;
       notifyListeners();
