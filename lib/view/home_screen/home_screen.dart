@@ -12,10 +12,9 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<HomeScreenController>(
-        builder: (BuildContext context, value, Widget? child) => PageView(
-          children: value.pageList,
-        ),
+      body: PageView(
+        controller: context.read<HomeScreenController>().pageController,
+        children: context.read<HomeScreenController>().pageList,
       ),
       bottomNavigationBar: HomeBottomNavBar(),
     );
