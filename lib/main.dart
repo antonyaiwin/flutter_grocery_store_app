@@ -1,8 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/controller/cart_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/view/splash_screen/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
@@ -20,21 +22,28 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: ColorConstants.primaryColor,
-          primary: ColorConstants.primaryColor,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => CartController(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: ColorConstants.primaryColor,
+            primary: ColorConstants.primaryColor,
+          ),
+          useMaterial3: true,
+          textTheme: GoogleFonts.dmSansTextTheme(),
+          inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          ),
         ),
-        useMaterial3: true,
-        textTheme: GoogleFonts.dmSansTextTheme(),
-        inputDecorationTheme: InputDecorationTheme(
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
-        ),
+        home: const SplashScreen(),
       ),
-      home: const SplashScreen(),
     );
   }
 }

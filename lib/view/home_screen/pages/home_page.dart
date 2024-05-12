@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_grocery_store/controller/cart_controller.dart';
 import 'package:flutter_grocery_store/core/data/dummy_db.dart';
+import 'package:flutter_grocery_store/utils/global_widgets/add_to_cart_button.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/elevated_card.dart';
+import 'package:flutter_grocery_store/view/product_details_screen/product_details_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/sliver_label_text.dart';
 
@@ -70,6 +72,10 @@ class HomePage extends StatelessWidget {
         ),
         SliverCategoryListView(),
         SliverLabelText(
+          label: 'Saved',
+        ),
+        SliverCategoryListView(),
+        SliverLabelText(
           label: 'Everything',
         ),
         SliverPadding(
@@ -83,40 +89,69 @@ class HomePage extends StatelessWidget {
             ),
             itemBuilder: (context, index) {
               var e = DummyDb.groceryItems[index];
-              return ElevatedCard(
-                elevation: 5,
-                child: Column(
-                  children: [
-                    AspectRatio(
-                      aspectRatio: 1,
-                      child: Image.network(
-                          'https://static.vecteezy.com/system/resources/thumbnails/023/290/773/small/fresh-red-apple-isolated-on-transparent-background-generative-ai-png.png'),
-                    ),
-                    Text(
-                      e.name ?? '',
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    Row(
-                      children: [
-                        Text(
-                          '250g',
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                      ],
-                    ),
-                    Spacer(),
-                    Row(
-                      children: [
-                        Text(
-                          '₹${e.price?.toStringAsFixed(1) ?? ''}',
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ],
-                    ),
-                  ],
+              return InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProductDetailsScreen(item: e),
+                  ),
+                ),
+                child: ElevatedCard(
+                  elevation: 5,
+                  child: Column(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: 1,
+                        child: Image.network(
+                            'https://static.vecteezy.com/system/resources/thumbnails/023/290/773/small/fresh-red-apple-isolated-on-transparent-background-generative-ai-png.png'),
+                      ),
+                      Text(
+                        e.name ?? '',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            '250g',
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              '₹${e.price?.toStringAsFixed(1) ?? ''}',
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          Consumer<CartController>(
+                            builder:
+                                (BuildContext context, value, Widget? child) =>
+                                    AddToCartButton(
+                              count: value.getItemCount(e.id ?? 0),
+                              label: 'ADD',
+                              height: 30,
+                              width: 70,
+                              onTap: () {
+                                value.addItemToCart(e);
+                              },
+                              onAddTap: () {
+                                value.addItemToCart(e);
+                              },
+                              onRemoveTap: () {
+                                value.removeItemFromCart(e);
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               );
             },

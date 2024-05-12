@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
-import 'package:flutter_grocery_store/view/home_screen/home_screen.dart';
 
 showSnackBar({required BuildContext context, required String content}) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(content)));

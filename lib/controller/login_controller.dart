@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/view/splash_screen/splash_screen.dart';
 
 import '../utils/functions/functions.dart';
-import '../view/home_screen/home_screen.dart';
 
 class LoginController extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
