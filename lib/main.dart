@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
             primary: ColorConstants.primaryColor,
           ),
           useMaterial3: true,
-          textTheme: GoogleFonts.dmSansTextTheme(),
+          textTheme: GoogleFonts.ubuntuTextTheme(),
           inputDecorationTheme: InputDecorationTheme(
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           ),
