@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/data/dummy_db.dart';
+import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
 
 class SliverCategoryListView extends StatelessWidget {
   const SliverCategoryListView({
@@ -12,7 +13,7 @@ class SliverCategoryListView extends StatelessWidget {
       child: SizedBox(
         height: 120,
         child: ListView.separated(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           clipBehavior: Clip.none,
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
@@ -27,8 +28,8 @@ class SliverCategoryListView extends StatelessWidget {
                 width: 100,
                 child: Column(children: [
                   Expanded(
-                      child: Image.network(
-                    e.imageUrl ?? '',
+                      child: MyNetworkImage(
+                    imageUrl: e.imageUrl ?? '',
                     fit: BoxFit.cover,
                   )),
                   Text(

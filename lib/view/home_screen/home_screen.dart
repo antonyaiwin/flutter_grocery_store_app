@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/home_screen_controller.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +11,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: context.read<HomeScreenController>().pageController,
         children: context.read<HomeScreenController>().pageList,
       ),
-      bottomNavigationBar: HomeBottomNavBar(),
+      bottomNavigationBar: const HomeBottomNavBar(),
     );
   }
 }

@@ -70,7 +70,8 @@ abstract class DummyDb {
       id: 1,
       name: 'Apple',
       description: 'Fresh and delicious apple',
-      imageUrl: '',
+      imageUrl:
+          'https://static.vecteezy.com/system/resources/thumbnails/023/290/773/small/fresh-red-apple-isolated-on-transparent-background-generative-ai-png.png',
       price: 1.99,
       rating: 4.5,
       ratingCount: 100,
@@ -80,7 +81,8 @@ abstract class DummyDb {
       id: 2,
       name: 'Banana',
       description: 'Ripe and sweet banana',
-      imageUrl: '',
+      imageUrl:
+          'https://png.pngtree.com/png-clipart/20220716/ourmid/pngtree-banana-yellow-fruit-banana-skewers-png-image_5944324.png',
       price: 0.99,
       rating: 4.3,
       ratingCount: 80,
@@ -90,7 +92,8 @@ abstract class DummyDb {
       id: 3,
       name: 'Carrot',
       description: 'Crunchy and nutritious carrot',
-      imageUrl: '',
+      imageUrl:
+          'https://wallpapers.com/images/featured/carrot-png-7crm54jnhoaaa46f.jpg',
       price: 0.49,
       rating: 4.2,
       ratingCount: 60,
@@ -100,7 +103,8 @@ abstract class DummyDb {
       id: 4,
       name: 'Milk',
       description: 'Fresh dairy milk',
-      imageUrl: '',
+      imageUrl:
+          'https://purepng.com/public/uploads/large/purepng.com-milkmilkliquidnutritioncow-1411527957210irmnt.png',
       price: 2.49,
       rating: 4.6,
       ratingCount: 120,
@@ -110,7 +114,8 @@ abstract class DummyDb {
       id: 5,
       name: 'Bread',
       description: 'Soft and fluffy bread loaf',
-      imageUrl: '',
+      imageUrl:
+          'https://lh3.googleusercontent.com/proxy/PNXey313AC6G1YaBR4K1r1otuOTpp59tngHn3jGiuFCsz0PVmBBSQQRp0w2fJnHeg3F3xNtW3tLyNdR3frJcqJRq3EuDNwGhY3n7frY4b7WAUhNDHEPKMg',
       price: 1.79,
       rating: 4.7,
       ratingCount: 150,

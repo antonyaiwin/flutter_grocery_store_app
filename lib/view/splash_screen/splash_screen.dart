@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/home_screen_controller.dart';
 import 'package:flutter_grocery_store/controller/login_controller.dart';
+import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:flutter_grocery_store/core/constants/image_constants.dart';
 import 'package:flutter_grocery_store/view/home_screen/home_screen.dart';
 import 'package:flutter_grocery_store/view/login_screen/login_screen.dart';
 import 'package:provider/provider.dart';
@@ -29,9 +31,10 @@ class SplashScreen extends StatelessWidget {
         );
       },
     );
-    return const Scaffold(
+    return Scaffold(
+      backgroundColor: ColorConstants.primaryColor,
       body: Center(
-        child: Text('data'),
+        child: Image.asset(ImageConstants.appLogo),
       ),
     );
   }

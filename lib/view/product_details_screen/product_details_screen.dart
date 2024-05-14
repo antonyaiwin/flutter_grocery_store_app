@@ -6,6 +6,7 @@ import '../../controller/cart_controller.dart';
 import '../../model/product_model.dart';
 import '../../utils/global_widgets/add_to_cart_button.dart';
 import '../../utils/global_widgets/custom_loading_indicator.dart';
+import '../../utils/global_widgets/my_network_image.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   const ProductDetailsScreen({super.key, required this.item});
@@ -39,15 +40,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
-                      child: CachedNetworkImage(
-                        imageUrl: item.imageUrl ?? '',
-                        height: 250,
-                        errorWidget: (context, url, error) => const Center(
-                          child: Icon(Icons.error),
-                        ),
-                        progressIndicatorBuilder: (context, url, progress) =>
-                            const CustomLoadingIndicator(),
-                      ),
+                      child: MyNetworkImage(imageUrl: item.imageUrl ?? ''),
                     ),
                     const SizedBox(height: 20),
                     Row(

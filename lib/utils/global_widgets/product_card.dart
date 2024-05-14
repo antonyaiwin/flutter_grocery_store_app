@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
 import '../../controller/cart_controller.dart';
 import 'package:provider/provider.dart';
 
@@ -30,8 +32,7 @@ class ProductCard extends StatelessWidget {
           children: [
             AspectRatio(
               aspectRatio: 1,
-              child: Image.network(
-                  'https://static.vecteezy.com/system/resources/thumbnails/023/290/773/small/fresh-red-apple-isolated-on-transparent-background-generative-ai-png.png'),
+              child: MyNetworkImage(imageUrl: item.imageUrl ?? ''),
             ),
             Text(
               item.name ?? '',
@@ -54,7 +55,9 @@ class ProductCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     '₹${item.price?.toStringAsFixed(1) ?? ''}',
-                    style: Theme.of(context).textTheme.titleMedium,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
                 ),
                 Consumer<CartController>(

@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+Logo image from <a href="https://www.vecteezy.com/free-png/grocery-app-3d">Grocery App 3d PNGs by Vecteezy</a>
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

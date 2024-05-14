@@ -7,4 +7,5 @@ class ColorConstants {
   static const Color primaryBlue = Colors.blue;
   static const Color snackBarErrorBackground = Colors.red;
   static const Color snackBarSuccessBackground = Colors.green;
+  static const Color hintColor = Color.fromARGB(255, 112, 112, 112);
 }

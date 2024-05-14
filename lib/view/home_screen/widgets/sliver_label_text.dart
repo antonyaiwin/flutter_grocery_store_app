@@ -11,7 +11,7 @@ class SliverLabelText extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         child: Text(
           label,
           style: Theme.of(context).textTheme.titleLarge,

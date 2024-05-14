@@ -19,7 +19,7 @@ class RegistrationController extends ChangeNotifier {
   bool loading = false;
 
   String? nameValidator(String? value) {
-    if ((value?.length ?? 0) > 5) {
+    if ((value?.length ?? 0) > 3) {
       return null;
     } else {
       return 'Enter valid name!';

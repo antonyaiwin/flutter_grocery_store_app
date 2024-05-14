@@ -23,6 +23,7 @@ class AddToCartButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: count == 0 ? onTap : null,
+      borderRadius: BorderRadius.circular(10),
       child: ClipRRect(
         clipBehavior: Clip.antiAlias,
         borderRadius: BorderRadius.circular(10),
