@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controller/home_screen_controller.dart';
+import '../../../controller/screens/home_screen_controller.dart';
 
 class HomeBottomNavBar extends StatelessWidget {
   const HomeBottomNavBar({
@@ -14,7 +14,7 @@ class HomeBottomNavBar extends StatelessWidget {
       builder: (BuildContext context, controller, Widget? child) =>
           BottomNavigationBar(
         currentIndex: controller.selectedPageIndex,
-        onTap: (value) => controller.setSelecetedPageIndex(value),
+        onTap: (value) {},
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
@@ -27,9 +27,9 @@ class HomeBottomNavBar extends StatelessWidget {
             label: 'Categories',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt_outlined),
-            activeIcon: Icon(Icons.list_alt),
-            label: 'My List',
+            icon: Icon(Icons.favorite_border),
+            activeIcon: Icon(Icons.favorite),
+            label: 'Favourites',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart_outlined),

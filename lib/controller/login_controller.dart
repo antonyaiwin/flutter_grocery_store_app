@@ -76,8 +76,8 @@ class LoginController extends ChangeNotifier {
           content: snackBarMessage,
         );
       }
-      loading = false;
-      notifyListeners();
     }
+    loading = false;
+    notifyListeners();
   }
 }

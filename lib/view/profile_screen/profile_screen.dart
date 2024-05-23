@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery_store/controller/profile_screen_controller.dart';
+import 'package:flutter_grocery_store/controller/screens/profile_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/elevated_card.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/profile_circle_avatar.dart';

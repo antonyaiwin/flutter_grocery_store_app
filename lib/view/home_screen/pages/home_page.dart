@@ -2,9 +2,10 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery_store/controller/profile_screen_controller.dart';
+import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
+import 'package:flutter_grocery_store/controller/screens/home_screen_controller.dart';
+import 'package:flutter_grocery_store/controller/screens/profile_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
-import 'package:flutter_grocery_store/core/data/dummy_db.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/elevated_card.dart';
 import 'package:flutter_grocery_store/view/profile_screen/profile_screen.dart';
 import 'package:flutter_grocery_store/view/search_screen/search_screen.dart';
@@ -23,10 +24,26 @@ class HomePage extends StatelessWidget {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
+          floating: true,
+          surfaceTintColor: Colors.transparent,
           automaticallyImplyLeading: false,
-          leading: Align(
-            alignment: Alignment.centerRight,
-            child: GestureDetector(
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Welcome Back,',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              Text(
+                FirebaseAuth.instance.currentUser?.displayName ?? 'User',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ],
+          ),
+          actions: [
+            GestureDetector(
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -41,24 +58,11 @@ class HomePage extends StatelessWidget {
                 user: FirebaseAuth.instance.currentUser,
               ),
             ),
-          ),
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Hi,',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              Text(
-                '${FirebaseAuth.instance.currentUser?.displayName}',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-            ],
-          ),
+            const SizedBox(width: 15),
+          ],
         ),
         SliverAppBar(
+          clipBehavior: Clip.none,
           pinned: true,
           primary: true,
           surfaceTintColor: Colors.transparent,
@@ -66,79 +70,87 @@ class HomePage extends StatelessWidget {
           title: Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 0),
-            child: ElevatedCard(
-              elevation: 3,
-              padding: EdgeInsets.only(),
-              child: InkWell(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchScreen(),
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Icon(
-                        Icons.search,
-                        color: ColorConstants.hintColor,
+            child: Row(
+              children: [
+                Expanded(
+                  child: ElevatedCard(
+                    elevation: 5,
+                    padding: EdgeInsets.only(),
+                    child: InkWell(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SearchScreen(),
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'Search for \'Grocery\'',
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Icon(
+                              Icons.search,
                               color: ColorConstants.hintColor,
                             ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'Search for \'Grocery\'',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                    color: ColorConstants.hintColor,
+                                  ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: 30,
-                      child: VerticalDivider(
-                        color: ColorConstants.hintColor,
-                        thickness: 1,
-                        width: 1,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Ink(
-                        padding: EdgeInsets.all(12),
-                        child: Icon(Icons.qr_code_scanner),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+                const SizedBox(width: 10),
+                ElevatedCard(
+                  elevation: 5,
+                  width: 50,
+                  child: InkWell(
+                    onTap: () {},
+                    child: Ink(
+                      padding: EdgeInsets.all(12),
+                      child: Icon(Icons.qr_code_scanner),
+                    ),
+                  ),
+                )
+              ],
             ),
           ),
         ),
         SliverLabelText(
           label: 'Shop by category',
+          onSeeAllPressed: () {
+            context.read<HomeScreenController>().setSelecetedPageIndex(1);
+          },
         ),
         SliverCategoryListView(),
         SliverLabelText(
-          label: 'Saved',
-        ),
-        SliverCategoryListView(),
-        SliverLabelText(
-          label: 'Everything',
+          label: 'All Products',
         ),
         SliverPadding(
-          padding: EdgeInsets.all(20),
-          sliver: SliverGrid.builder(
-            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 200,
-              mainAxisSpacing: 20,
-              crossAxisSpacing: 20,
-              childAspectRatio: 9 / 13,
+          padding: EdgeInsets.all(20).copyWith(bottom: 300),
+          sliver: Consumer<FireStoreController>(
+            builder: (BuildContext context, value, Widget? child) =>
+                SliverGrid.builder(
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 200,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 20,
+                childAspectRatio: 9 / 13,
+              ),
+              itemBuilder: (context, index) {
+                var e = value.productList[index];
+                return ProductCard(item: e);
+              },
+              itemCount: value.productList.length,
             ),
-            itemBuilder: (context, index) {
-              var e = DummyDb.groceryItems[index];
-              return ProductCard(item: e);
-            },
-            itemCount: DummyDb.groceryItems.length,
           ),
         ),
       ],

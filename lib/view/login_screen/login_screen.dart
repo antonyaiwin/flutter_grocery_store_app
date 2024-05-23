@@ -2,9 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/login_controller.dart';
-import 'package:flutter_grocery_store/controller/registration_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
-import 'package:flutter_grocery_store/view/register_screen/register_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/image_constants.dart';
@@ -49,9 +47,9 @@ class LoginScreen extends StatelessWidget {
                       controller:
                           context.read<LoginController>().emailController,
                       decoration: const InputDecoration(
-                        labelText: 'Email',
-                        isDense: true,
-                      ),
+                          labelText: 'Email',
+                          isDense: true,
+                          prefixIcon: Icon(Icons.email)),
                       validator: context.read<LoginController>().emailValidator,
                     ),
                     const SizedBox(height: 15),
@@ -64,6 +62,7 @@ class LoginScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: 'Password',
                           isDense: true,
+                          prefixIcon: const Icon(Icons.lock),
                           suffixIcon: IconButton(
                             onPressed: () {
                               value.togglePasswordVisibility();
@@ -125,29 +124,6 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text('Dont\'t have an account?'),
-                        const SizedBox(width: 2),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ChangeNotifierProvider(
-                                  create: (BuildContext context) =>
-                                      RegistrationController(),
-                                  child: const RegisterScreen(),
-                                ),
-                              ),
-                            );
-                          },
-                          child: const Text('Sign Up'),
-                        )
-                      ],
                     ),
                   ],
                 ),

@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/cart_controller.dart';
+import 'package:flutter_grocery_store/controller/firebase/firebase_storage_controller.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/view/splash_screen/splash_screen.dart';
@@ -31,10 +32,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => FireStoreController(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => FirebaseStorageController(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Grocery Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
             seedColor: ColorConstants.primaryColor,
@@ -43,8 +47,12 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           textTheme: GoogleFonts.ubuntuTextTheme(),
           inputDecorationTheme: InputDecorationTheme(
+            isDense: true,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           ),
+          scaffoldBackgroundColor: ColorConstants.scaffoldBackgroundColor,
+          appBarTheme: const AppBarTheme(
+              backgroundColor: ColorConstants.scaffoldBackgroundColor),
         ),
         home: const SplashScreen(),
       ),

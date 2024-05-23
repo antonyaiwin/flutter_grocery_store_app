@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
-import 'package:flutter_grocery_store/core/data/dummy_db.dart';
-import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
+import 'package:flutter_grocery_store/utils/global_widgets/category_card.dart';
 import 'package:provider/provider.dart';
 
 class SliverCategoryListView extends StatelessWidget {
@@ -13,7 +12,7 @@ class SliverCategoryListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
       child: SizedBox(
-        height: 120,
+        height: 150,
         child: Consumer<FireStoreController>(
           builder: (BuildContext context, value, Widget? child) =>
               ListView.separated(
@@ -22,28 +21,7 @@ class SliverCategoryListView extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemBuilder: (context, index) {
               var e = value.categoryList[index];
-              return Material(
-                elevation: 5,
-                type: MaterialType.canvas,
-                borderRadius: BorderRadius.circular(20),
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  height: 100,
-                  width: 100,
-                  child: Column(children: [
-                    Expanded(
-                        child: MyNetworkImage(
-                      imageUrl: e.imageUrl ?? '',
-                      fit: BoxFit.cover,
-                    )),
-                    Text(
-                      e.name ?? '',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  ]),
-                ),
-              );
+              return CategoryCard(item: e);
             },
             separatorBuilder: (context, index) => const SizedBox(width: 10),
             itemCount: value.categoryList.length,
