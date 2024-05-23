@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/cart_controller.dart';
+import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/view/splash_screen/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,7 +27,10 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (context) => CartController(),
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (context) => FireStoreController(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,8 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CategoryModel {
-  int? id;
+  String? id;
   String? name;
   String? imageUrl;
   CategoryModel({
@@ -12,7 +13,7 @@ class CategoryModel {
   });
 
   CategoryModel copyWith({
-    int? id,
+    String? id,
     String? name,
     String? imageUrl,
   }) {
@@ -33,7 +34,16 @@ class CategoryModel {
 
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
     return CategoryModel(
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['id'] != null ? map['id'] as String : null,
+      name: map['name'] != null ? map['name'] as String : null,
+      imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
+    );
+  }
+  factory CategoryModel.fromQueryDocumentSnapshot(
+      QueryDocumentSnapshot<Map<String, dynamic>> query) {
+    var map = query.data();
+    return CategoryModel(
+      id: query.id,
       name: map['name'] != null ? map['name'] as String : null,
       imageUrl: map['imageUrl'] != null ? map['imageUrl'] as String : null,
     );
