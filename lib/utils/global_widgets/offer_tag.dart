@@ -23,10 +23,11 @@ class OfferTag extends StatelessWidget {
               // color: ColorConstants.primaryGreen,
               gradient: LinearGradient(
                 colors: [
-                  Color.fromRGBO(0, 255, 0, 1),
-                  Color.fromRGBO(0, 200, 0, 1),
+                  // Color.fromRGBO(0, 255, 0, 1),
+                  // Color.fromRGBO(0, 200, 0, 1),
                   // const Color.fromRGBO(0, 150, 0, 1),
                   // const Color.fromRGBO(0, 100, 0, 1),
+                  Color.fromARGB(255, 73, 161, 76),
                   ColorConstants.primaryGreen,
                 ],
                 begin: Alignment.topCenter,

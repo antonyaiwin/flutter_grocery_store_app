@@ -26,7 +26,7 @@ class AddToCartButton extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: ClipRRect(
         clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(50),
         child: Material(
           child: Ink(
             width: width,
@@ -40,7 +40,7 @@ class AddToCartButton extends StatelessWidget {
                       width: 1,
                       strokeAlign: BorderSide.strokeAlignInside,
                     ),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(50),
             ),
             child: Center(
                 child: count == 0
@@ -55,10 +55,12 @@ class AddToCartButton extends StatelessWidget {
   Row addRemoveButtons(BuildContext context) {
     return Row(
       children: [
-        Expanded(
+        Padding(
+          padding: const EdgeInsets.all(1),
           child: ColoredAddButton(
             onTap: onRemoveTap,
             icon: Icons.remove,
+            size: height - 4,
           ),
         ),
         Expanded(
@@ -70,10 +72,12 @@ class AddToCartButton extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
+        Padding(
+          padding: const EdgeInsets.all(1),
           child: ColoredAddButton(
             onTap: onAddTap,
             icon: Icons.add,
+            size: height - 4,
           ),
         ),
       ],
@@ -94,16 +98,24 @@ class ColoredAddButton extends StatelessWidget {
     super.key,
     required this.onTap,
     this.icon,
+    required this.size,
   });
 
   final void Function()? onTap;
   final IconData? icon;
+  final double size;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(50),
       child: Ink(
-        decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(50),
+        ),
         child: Center(
           child: Icon(
             icon,

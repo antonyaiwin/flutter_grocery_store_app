@@ -141,9 +141,9 @@ class HomePage extends StatelessWidget {
                 SliverGrid.builder(
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 200,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 20,
-                childAspectRatio: 9 / 13,
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 10,
+                childAspectRatio: 20 / 28,
               ),
               itemBuilder: (context, index) {
                 var e = value.productList[index];

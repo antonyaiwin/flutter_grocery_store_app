@@ -18,6 +18,7 @@ class ProductDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var offer = item.getOffer();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -71,7 +72,6 @@ class ProductDetailsScreen extends StatelessWidget {
                                     .titleLarge
                                     ?.copyWith(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 24,
                                     ),
                                 maxLines: 4,
                                 overflow: TextOverflow.ellipsis,
@@ -92,7 +92,13 @@ class ProductDetailsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 10),
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
+                            if (offer == null)
+                              Text(
+                                'MRP: ',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
                             // Selling Price
                             Text(
                               '₹${item.getFormattedSellingPrice()}',
@@ -103,8 +109,31 @@ class ProductDetailsScreen extends StatelessWidget {
                                     fontWeight: FontWeight.bold,
                                   ),
                             ),
-                            const SizedBox(width: 3),
-                            if (item.getOffer() != null) ...[
+                            if (offer == null)
+                              Text(
+                                ' (Incl. of all taxes)',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            const SizedBox(width: 10),
+
+                            // Offer
+                            if (offer != null) OfferTag(text: offer),
+                          ],
+                        ),
+
+                        if (offer != null)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                'MRP: ',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: ColorConstants.hintColor,
+                                    ),
+                              ),
                               // MRP price
                               Text(
                                 '₹${item.getFormattedMRP()}',
@@ -118,13 +147,18 @@ class ProductDetailsScreen extends StatelessWidget {
                                           ColorConstants.primaryRed,
                                     ),
                               ),
+                              Text(
+                                ' (Incl. of all taxes)',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: ColorConstants.hintColor,
+                                    ),
+                              ),
                               const SizedBox(width: 10),
-
-                              // Offer
-                              OfferTag(text: item.getOffer()!),
                             ],
-                          ],
-                        ),
+                          ),
 
                         // Rating
                         if (item.rating != null && item.ratingCount != null)

@@ -14,7 +14,9 @@ class HomeBottomNavBar extends StatelessWidget {
       builder: (BuildContext context, controller, Widget? child) =>
           BottomNavigationBar(
         currentIndex: controller.selectedPageIndex,
-        onTap: (value) {},
+        onTap: (value) {
+          controller.setSelecetedPageIndex(value);
+        },
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),

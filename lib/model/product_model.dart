@@ -53,7 +53,7 @@ class ProductModel {
     if (number % 1 == 0) {
       return number.toStringAsFixed(0);
     } else {
-      return number.toStringAsFixed(1);
+      return number.toStringAsFixed(2);
     }
   }
 

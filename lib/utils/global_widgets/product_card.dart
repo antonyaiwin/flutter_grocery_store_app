@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedCard(
-      elevation: 5,
+      elevation: 2,
       child: InkWell(
         onTap: () => Navigator.push(
           context,
@@ -32,43 +33,50 @@ class ProductCard extends StatelessWidget {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.all(15).copyWith(bottom: 0),
+              padding: const EdgeInsets.all(15),
               child: Column(
                 children: [
                   Expanded(
                     flex: 8,
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: MyNetworkImage(
-                          imageUrl:
-                              item.imageUrl != null && item.imageUrl!.isNotEmpty
-                                  ? item.imageUrl![0]
-                                  : ''),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 7,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text(
-                          item.name ?? '',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(fontWeight: FontWeight.bold),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              item.getFormattedQuantity(),
-                              style: Theme.of(context).textTheme.bodyMedium,
+                        Expanded(
+                          flex: 9,
+                          child: AspectRatio(
+                            aspectRatio: 1,
+                            child: MyNetworkImage(
+                              imageUrl: item.imageUrl != null &&
+                                      item.imageUrl!.isNotEmpty
+                                  ? item.imageUrl![0]
+                                  : '',
                             ),
-                          ],
+                          ),
                         ),
-                        const Spacer(),
+                        const SizedBox(height: 5),
+                        Expanded(
+                          flex: 3,
+                          child: Text(
+                            item.name ?? '',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                  height: 1.25,
+                                ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
                         Row(
                           children: [
                             // Selling Price
@@ -98,28 +106,32 @@ class ProductCard extends StatelessWidget {
                                           ColorConstants.primaryRed,
                                     ),
                               ),
-
-                            const Spacer(),
-                            Consumer<CartController>(
-                              builder: (BuildContext context, value,
-                                      Widget? child) =>
-                                  AddToCartButton(
-                                count: value.getItemCount(item.id ?? 0),
-                                label: 'ADD',
-                                height: 30,
-                                width: 70,
-                                onTap: () {
-                                  value.addItemToCart(item);
-                                },
-                                onAddTap: () {
-                                  value.addItemToCart(item);
-                                },
-                                onRemoveTap: () {
-                                  value.removeItemFromCart(item);
-                                },
-                              ),
+                            Spacer(),
+                            const SizedBox(width: 10),
+                            Text(
+                              item.getFormattedQuantity(),
+                              style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
+                        ),
+                        Consumer<CartController>(
+                          builder:
+                              (BuildContext context, value, Widget? child) =>
+                                  AddToCartButton(
+                            count: value.getItemCount(item.id ?? 0),
+                            label: 'ADD',
+                            height: 30,
+                            width: double.infinity,
+                            onTap: () {
+                              value.addItemToCart(item);
+                            },
+                            onAddTap: () {
+                              value.addItemToCart(item);
+                            },
+                            onRemoveTap: () {
+                              value.removeItemFromCart(item);
+                            },
+                          ),
                         ),
                       ],
                     ),

@@ -45,7 +45,8 @@ class MyApp extends StatelessWidget {
             primary: ColorConstants.primaryColor,
           ),
           useMaterial3: true,
-          textTheme: GoogleFonts.ubuntuTextTheme(),
+          textTheme: GoogleFonts.rubikTextTheme(),
+          // rubik,
           inputDecorationTheme: InputDecorationTheme(
             isDense: true,
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
