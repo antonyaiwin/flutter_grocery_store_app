@@ -59,9 +59,10 @@ class _PhotoScreenState extends State<PhotoScreen> {
                     backgroundDecoration: _boxDecoration,
                     pageController: pageController,
                     itemCount: widget.imageUrlList?.length ?? 0,
-                    builder: (context, index) => PhotoViewGalleryPageOptions(
-                      imageProvider:
-                          NetworkImage(widget.imageUrlList?[index] ?? ''),
+                    builder: (context, index) =>
+                        PhotoViewGalleryPageOptions.customChild(
+                      child: MyNetworkImage(
+                          imageUrl: widget.imageUrlList?[index] ?? ''),
                       controller: PhotoViewController(),
                     ),
                   )
@@ -70,9 +71,9 @@ class _PhotoScreenState extends State<PhotoScreen> {
                         backgroundDecoration: _boxDecoration,
                         imageProvider: FileImage(widget.imageFile!),
                       )
-                    : PhotoView(
+                    : PhotoView.customChild(
                         backgroundDecoration: _boxDecoration,
-                        imageProvider: NetworkImage(widget.imageUrl!),
+                        child: MyNetworkImage(imageUrl: widget.imageUrl!),
                       ),
           ),
           SizedBox(

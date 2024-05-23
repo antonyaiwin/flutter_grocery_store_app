@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_grocery_store/controller/screens/product_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,11 @@ class ProductCard extends StatelessWidget {
         onTap: () => Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => ProductDetailsScreen(item: item),
+            builder: (context) => ChangeNotifierProvider(
+              create: (BuildContext context) =>
+                  ProductDetailsScreenController(context, item),
+              child: ProductDetailsScreen(item: item),
+            ),
           ),
         ),
         child: Stack(
@@ -84,11 +89,15 @@ class ProductCard extends StatelessWidget {
                                     decorationColor: ColorConstants.primaryRed,
                                   ),
                         ),
-                      Spacer(),
-                      const SizedBox(width: 10),
-                      Text(
-                        item.getFormattedQuantity(),
-                        style: Theme.of(context).textTheme.bodySmall,
+                      const SizedBox(width: 5),
+                      Expanded(
+                        child: Text(
+                          textAlign: TextAlign.end,
+                          item.getFormattedQuantity(),
+                          style: Theme.of(context).textTheme.bodySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ],
                   ),
