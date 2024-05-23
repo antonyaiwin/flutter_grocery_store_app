@@ -18,7 +18,8 @@ class ProductDetailsScreenController extends ChangeNotifier {
         .where((element) =>
             element.categoryId == product.categoryId &&
             element.collectionDocumentId != product.collectionDocumentId)
-        .toList();
+        .toList()
+      ..shuffle();
     notifyListeners();
   }
 }

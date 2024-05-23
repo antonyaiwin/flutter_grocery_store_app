@@ -44,13 +44,14 @@ class CategoryCard extends StatelessWidget {
                 child: Column(
                   children: [
                     Expanded(
-                        child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: MyNetworkImage(
-                        imageUrl: item.imageUrl ?? '',
-                        fit: BoxFit.contain,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: MyNetworkImage(
+                          imageUrl: item.imageUrl ?? '',
+                          fit: BoxFit.contain,
+                        ),
                       ),
-                    )),
+                    ),
                     Text(
                       item.name ?? '',
                       maxLines: 2,

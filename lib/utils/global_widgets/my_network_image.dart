@@ -7,7 +7,7 @@ class MyNetworkImage extends StatelessWidget {
   const MyNetworkImage({
     super.key,
     required this.imageUrl,
-    this.height,
+    this.height = 250,
     this.width,
     this.fit,
   });
@@ -21,7 +21,7 @@ class MyNetworkImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: imageUrl,
-      height: height ?? 250,
+      height: height,
       width: width,
       fit: fit,
       errorWidget: (context, url, error) => const Center(
