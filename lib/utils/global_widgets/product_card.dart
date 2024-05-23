@@ -37,103 +37,77 @@ class ProductCard extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(
-                    flex: 8,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Expanded(
-                          flex: 9,
-                          child: AspectRatio(
-                            aspectRatio: 1,
-                            child: MyNetworkImage(
-                              imageUrl: item.imageUrl != null &&
-                                      item.imageUrl!.isNotEmpty
-                                  ? item.imageUrl![0]
-                                  : '',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Expanded(
-                          flex: 3,
-                          child: Text(
-                            item.name ?? '',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
-                                ?.copyWith(
-                                  height: 1.25,
-                                ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
-                        ),
-                      ],
+                    flex: 9,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: MyNetworkImage(
+                        imageUrl:
+                            item.imageUrl != null && item.imageUrl!.isNotEmpty
+                                ? item.imageUrl![0]
+                                : '',
+                      ),
                     ),
                   ),
+                  const SizedBox(height: 5),
                   Expanded(
                     flex: 3,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            // Selling Price
-                            Text(
-                              '₹${item.getFormattedSellingPrice()}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleMedium
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                    color: ColorConstants.primaryGreen,
-                                  ),
-                            ),
-                            const SizedBox(width: 3),
-
-                            // MRP
-                            if (item.getOffer() != null)
-                              Text(
-                                '₹${item.getFormattedMRP()}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: ColorConstants.hintColor,
-                                      decoration: TextDecoration.lineThrough,
-                                      decorationColor:
-                                          ColorConstants.primaryRed,
-                                    ),
-                              ),
-                            Spacer(),
-                            const SizedBox(width: 10),
-                            Text(
-                              item.getFormattedQuantity(),
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                        Consumer<CartController>(
-                          builder:
-                              (BuildContext context, value, Widget? child) =>
-                                  AddToCartButton(
-                            count: value.getItemCount(item.id ?? 0),
-                            label: 'ADD',
-                            height: 30,
-                            width: double.infinity,
-                            onTap: () {
-                              value.addItemToCart(item);
-                            },
-                            onAddTap: () {
-                              value.addItemToCart(item);
-                            },
-                            onRemoveTap: () {
-                              value.removeItemFromCart(item);
-                            },
+                    child: Text(
+                      item.name ?? '',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            height: 1.25,
                           ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      // Selling Price
+                      Text(
+                        '₹${item.getFormattedSellingPrice()}',
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorConstants.primaryGreen,
+                                ),
+                      ),
+                      const SizedBox(width: 3),
+
+                      // MRP
+                      if (item.getOffer() != null)
+                        Text(
+                          '₹${item.getFormattedMRP()}',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: ColorConstants.hintColor,
+                                    decoration: TextDecoration.lineThrough,
+                                    decorationColor: ColorConstants.primaryRed,
+                                  ),
                         ),
-                      ],
+                      Spacer(),
+                      const SizedBox(width: 10),
+                      Text(
+                        item.getFormattedQuantity(),
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                  Consumer<CartController>(
+                    builder: (BuildContext context, value, Widget? child) =>
+                        AddToCartButton(
+                      count: value.getItemCount(item.id ?? 0),
+                      label: 'ADD',
+                      height: 30,
+                      width: double.infinity,
+                      onTap: () {
+                        value.addItemToCart(item);
+                      },
+                      onAddTap: () {
+                        value.addItemToCart(item);
+                      },
+                      onRemoveTap: () {
+                        value.removeItemFromCart(item);
+                      },
                     ),
                   ),
                 ],
