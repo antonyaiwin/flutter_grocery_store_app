@@ -12,6 +12,7 @@ import '../../controller/cart_controller.dart';
 import '../../core/constants/color_constants.dart';
 import '../../model/product_model.dart';
 import '../../utils/global_widgets/add_to_cart_button.dart';
+import '../../utils/global_widgets/favorite_button.dart';
 import '../../utils/global_widgets/my_network_image.dart';
 import 'widgets/carousel_image_view.dart';
 
@@ -27,23 +28,8 @@ class ProductDetailsScreen extends StatelessWidget {
         centerTitle: true,
         title: const Text('Product Details'),
         actions: [
-          Consumer<FireStoreController>(
-            builder: (BuildContext context, FireStoreController value,
-                Widget? child) {
-              bool favorite =
-                  value.favouritesList.contains(item.collectionDocumentId);
-              return IconButton(
-                onPressed: () {
-                  if (favorite) {
-                    value.deleteFavorite(item);
-                  } else {
-                    value.addFavorite(item);
-                  }
-                },
-                icon: Icon(favorite ? Icons.favorite : Icons.favorite_border),
-              );
-            },
-          ),
+          FavoriteButton(item: item),
+          const SizedBox(width: 15),
         ],
       ),
       body: Consumer<FireStoreController>(
@@ -293,6 +279,8 @@ class ProductDetailsScreen extends StatelessWidget {
                                     ),
                               ),
                               const SizedBox(height: 10),
+
+                              // Disclaimer section
                               Text(
                                 'Disclaimer',
                                 style: Theme.of(context).textTheme.titleMedium,
@@ -310,13 +298,17 @@ class ProductDetailsScreen extends StatelessWidget {
                                       color: Colors.grey,
                                     ),
                               ),
+                              const SizedBox(height: 10),
                               const Divider(),
                             ],
                           ),
                         ),
                         // Similar Products
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 20,
+                            vertical: 5,
+                          ),
                           child: Text(
                             'Similar Products',
                             style: Theme.of(context).textTheme.titleMedium,

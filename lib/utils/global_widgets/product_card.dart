@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_grocery_store/controller/screens/product_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:flutter_grocery_store/utils/global_widgets/favorite_button.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
 import 'package:provider/provider.dart';
 
@@ -127,6 +128,11 @@ class ProductCard extends StatelessWidget {
                 left: 10,
                 child: OfferTag(text: item.getOffer()!),
               ),
+            Positioned(
+              right: 10,
+              top: 10,
+              child: FavoriteButton(item: item),
+            ),
           ],
         ),
       ),
