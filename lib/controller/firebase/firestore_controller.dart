@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_grocery_store/model/category_model.dart';
@@ -9,14 +10,19 @@ import 'package:flutter_grocery_store/model/product_model.dart';
 
 class FireStoreController extends ChangeNotifier {
   static const String _categoryCollectionName = 'categories';
-  static const String productsCollectionName = 'grocery-shop/data/products';
+  static const String _productsCollectionName = 'grocery-shop/data/products';
+  static const String _userDataCollectionName = 'users';
+  static const String _favouritesCollectionName = 'favourites';
+
   var db = FirebaseFirestore.instance;
   List<CategoryModel> categoryList = [];
   List<ProductModel> productList = [];
+  List<String> favouritesList = [];
 
   FireStoreController() {
     _initCategoriesListener();
     _initProductsListener();
+    _initFavouritesListener();
   }
 
   String? getLastCategoryIndex() {
@@ -44,13 +50,25 @@ class FireStoreController extends ChangeNotifier {
 
   void _initProductsListener() {
     db
-        .collection(productsCollectionName)
+        .collection(_productsCollectionName)
         .orderBy('id')
         .snapshots()
         .listen((event) {
       productList = event.docs
           .map((e) => ProductModel.fromQueryDocumentSnapshot(e))
           .toList();
+      notifyListeners();
+    });
+  }
+
+  void _initFavouritesListener() {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    db
+        .collection('$_userDataCollectionName/$uid/$_favouritesCollectionName')
+        .orderBy('date_added', descending: true)
+        .snapshots()
+        .listen((event) {
+      favouritesList = event.docs.map((e) => e.id).toList();
       notifyListeners();
     });
   }
@@ -105,7 +123,7 @@ class FireStoreController extends ChangeNotifier {
 
   Future<DocumentReference<Map<String, dynamic>>> addProduct(
       ProductModel product) async {
-    var ref = await db.collection(productsCollectionName).add(product.toMap());
+    var ref = await db.collection(_productsCollectionName).add(product.toMap());
     log('addProduct completed');
     return ref;
   }
@@ -116,7 +134,7 @@ class FireStoreController extends ChangeNotifier {
       return list;
     }
     var data = await db
-        .collection(productsCollectionName)
+        .collection(_productsCollectionName)
         .where('categoryId', isEqualTo: categoryId)
         .get();
     list = data.docs
@@ -127,7 +145,7 @@ class FireStoreController extends ChangeNotifier {
 
   Future<void> updateProduct(ProductModel product) async {
     await db
-        .collection(productsCollectionName)
+        .collection(_productsCollectionName)
         .doc(product.collectionDocumentId)
         .update(product.toMapWithoutNull());
     log('updateProduct completed');
@@ -135,7 +153,7 @@ class FireStoreController extends ChangeNotifier {
 
   Future<bool> deleteProduct(String productId) async {
     try {
-      await db.collection(productsCollectionName).doc(productId).delete()
+      await db.collection(_productsCollectionName).doc(productId).delete()
           /*  .onError((error, stackTrace) =>
               log('deleteProduct onError : $error \n $stackTrace')) */
           ;
@@ -150,7 +168,7 @@ class FireStoreController extends ChangeNotifier {
     List<ProductModel> list = [];
     try {
       var data = await db
-          .collection(productsCollectionName)
+          .collection(_productsCollectionName)
           .where('barcode', isEqualTo: text)
           .get();
       list = data.docs
@@ -160,5 +178,33 @@ class FireStoreController extends ChangeNotifier {
       log('searchProductsUsingBarcode FirebaseException: ${e.code}');
     }
     return list;
+  }
+
+  // Favorites CRUD Operation
+
+  Future<void> addFavorite(
+    ProductModel product,
+  ) async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    var ref = db
+        .collection('$_userDataCollectionName/$uid/$_favouritesCollectionName');
+    log(ref.path);
+    await ref.doc(product.collectionDocumentId).set({
+      'date_added': DateTime.now().millisecondsSinceEpoch,
+    });
+
+    log('Favourites add completed');
+  }
+
+  Future<void> deleteFavorite(
+    ProductModel product,
+  ) async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    var ref = db
+        .collection('$_userDataCollectionName/$uid/$_favouritesCollectionName');
+    log(ref.path);
+    await ref.doc(product.collectionDocumentId).delete();
+
+    log('Favourites add completed');
   }
 }

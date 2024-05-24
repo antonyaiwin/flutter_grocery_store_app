@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/controller/screens/category_page_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
-import 'package:flutter_grocery_store/model/category_model.dart';
-import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
 import 'package:provider/provider.dart';
 
-import '../../../utils/global_widgets/product_list_card.dart';
+import '../../../controller/screens/home_screen_controller.dart';
+import '../widgets/category_list_card.dart';
+import '../widgets/product_list_card.dart';
 
 class CategoryPage extends StatelessWidget {
   const CategoryPage({super.key});
@@ -15,118 +16,126 @@ class CategoryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var provider = context.read<CategoryPageController>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('All Categories'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('All Categories'),
+      // ),
       body: Row(
         children: [
-          SizedBox(
-            width: 90,
-            child: Consumer2<FireStoreController, CategoryPageController>(
-              builder: (BuildContext context, firestore, categoryController,
-                      Widget? child) =>
-                  ListView.separated(
-                itemBuilder: (context, index) {
-                  var e = firestore.categoryList[index];
-                  return CategoryListCard(
-                    category: e,
-                    isSelected:
-                        provider.selectedCategoryId == e.collectionDocumentId,
-                    onTap: () {
-                      categoryController
-                          .changeCategory(e.collectionDocumentId ?? '');
+          Stack(
+            children: [
+              SizedBox(
+                width: 90,
+                child: Consumer2<FireStoreController, CategoryPageController>(
+                  builder: (BuildContext context, firestore, categoryController,
+                          Widget? child) =>
+                      ListView.builder(
+                    itemBuilder: (context, index) {
+                      if (index == 0) {
+                        return Container(
+                          height: kToolbarHeight +
+                              MediaQuery.of(context).padding.top,
+                          decoration: BoxDecoration(
+                            color: ColorConstants.categorySliderBackground,
+                            borderRadius: categoryController.categoryList[index]
+                                        .collectionDocumentId ==
+                                    categoryController.selectedCategoryId
+                                ? const BorderRadius.only(
+                                    bottomRight: Radius.circular(15),
+                                  )
+                                : null,
+                          ),
+                        );
+                      }
+                      var e = firestore.categoryList[index - 1];
+                      return CategoryListCard(
+                        category: e,
+                        isSelected: provider.selectedCategoryId ==
+                            e.collectionDocumentId,
+                        isPrevious: provider.selectedCategoryId ==
+                                    e.collectionDocumentId ||
+                                index >= categoryController.categoryList.length
+                            ? false
+                            : categoryController
+                                    .categoryList[index].collectionDocumentId ==
+                                categoryController.selectedCategoryId,
+                        isNext: provider.selectedCategoryId ==
+                                    e.collectionDocumentId ||
+                                index < 2
+                            ? false
+                            : categoryController.categoryList[index - 2]
+                                    .collectionDocumentId ==
+                                categoryController.selectedCategoryId,
+                        onTap: () {
+                          categoryController
+                              .changeCategory(e.collectionDocumentId ?? '');
+                        },
+                      );
                     },
+                    itemCount: firestore.categoryList.length + 1,
+                  ),
+                ),
+              ),
+              Container(
+                alignment: Alignment.bottomCenter,
+                height: kToolbarHeight + MediaQuery.of(context).padding.top,
+                width: 90,
+                decoration: const BoxDecoration(
+                  color: ColorConstants.categorySliderBackground,
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.circular(15),
+                  ),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    context
+                        .read<HomeScreenController>()
+                        .setSelecetedPageIndex(0);
+                  },
+                  icon: const Icon(Icons.arrow_back),
+                ),
+              ),
+            ],
+          ),
+          // const VerticalDivider(
+          //   width: 1,
+          // ),
+          Expanded(
+            child: SafeArea(
+              child: Consumer<CategoryPageController>(
+                builder: (BuildContext context, value, Widget? child) {
+                  return Column(
+                    children: [
+                      AppBar(
+                        title: Text(value.getCurrentCategoryName()),
+                        surfaceTintColor: Colors.transparent,
+                      ),
+                      if (value.isLoading)
+                        const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      else if (value.filteredProducts.isEmpty)
+                        const Center(
+                          child: Text('No products found!'),
+                        )
+                      else
+                        Expanded(
+                          child: ListView.separated(
+                            controller: value.productsScrollController,
+                            padding: const EdgeInsets.all(10),
+                            itemBuilder: (context, index) => ProductListCard(
+                                item: value.filteredProducts[index]),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 10),
+                            itemCount: value.filteredProducts.length,
+                          ),
+                        )
+                    ],
                   );
                 },
-                separatorBuilder: (context, index) => Divider(
-                  height: 1,
-                  endIndent: 10,
-                  color: ColorConstants.hintColor.withOpacity(0.2),
-                ),
-                itemCount: firestore.categoryList.length,
               ),
-            ),
-          ),
-          const VerticalDivider(
-            width: 1,
-          ),
-          Expanded(
-            child: Consumer<CategoryPageController>(
-              builder: (BuildContext context, value, Widget? child) {
-                if (value.isLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                if (value.filteredProducts.isEmpty) {
-                  return const Center(
-                    child: Text('No products found!'),
-                  );
-                }
-                return ListView.separated(
-                  padding: const EdgeInsets.all(10),
-                  itemBuilder: (context, index) =>
-                      ProductListCard(item: value.filteredProducts[index]),
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 10),
-                  itemCount: value.filteredProducts.length,
-                );
-              },
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class CategoryListCard extends StatelessWidget {
-  const CategoryListCard({
-    super.key,
-    required this.category,
-    required this.isSelected,
-    this.onTap,
-  });
-
-  final CategoryModel category;
-  final bool isSelected;
-  final Function()? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: !isSelected
-            ? null
-            : BoxDecoration(
-                color: ColorConstants.primaryColor.withOpacity(0.125),
-                border: const Border(
-                  left: BorderSide(
-                    color: ColorConstants.primaryColor,
-                    width: 4,
-                  ),
-                ),
-                borderRadius: const BorderRadius.horizontal(
-                  right: Radius.circular(10),
-                ),
-              ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            MyNetworkImage(
-              imageUrl: category.imageUrl ?? '',
-              height: null,
-            ),
-            Text(
-              category.name ?? '',
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
       ),
     );
   }

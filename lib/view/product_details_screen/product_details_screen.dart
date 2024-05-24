@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/product_details_screen_controller.dart';
+import 'package:flutter_grocery_store/core/constants/string_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/product_card.dart';
 import 'package:provider/provider.dart';
 
@@ -26,9 +27,22 @@ class ProductDetailsScreen extends StatelessWidget {
         centerTitle: true,
         title: const Text('Product Details'),
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.favorite_border),
+          Consumer<FireStoreController>(
+            builder: (BuildContext context, FireStoreController value,
+                Widget? child) {
+              bool favorite =
+                  value.favouritesList.contains(item.collectionDocumentId);
+              return IconButton(
+                onPressed: () {
+                  if (favorite) {
+                    value.deleteFavorite(item);
+                  } else {
+                    value.addFavorite(item);
+                  }
+                },
+                icon: Icon(favorite ? Icons.favorite : Icons.favorite_border),
+              );
+            },
           ),
         ],
       ),
@@ -175,17 +189,20 @@ class ProductDetailsScreen extends StatelessWidget {
                                   item.ratingCount != null)
                                 Row(
                                   children: [
-                                    ...List.generate(5, (index) {
-                                      double rating = item.rating ?? 0;
-                                      return Icon(
-                                        Icons.star,
-                                        size: 15,
-                                        color:
-                                            rating.round() ~/ (index + 1) == 0
-                                                ? Colors.grey
-                                                : Colors.amber,
-                                      );
-                                    }),
+                                    ...List.generate(
+                                      5,
+                                      (index) {
+                                        double rating = item.rating ?? 0;
+                                        return Icon(
+                                          Icons.star,
+                                          size: 15,
+                                          color:
+                                              rating.round() ~/ (index + 1) == 0
+                                                  ? Colors.grey
+                                                  : Colors.amber,
+                                        );
+                                      },
+                                    ),
 
                                     const SizedBox(width: 10),
                                     // Text(
@@ -267,6 +284,24 @@ class ProductDetailsScreen extends StatelessWidget {
                               const SizedBox(height: 10),
                               Text(
                                 item.description ?? '',
+                                textAlign: TextAlign.justify,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: Colors.grey,
+                                    ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                'Disclaimer',
+                                style: Theme.of(context).textTheme.titleMedium,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                StringConstants.productDisclaimer,
                                 textAlign: TextAlign.justify,
                                 style: Theme.of(context)
                                     .textTheme

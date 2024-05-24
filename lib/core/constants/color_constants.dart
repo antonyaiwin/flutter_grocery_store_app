@@ -10,7 +10,9 @@ class ColorConstants {
   static const Color snackBarErrorBackground = Colors.red;
   static const Color snackBarSuccessBackground = Colors.green;
   static const Color hintColor = Color.fromARGB(255, 112, 112, 112);
+  static const Color categorySliderBackground =
+      Color.fromARGB(255, 239, 216, 181);
 
   static const Color scaffoldBackgroundColor =
-      Color.fromARGB(255, 249, 249, 249);
+      Color.fromARGB(255, 243, 237, 255);
 }

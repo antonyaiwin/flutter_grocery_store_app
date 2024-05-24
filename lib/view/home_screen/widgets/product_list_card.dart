@@ -4,12 +4,12 @@ import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/cart_controller.dart';
-import '../../model/product_model.dart';
-import '../../view/product_details_screen/product_details_screen.dart';
-import 'add_to_cart_button.dart';
-import 'elevated_card.dart';
-import 'offer_tag.dart';
+import '../../../controller/cart_controller.dart';
+import '../../../model/product_model.dart';
+import '../../product_details_screen/product_details_screen.dart';
+import '../../../utils/global_widgets/add_to_cart_button.dart';
+import '../../../utils/global_widgets/elevated_card.dart';
+import '../../../utils/global_widgets/offer_tag.dart';
 
 class ProductListCard extends StatelessWidget {
   const ProductListCard({
@@ -23,7 +23,7 @@ class ProductListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedCard(
       height: 130,
-      elevation: 2,
+      // elevation: 2,
       child: InkWell(
         onTap: () => Navigator.push(
           context,

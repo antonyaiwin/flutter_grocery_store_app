@@ -5,7 +5,7 @@ import 'package:flutter_grocery_store/utils/global_widgets/base_keep_alive_page.
 import 'package:flutter_grocery_store/view/home_screen/pages/cart_page.dart';
 import 'package:flutter_grocery_store/view/home_screen/pages/category_page.dart';
 import 'package:flutter_grocery_store/view/home_screen/pages/home_page.dart';
-import 'package:flutter_grocery_store/view/home_screen/pages/my_list_page.dart';
+import 'package:flutter_grocery_store/view/home_screen/pages/favorites_page.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreenController extends ChangeNotifier {
@@ -19,7 +19,7 @@ class HomeScreenController extends ChangeNotifier {
         child: const CategoryPage(),
       ),
     ),
-    const BaseKeepAlivePage(child: MyListPage()),
+    const BaseKeepAlivePage(child: FavoritesPage()),
     const BaseKeepAlivePage(child: CartPage()),
   ];
   int selectedPageIndex = 0;

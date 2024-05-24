@@ -23,7 +23,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedCard(
-      elevation: 2,
+      // elevation: 2,
       child: InkWell(
         onTap: () => Navigator.push(
           context,
