@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/firebase/firestore_controller.dart';
@@ -20,7 +21,7 @@ class FavoriteButton extends StatelessWidget {
         bool favorite =
             value.favouritesList.contains(item.collectionDocumentId);
         return InkWell(
-          overlayColor: MaterialStatePropertyAll(Colors.transparent),
+          overlayColor: const MaterialStatePropertyAll(Colors.transparent),
           onTap: () {
             if (favorite) {
               value.deleteFavorite(item);
@@ -28,7 +29,10 @@ class FavoriteButton extends StatelessWidget {
               value.addFavorite(item);
             }
           },
-          child: Icon(favorite ? Icons.favorite : Icons.favorite_border),
+          child: Icon(
+            favorite ? Icons.favorite : Icons.favorite_border,
+            color: favorite ? ColorConstants.primaryRed : null,
+          ),
         );
       },
     );

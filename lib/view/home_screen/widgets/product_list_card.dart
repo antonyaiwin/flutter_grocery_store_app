@@ -1,14 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_grocery_store/controller/screens/product_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
-import 'package:flutter_grocery_store/utils/global_widgets/favorite_button.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/cart_controller.dart';
 import '../../../model/product_model.dart';
+import '../../../utils/global_widgets/favorite_button.dart';
 import '../../product_details_screen/product_details_screen.dart';
 import '../../../utils/global_widgets/add_to_cart_button.dart';
 import '../../../utils/global_widgets/elevated_card.dart';
@@ -44,16 +42,13 @@ class ProductListCard extends StatelessWidget {
               padding: const EdgeInsets.all(15),
               child: Row(
                 children: [
-                  Expanded(
-                    flex: 4,
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: MyNetworkImage(
-                        imageUrl:
-                            item.imageUrl != null && item.imageUrl!.isNotEmpty
-                                ? item.imageUrl![0]
-                                : '',
-                      ),
+                  AspectRatio(
+                    aspectRatio: 1,
+                    child: MyNetworkImage(
+                      imageUrl:
+                          item.imageUrl != null && item.imageUrl!.isNotEmpty
+                              ? item.imageUrl![0]
+                              : '',
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -64,42 +59,21 @@ class ProductListCard extends StatelessWidget {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  item.name ?? '',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleSmall
-                                      ?.copyWith(
-                                        height: 1.25,
-                                      ),
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 2,
+                          child: Text(
+                            item.name ?? '',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleSmall
+                                ?.copyWith(
+                                  height: 1.25,
                                 ),
-                              ),
-                              FavoriteButton(item: item),
-                            ],
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
                         ),
                         Row(
                           children: [
-                            Text(
-                              textAlign: TextAlign.end,
-                              item.getFormattedQuantity(),
-                              style: Theme.of(context).textTheme.bodySmall,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 5),
-                        Row(
-                          children: [
                             // Selling Price
-
                             Text(
                               '₹${item.getFormattedSellingPrice()}',
                               style: Theme.of(context)
@@ -111,25 +85,39 @@ class ProductListCard extends StatelessWidget {
                                   ),
                             ),
                             const SizedBox(width: 3),
+
                             // MRP
-                            if (item.getOffer() != null) ...[
-                              Expanded(
-                                child: Text(
-                                  '₹${item.getFormattedMRP()}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodySmall
-                                      ?.copyWith(
-                                        color: ColorConstants.hintColor,
-                                        decoration: TextDecoration.lineThrough,
-                                        decorationColor:
-                                            ColorConstants.primaryRed,
-                                      ),
-                                ),
+                            if (item.getOffer() != null)
+                              Text(
+                                '₹${item.getFormattedMRP()}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: ColorConstants.hintColor,
+                                      decoration: TextDecoration.lineThrough,
+                                      decorationColor:
+                                          ColorConstants.primaryRed,
+                                    ),
                               ),
-                              const SizedBox(width: 5),
-                            ] else
-                              const Spacer(),
+                            const SizedBox(width: 5),
+                            Expanded(
+                              child: Text(
+                                textAlign: TextAlign.end,
+                                item.getFormattedQuantity(),
+                                style: Theme.of(context).textTheme.bodySmall,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            if (item.getOffer() != null)
+                              OfferTag(text: item.getOffer()!),
+                            const Spacer(),
                             SizedBox(
                               width: 90,
                               child: Consumer<CartController>(
@@ -160,11 +148,13 @@ class ProductListCard extends StatelessWidget {
                 ],
               ),
             ),
-            if (item.getOffer() != null)
-              Positioned(
-                left: 10,
-                child: OfferTag(text: item.getOffer()!),
+            Positioned(
+              left: 10,
+              top: 10,
+              child: FavoriteButton(
+                item: item,
               ),
+            ),
           ],
         ),
       ),
