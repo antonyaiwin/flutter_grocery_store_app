@@ -95,8 +95,9 @@ class CategoryPage extends StatelessWidget {
           // ),
           Expanded(
             child: SafeArea(
-              child: Consumer<CategoryPageController>(
-                builder: (BuildContext context, value, Widget? child) {
+              child: Consumer2<FireStoreController, CategoryPageController>(
+                builder:
+                    (BuildContext context, fireStore, value, Widget? child) {
                   return Column(
                     children: [
                       AppBar(
