@@ -3,9 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/login_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
+import '../../controller/registration_controller.dart';
 import '../../core/constants/image_constants.dart';
+import '../register_screen/register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -47,9 +50,10 @@ class LoginScreen extends StatelessWidget {
                       controller:
                           context.read<LoginController>().emailController,
                       decoration: const InputDecoration(
-                          labelText: 'Email',
-                          isDense: true,
-                          prefixIcon: Icon(Icons.email)),
+                        labelText: 'Email',
+                        isDense: true,
+                        prefixIcon: Icon(Iconsax.sms_outline),
+                      ),
                       validator: context.read<LoginController>().emailValidator,
                     ),
                     const SizedBox(height: 15),
@@ -62,15 +66,15 @@ class LoginScreen extends StatelessWidget {
                         decoration: InputDecoration(
                           labelText: 'Password',
                           isDense: true,
-                          prefixIcon: const Icon(Icons.lock),
+                          prefixIcon: const Icon(Iconsax.lock_1_outline),
                           suffixIcon: IconButton(
                             onPressed: () {
                               value.togglePasswordVisibility();
                             },
                             icon: Icon(
                               value.obscurePassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
+                                  ? Iconsax.eye_slash_outline
+                                  : Iconsax.eye_outline,
                             ),
                           ),
                         ),
@@ -124,6 +128,29 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Dont\'t have an account?'),
+                        const SizedBox(width: 2),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChangeNotifierProvider(
+                                  create: (BuildContext context) =>
+                                      RegistrationController(),
+                                  child: const RegisterScreen(),
+                                ),
+                              ),
+                            );
+                          },
+                          child: const Text('Sign Up'),
+                        )
+                      ],
                     ),
                   ],
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/registration_controller.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/color_constants.dart';
@@ -49,6 +50,7 @@ class RegisterScreen extends StatelessWidget {
                   controller:
                       context.read<RegistrationController>().nameController,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Iconsax.user_outline),
                     labelText: 'Name',
                     isDense: true,
                   ),
@@ -60,6 +62,7 @@ class RegisterScreen extends StatelessWidget {
                   controller:
                       context.read<RegistrationController>().emailController,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Iconsax.sms_outline),
                     labelText: 'Email',
                     isDense: true,
                   ),
@@ -73,6 +76,7 @@ class RegisterScreen extends StatelessWidget {
                     controller: value.passwordController,
                     obscureText: value.obscurePassword,
                     decoration: InputDecoration(
+                      prefixIcon: Icon(Iconsax.lock_1_outline),
                       labelText: 'Password',
                       isDense: true,
                       suffixIcon: IconButton(
@@ -81,8 +85,8 @@ class RegisterScreen extends StatelessWidget {
                         },
                         icon: Icon(
                           value.obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
+                              ? Iconsax.eye_slash_outline
+                              : Iconsax.eye_outline,
                         ),
                       ),
                     ),
