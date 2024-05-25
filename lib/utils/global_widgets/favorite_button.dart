@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../controller/firebase/firestore_controller.dart';
@@ -30,7 +31,7 @@ class FavoriteButton extends StatelessWidget {
             }
           },
           child: Icon(
-            favorite ? Icons.favorite : Icons.favorite_border,
+            favorite ? Iconsax.heart_bold : Iconsax.heart_outline,
             color: favorite ? ColorConstants.primaryRed : null,
           ),
         );

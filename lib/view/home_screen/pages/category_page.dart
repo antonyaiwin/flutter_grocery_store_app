@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 
 import '../../../controller/screens/home_screen_controller.dart';
 import '../widgets/category_list_card.dart';
+import '../widgets/home_screen_back_button.dart';
 import '../widgets/product_list_card.dart';
 
 class CategoryPage extends StatelessWidget {
@@ -85,14 +86,7 @@ class CategoryPage extends StatelessWidget {
                     bottomRight: Radius.circular(15),
                   ),
                 ),
-                child: IconButton(
-                  onPressed: () {
-                    context
-                        .read<HomeScreenController>()
-                        .setSelecetedPageIndex(0);
-                  },
-                  icon: const Icon(Icons.arrow_back),
-                ),
+                child: const HomeScreenBackButton(),
               ),
             ],
           ),

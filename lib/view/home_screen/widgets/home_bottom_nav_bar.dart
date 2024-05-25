@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/screens/home_screen_controller.dart';
@@ -19,23 +20,23 @@ class HomeBottomNavBar extends StatelessWidget {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+            icon: Icon(Iconsax.home_2_outline),
+            activeIcon: Icon(Iconsax.home_2_bold),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.category_outlined),
-            activeIcon: Icon(Icons.category),
+            icon: Icon(Iconsax.category_2_outline),
+            activeIcon: Icon(Iconsax.category_2_bold),
             label: 'Categories',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_border),
-            activeIcon: Icon(Icons.favorite),
+            icon: Icon(Iconsax.heart_outline),
+            activeIcon: Icon(Iconsax.heart_bold),
             label: 'Favourites',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            activeIcon: Icon(Icons.shopping_cart),
+            icon: Icon(Iconsax.shopping_cart_outline),
+            activeIcon: Icon(Iconsax.shopping_cart_bold),
             label: 'Cart',
           ),
         ],

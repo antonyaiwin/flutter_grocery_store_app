@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_grocery_store/controller/screens/product_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/cart_controller.dart';
@@ -16,9 +19,11 @@ class ProductListCard extends StatelessWidget {
   const ProductListCard({
     super.key,
     required this.item,
+    this.onDelete,
   });
 
   final ProductModel item;
+  final void Function()? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -59,17 +64,7 @@ class ProductListCard extends StatelessWidget {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: Text(
-                            item.name ?? '',
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleSmall
-                                ?.copyWith(
-                                  height: 1.25,
-                                ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                          ),
+                          child: _getNameSection(context),
                         ),
                         Row(
                           children: [
@@ -117,7 +112,24 @@ class ProductListCard extends StatelessWidget {
                           children: [
                             if (item.getOffer() != null)
                               OfferTag(text: item.getOffer()!),
-                            const Spacer(),
+                            const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 15,
+                            ),
+                            Expanded(
+                              child: Text(
+                                '${item.rating ?? 'No ratings yet'}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.copyWith(
+                                      color: ColorConstants.hintColor,
+                                    ),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
                             SizedBox(
                               width: 90,
                               child: Consumer<CartController>(
@@ -158,6 +170,32 @@ class ProductListCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _getNameSection(BuildContext context) {
+    if (onDelete != null) {
+      return Row(
+        children: [
+          Expanded(child: _getNameWidget(context)),
+          IconButton(
+            onPressed: onDelete,
+            icon: const Icon(Iconsax.trash_outline),
+          ),
+        ],
+      );
+    }
+    return _getNameWidget(context);
+  }
+
+  Widget _getNameWidget(BuildContext context) {
+    return Text(
+      item.name ?? '',
+      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            height: 1.25,
+          ),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 2,
     );
   }
 }

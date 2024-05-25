@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/view/home_screen/widgets/home_screen_back_button.dart';
+import 'package:flutter_grocery_store/view/home_screen/widgets/product_list_card.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import 'package:provider/provider.dart';
 
@@ -12,13 +15,15 @@ class CartPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const HomeScreenBackButton(),
         title: const Text('My Cart'),
         actions: [
           IconButton(
-              onPressed: () {
-                context.read<CartController>().clearItems();
-              },
-              icon: const Icon(Icons.delete))
+            onPressed: () {
+              context.read<CartController>().clearItems();
+            },
+            icon: const Icon(Iconsax.trash_outline),
+          ),
         ],
       ),
       body: Column(
@@ -41,8 +46,19 @@ class CartPage extends StatelessWidget {
                           ListView.separated(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) => CartItemCard(
+                            itemBuilder: (context, index) => ProductListCard(
                               item: cart.cartItemList[index].product,
+                              onDelete: () {
+                                context
+                                    .read<CartController>()
+                                    .deleteItemFromCart(
+                                        cart.cartItemList[index].product);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Item removed from cart'),
+                                  ),
+                                );
+                              },
                             ),
                             separatorBuilder: (context, index) =>
                                 const SizedBox(height: 10),

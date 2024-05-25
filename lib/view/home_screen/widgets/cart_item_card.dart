@@ -54,10 +54,11 @@ class CartItemCard extends StatelessWidget {
                     IconButton(
                       onPressed: () {
                         context.read<CartController>().deleteItemFromCart(item);
-                        ScaffoldMessenger.of(context)
-                            .showSnackBar(const SnackBar(
-                          content: Text('Item removed from cart'),
-                        ));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Item removed from cart'),
+                          ),
+                        );
                       },
                       icon: const Icon(Icons.delete),
                     ),

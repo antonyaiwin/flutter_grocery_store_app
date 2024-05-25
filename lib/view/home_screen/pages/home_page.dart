@@ -9,6 +9,7 @@ import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/elevated_card.dart';
 import 'package:flutter_grocery_store/view/profile_screen/profile_screen.dart';
 import 'package:flutter_grocery_store/view/search_screen/search_screen.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/global_widgets/product_card.dart';
@@ -88,7 +89,7 @@ class HomePage extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(12),
                             child: Icon(
-                              Icons.search,
+                              Iconsax.search_normal_1_outline,
                               color: ColorConstants.hintColor,
                             ),
                           ),
@@ -116,7 +117,7 @@ class HomePage extends StatelessWidget {
                     onTap: () {},
                     child: Ink(
                       padding: EdgeInsets.all(12),
-                      child: Icon(Icons.qr_code_scanner),
+                      child: Icon(Iconsax.scanning_bold),
                     ),
                   ),
                 )
