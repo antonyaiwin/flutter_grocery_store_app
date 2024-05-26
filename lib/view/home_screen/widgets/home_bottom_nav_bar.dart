@@ -14,6 +14,7 @@ class HomeBottomNavBar extends StatelessWidget {
     return Consumer<HomeScreenController>(
       builder: (BuildContext context, controller, Widget? child) =>
           BottomNavigationBar(
+        elevation: 10,
         currentIndex: controller.selectedPageIndex,
         onTap: (value) {
           controller.setSelecetedPageIndex(value);

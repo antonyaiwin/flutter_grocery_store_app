@@ -3,7 +3,6 @@ import 'package:flutter_grocery_store/controller/firebase/firebase_auth_controll
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/controller/screens/home_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
-import 'package:flutter_grocery_store/utils/global_widgets/elevated_card.dart';
 import 'package:flutter_grocery_store/view/profile_screen/profile_screen.dart';
 import 'package:flutter_grocery_store/view/search_screen/search_screen.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -69,8 +68,14 @@ class HomePage extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: ElevatedCard(
-                    elevation: 5,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: ColorConstants.primaryWhite,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: ColorConstants.hintColor.withOpacity(0.15),
+                      ),
+                    ),
                     padding: const EdgeInsets.only(),
                     child: InkWell(
                       onTap: () => Navigator.push(
@@ -105,9 +110,15 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 10),
-                ElevatedCard(
-                  elevation: 5,
+                Container(
                   width: 50,
+                  decoration: BoxDecoration(
+                    color: ColorConstants.primaryWhite,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: ColorConstants.hintColor.withOpacity(0.15),
+                    ),
+                  ),
                   child: InkWell(
                     onTap: () {},
                     child: Ink(

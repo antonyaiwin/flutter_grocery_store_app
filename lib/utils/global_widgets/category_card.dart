@@ -19,7 +19,7 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedCard(
-      elevation: 5,
+      elevation: 1.5,
       height: 150,
       width: 100,
       borderRadius: BorderRadius.circular(20),

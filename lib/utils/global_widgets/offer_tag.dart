@@ -61,13 +61,13 @@ class CustomPath extends CustomClipper<Path> {
     // path.lineTo(2, 2);
     // path.lineTo(2, size.height);
 
-    path.relativeLineTo(factor, -factor);
-    path.relativeLineTo(factor, factor);
-    path.relativeLineTo(factor, -factor);
-    path.relativeLineTo(factor, factor);
-    path.relativeLineTo(factor, -factor);
-    path.relativeLineTo(factor, factor);
-    path.relativeLineTo(factor, -factor);
+    path.relativeLineTo(factor, -factor * 0.7);
+    path.relativeLineTo(factor, factor * 0.7);
+    path.relativeLineTo(factor, -factor * 0.7);
+    path.relativeLineTo(factor, factor * 0.7);
+    path.relativeLineTo(factor, -factor * 0.7);
+    path.relativeLineTo(factor, factor * 0.7);
+    path.relativeLineTo(factor, -factor * 0.7);
 
     path.lineTo(size.width, size.height);
     path.quadraticBezierTo(size.width - factor, factor * 2, size.width, 0);
