@@ -76,7 +76,7 @@ class RegisterScreen extends StatelessWidget {
                     controller: value.passwordController,
                     obscureText: value.obscurePassword,
                     decoration: InputDecoration(
-                      prefixIcon: Icon(Iconsax.lock_1_outline),
+                      prefixIcon: const Icon(Iconsax.lock_1_outline),
                       labelText: 'Password',
                       isDense: true,
                       suffixIcon: IconButton(

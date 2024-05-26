@@ -8,6 +8,7 @@ import 'package:flutter_grocery_store/view/splash_screen/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'controller/firebase/firebase_auth_controller.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -35,6 +36,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => FirebaseStorageController(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => FirebaseAuthController(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -55,6 +59,30 @@ class MyApp extends StatelessWidget {
           appBarTheme: const AppBarTheme(
             backgroundColor: ColorConstants.scaffoldBackgroundColor,
           ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ButtonStyle(
+              foregroundColor:
+                  const MaterialStatePropertyAll(ColorConstants.primaryWhite),
+              backgroundColor: MaterialStateProperty.resolveWith(
+                (states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return ColorConstants.categorySliderBackground;
+                  }
+                  return ColorConstants.primaryColor;
+                },
+              ),
+              shape: MaterialStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              overlayColor: MaterialStatePropertyAll(
+                ColorConstants.primaryWhite.withOpacity(0.2),
+              ),
+            ),
+          ),
+          bottomSheetTheme: const BottomSheetThemeData(
+              backgroundColor: ColorConstants.scaffoldBackgroundColor),
         ),
         home: const SplashScreen(),
       ),

@@ -1,12 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery_store/controller/screens/profile_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
-import 'package:flutter_grocery_store/utils/global_widgets/elevated_card.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/profile_circle_avatar.dart';
 import 'package:flutter_grocery_store/view/splash_screen/splash_screen.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
+
+import '../../controller/firebase/firebase_auth_controller.dart';
+import '../../controller/screens/profile_edit_screen_controller.dart';
+import '../profile_edit_screen/profile_edit_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -20,39 +22,15 @@ class ProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            GestureDetector(
-              onTap: () {
-                context.read<ProfileScreenController>().changeProfilePic();
-              },
-              child: Stack(
-                children: [
-                  Consumer<ProfileScreenController>(
-                    builder: (context, value, child) => ProfileCircleAvatar(
-                      radius: 70,
-                      user: value.currentUser,
-                    ),
-                  ),
-                  const Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: ElevatedCard(
-                      padding: EdgeInsets.zero,
-                      elevation: 1,
-                      height: 30,
-                      width: 30,
-                      child: Icon(
-                        Icons.edit,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            const ProfileCircleAvatar(
+              radius: 70,
             ),
             const SizedBox(height: 10),
-            Text(
-              FirebaseAuth.instance.currentUser?.displayName ?? '',
-              style: Theme.of(context).textTheme.headlineMedium,
+            Consumer<FirebaseAuthController>(
+              builder: (BuildContext context, auth, Widget? child) => Text(
+                auth.currentUser?.displayName ?? 'User',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
             Text(
               FirebaseAuth.instance.currentUser?.email ?? '',
@@ -61,10 +39,22 @@ class ProfileScreen extends StatelessWidget {
                   ),
             ),
             const SizedBox(height: 50),
-            const ListTile(
-              leading: Icon(Iconsax.user_outline),
-              title: Text('My Profile'),
-              trailing: Icon(Iconsax.arrow_right_outline),
+            ListTile(
+              leading: const Icon(Iconsax.user_outline),
+              title: const Text('My Profile'),
+              trailing: const Icon(Iconsax.arrow_right_outline),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider(
+                      create: (BuildContext context) =>
+                          ProfileEditScreenController(context),
+                      child: const ProfileEditScreen(),
+                    ),
+                  ),
+                );
+              },
             ),
             const ListTile(
               leading: Icon(Iconsax.lock_1_outline),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/controller/screens/category_page_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controller/screens/home_screen_controller.dart';
 import '../widgets/category_list_card.dart';
 import '../widgets/home_screen_back_button.dart';
 import '../widgets/product_list_card.dart';

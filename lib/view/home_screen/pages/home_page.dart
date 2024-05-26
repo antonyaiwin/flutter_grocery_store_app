@@ -1,10 +1,7 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/controller/firebase/firebase_auth_controller.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/controller/screens/home_screen_controller.dart';
-import 'package:flutter_grocery_store/controller/screens/profile_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/elevated_card.dart';
 import 'package:flutter_grocery_store/view/profile_screen/profile_screen.dart';
@@ -35,28 +32,26 @@ class HomePage extends StatelessWidget {
                 'Welcome Back,',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-              Text(
-                FirebaseAuth.instance.currentUser?.displayName ?? 'User',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+              Consumer<FirebaseAuthController>(
+                builder: (BuildContext context, auth, Widget? child) => Text(
+                  auth.currentUser?.displayName ?? 'User',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
               ),
             ],
           ),
           actions: [
             GestureDetector(
               onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ChangeNotifierProvider(
-                      create: (BuildContext context) =>
-                          ProfileScreenController(),
-                      child: ProfileScreen(),
-                    ),
-                  )),
-              child: ProfileCircleAvatar(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              ),
+              child: const ProfileCircleAvatar(
                 radius: 22,
-                user: FirebaseAuth.instance.currentUser,
               ),
             ),
             const SizedBox(width: 15),
@@ -76,18 +71,18 @@ class HomePage extends StatelessWidget {
                 Expanded(
                   child: ElevatedCard(
                     elevation: 5,
-                    padding: EdgeInsets.only(),
+                    padding: const EdgeInsets.only(),
                     child: InkWell(
                       onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SearchScreen(),
+                          builder: (context) => const SearchScreen(),
                         ),
                       ),
                       child: Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(12),
+                          const Padding(
+                            padding: EdgeInsets.all(12),
                             child: Icon(
                               Iconsax.search_normal_1_outline,
                               color: ColorConstants.hintColor,
@@ -116,8 +111,8 @@ class HomePage extends StatelessWidget {
                   child: InkWell(
                     onTap: () {},
                     child: Ink(
-                      padding: EdgeInsets.all(12),
-                      child: Icon(Iconsax.scanning_bold),
+                      padding: const EdgeInsets.all(12),
+                      child: const Icon(Iconsax.scanning_bold),
                     ),
                   ),
                 )
@@ -131,16 +126,16 @@ class HomePage extends StatelessWidget {
             context.read<HomeScreenController>().setSelecetedPageIndex(1);
           },
         ),
-        SliverCategoryListView(),
-        SliverLabelText(
+        const SliverCategoryListView(),
+        const SliverLabelText(
           label: 'All Products',
         ),
         SliverPadding(
-          padding: EdgeInsets.all(20).copyWith(bottom: 300),
+          padding: const EdgeInsets.all(20).copyWith(bottom: 300),
           sliver: Consumer<FireStoreController>(
             builder: (BuildContext context, value, Widget? child) =>
                 SliverGrid.builder(
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 200,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,

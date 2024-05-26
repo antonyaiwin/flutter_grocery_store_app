@@ -4,9 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 
 class CropImageScreen extends StatefulWidget {
-  const CropImageScreen({super.key, required this.image});
+  const CropImageScreen({
+    super.key,
+    required this.image,
+    this.showAspectRatios = true,
+    this.withCircleUi = false,
+  });
 
   final Uint8List image;
+  final bool showAspectRatios;
+  final bool withCircleUi;
 
   @override
   State<CropImageScreen> createState() => _CropImageScreenState();
@@ -40,46 +47,50 @@ class _CropImageScreenState extends State<CropImageScreen> {
               image: widget.image,
               aspectRatio: aspectRatio,
               initialSize: 0.8,
+              withCircleUi: widget.withCircleUi,
               onCropped: (value) {
                 Navigator.pop(context, value);
               },
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {
-                  _changeAspectRatio(null);
-                },
-                icon: Icon(
-                  Icons.crop,
-                  color:
-                      aspectRatio == null ? ColorConstants.primaryColor : null,
+          if (widget.showAspectRatios)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    _changeAspectRatio(null);
+                  },
+                  icon: Icon(
+                    Icons.crop,
+                    color: aspectRatio == null
+                        ? ColorConstants.primaryColor
+                        : null,
+                  ),
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  _changeAspectRatio(1);
-                },
-                icon: Icon(
-                  Icons.crop_din,
-                  color: aspectRatio == 1 ? ColorConstants.primaryColor : null,
+                IconButton(
+                  onPressed: () {
+                    _changeAspectRatio(1);
+                  },
+                  icon: Icon(
+                    Icons.crop_din,
+                    color:
+                        aspectRatio == 1 ? ColorConstants.primaryColor : null,
+                  ),
                 ),
-              ),
-              IconButton(
-                onPressed: () {
-                  _changeAspectRatio(16 / 9);
-                },
-                icon: Icon(
-                  Icons.crop_16_9,
-                  color: aspectRatio == 16 / 9
-                      ? ColorConstants.primaryColor
-                      : null,
+                IconButton(
+                  onPressed: () {
+                    _changeAspectRatio(16 / 9);
+                  },
+                  icon: Icon(
+                    Icons.crop_16_9,
+                    color: aspectRatio == 16 / 9
+                        ? ColorConstants.primaryColor
+                        : null,
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
           ElevatedButton(
             onPressed: () {
               Navigator.pop(context, widget.image);

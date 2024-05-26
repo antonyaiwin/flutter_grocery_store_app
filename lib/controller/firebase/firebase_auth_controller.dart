@@ -1,17 +1,22 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter/foundation.dart';
 
-class ProfileScreenController extends ChangeNotifier {
+class FirebaseAuthController extends ChangeNotifier {
   User? get currentUser => FirebaseAuth.instance.currentUser;
 
-  Future<void> changeProfilePic() async {
-    XFile? xFile = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (xFile == null) {
+  Future<void> changeDisplayName(String name) async {
+    if (currentUser?.displayName == name) {
+      return;
+    }
+    await currentUser?.updateDisplayName(name);
+    notifyListeners();
+  }
+
+  Future<void> changeProfilePic(Uint8List? imageData) async {
+    if (imageData == null) {
       return;
     }
     String uid = currentUser?.uid ?? 'unknown';
@@ -19,7 +24,7 @@ class ProfileScreenController extends ChangeNotifier {
     final folderRef = storageRef.child('user_files');
     final userRef = folderRef.child(currentUser?.uid ?? 'unknown');
     final imageRef = userRef.child('$uid.jpg');
-    await imageRef.putFile(File(xFile.path));
+    await imageRef.putData(imageData);
     await currentUser?.updatePhotoURL(
       await imageRef.getDownloadURL(),
     );

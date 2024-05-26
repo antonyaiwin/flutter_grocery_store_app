@@ -1,16 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/controller/firebase/firebase_auth_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
+import 'package:provider/provider.dart';
 
 class ProfileCircleAvatar extends StatelessWidget {
   const ProfileCircleAvatar({
     super.key,
     this.radius,
-    this.user,
   });
   final double? radius;
-  final User? user;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,23 +18,26 @@ class ProfileCircleAvatar extends StatelessWidget {
         color: ColorConstants.primaryColor.withOpacity(0.5),
         borderRadius: BorderRadius.circular(radius ?? 22),
       ),
-      child: user?.photoURL != null
-          ? MyNetworkImage(
-              imageUrl: user!.photoURL!,
-              height: (radius ?? 22) * 2,
-              width: (radius ?? 22) * 2,
-              fit: BoxFit.cover,
-            )
-          : user?.displayName == null
-              ? null
-              : Center(
-                  child: Text(
-                    user?.displayName != null && user!.displayName!.isNotEmpty
-                        ? user!.displayName![0]
-                        : 'U',
-                    style: Theme.of(context).textTheme.headlineMedium,
+      child: Consumer<FirebaseAuthController>(
+        builder: (context, auth, child) => auth.currentUser?.photoURL != null
+            ? MyNetworkImage(
+                imageUrl: auth.currentUser!.photoURL!,
+                height: (radius ?? 22) * 2,
+                width: (radius ?? 22) * 2,
+                fit: BoxFit.cover,
+              )
+            : auth.currentUser?.displayName == null
+                ? const SizedBox()
+                : Center(
+                    child: Text(
+                      auth.currentUser?.displayName != null &&
+                              auth.currentUser!.displayName!.isNotEmpty
+                          ? auth.currentUser!.displayName![0]
+                          : 'U',
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
                   ),
-                ),
+      ),
     );
   }
 }

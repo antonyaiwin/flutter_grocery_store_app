@@ -6,7 +6,6 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/cart_controller.dart';
-import '../widgets/cart_item_card.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});

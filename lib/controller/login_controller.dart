@@ -43,8 +43,7 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
     if (formKey.currentState!.validate()) {
       try {
-        UserCredential user =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
