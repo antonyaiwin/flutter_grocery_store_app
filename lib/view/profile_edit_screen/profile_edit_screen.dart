@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/functions/functions.dart';
@@ -36,7 +35,8 @@ class ProfileEditScreen extends StatelessWidget {
                     builder: (context, value, child) {
                       if (value.xFile != null) {
                         return CircleAvatar(
-                          backgroundImage: FileImage(File(value.xFile!.path)),
+                          backgroundImage:
+                              MemoryImage(value.image ?? Uint8List(0)),
                           radius: 70,
                         );
                       }

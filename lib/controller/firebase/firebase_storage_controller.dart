@@ -15,7 +15,8 @@ class FirebaseStorageController extends ChangeNotifier {
 
   Future<String?> addCategoryImage(File image, String id) async {
     var imageRef = storgeRef.child('$categoryStoragePath$id.jpg');
-    Uint8List? imageData = await getCompressedImageData(image);
+    Uint8List? imageData =
+        await getCompressedImageData(await image.readAsBytes());
     if (imageData == null) {
       return null;
     }
@@ -32,7 +33,7 @@ class FirebaseStorageController extends ChangeNotifier {
     var imageRef = storgeRef
         .child('$productStoragePath$id/images/${basename(image.path)}');
     Uint8List? imageData = await getCompressedImageData(
-      image,
+      await image.readAsBytes(),
       minWidth: 900,
       minHeight: 900,
       quality: 55,
