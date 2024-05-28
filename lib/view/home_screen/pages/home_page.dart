@@ -12,6 +12,7 @@ import '../../../utils/global_widgets/product_card.dart';
 import '../../../utils/global_widgets/profile_circle_avatar.dart';
 import '../widgets/sliver_category_list_view.dart';
 import '../widgets/sliver_label_text.dart';
+import '../widgets/sliver_search_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -56,81 +57,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(width: 15),
           ],
         ),
-        SliverAppBar(
-          clipBehavior: Clip.none,
-          pinned: true,
-          primary: true,
-          surfaceTintColor: Colors.transparent,
-          titleSpacing: 0,
-          title: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: ColorConstants.primaryWhite,
-                      borderRadius: BorderRadius.circular(15),
-                      border: Border.all(
-                        color: ColorConstants.hintColor.withOpacity(0.15),
-                      ),
-                    ),
-                    padding: const EdgeInsets.only(),
-                    child: InkWell(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SearchScreen(),
-                        ),
-                      ),
-                      child: Row(
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.all(12),
-                            child: Icon(
-                              Iconsax.search_normal_1_outline,
-                              color: ColorConstants.hintColor,
-                            ),
-                          ),
-                          Expanded(
-                            child: Text(
-                              'Search for \'Grocery\'',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyLarge
-                                  ?.copyWith(
-                                    color: ColorConstants.hintColor,
-                                  ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Container(
-                  width: 50,
-                  decoration: BoxDecoration(
-                    color: ColorConstants.primaryWhite,
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(
-                      color: ColorConstants.hintColor.withOpacity(0.15),
-                    ),
-                  ),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Ink(
-                      padding: const EdgeInsets.all(12),
-                      child: const Icon(Iconsax.scanning_bold),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
+        const SliverSearchBar(),
         SliverLabelText(
           label: 'Shop by category',
           onSeeAllPressed: () {

@@ -10,11 +10,13 @@ class AddToCartButton extends StatelessWidget {
     this.width = 100,
     this.height = 40,
     this.label,
+    this.dense = false,
   });
   final int count;
   final double height;
   final double width;
   final String? label;
+  final bool dense;
   final void Function()? onTap;
   final void Function()? onAddTap;
   final void Function()? onRemoveTap;
@@ -29,11 +31,12 @@ class AddToCartButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
         child: Material(
           child: Ink(
-            width: width,
             height: height,
+            width: dense && count == 0 ? null : width,
             decoration: BoxDecoration(
-              color: count == 0 ? Theme.of(context).primaryColor : null,
-              border: count == 0
+              color:
+                  count == 0 && !dense ? Theme.of(context).primaryColor : null,
+              border: count == 0 && !dense
                   ? null
                   : Border.all(
                       color: Theme.of(context).primaryColor,
@@ -42,36 +45,38 @@ class AddToCartButton extends StatelessWidget {
                     ),
               borderRadius: BorderRadius.circular(50),
             ),
-            child: Center(
-                child: count == 0
-                    ? addToCartChild(context)
-                    : addRemoveButtons(context)),
+            child: count == 0 && !dense
+                ? addToCartChild(context)
+                : addRemoveButtons(context),
           ),
         ),
       ),
     );
   }
 
-  Row addRemoveButtons(BuildContext context) {
+  Widget addRemoveButtons(BuildContext context) {
     return Row(
+      mainAxisSize: count != 0 ? MainAxisSize.max : MainAxisSize.min,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(1),
-          child: ColoredAddButton(
-            onTap: onRemoveTap,
-            icon: Icons.remove,
-            size: height - 4,
-          ),
-        ),
-        Expanded(
-          child: Text(
-            textAlign: TextAlign.center,
-            count.toString(),
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
+        if (count != 0) ...[
+          Padding(
+            padding: const EdgeInsets.all(1),
+            child: ColoredAddButton(
+              onTap: onRemoveTap,
+              icon: Icons.remove,
+              size: height - 4,
             ),
           ),
-        ),
+          Expanded(
+            child: Text(
+              textAlign: TextAlign.center,
+              count.toString(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+        ],
         Padding(
           padding: const EdgeInsets.all(1),
           child: ColoredAddButton(
@@ -84,11 +89,15 @@ class AddToCartButton extends StatelessWidget {
     );
   }
 
-  Text addToCartChild(BuildContext context) {
-    return Text(
-      label ?? 'Add to cart',
-      style:
-          Theme.of(context).textTheme.titleSmall?.copyWith(color: Colors.white),
+  Widget addToCartChild(BuildContext context) {
+    return Center(
+      child: Text(
+        label ?? 'Add to cart',
+        style: Theme.of(context)
+            .textTheme
+            .titleSmall
+            ?.copyWith(color: Colors.white),
+      ),
     );
   }
 }

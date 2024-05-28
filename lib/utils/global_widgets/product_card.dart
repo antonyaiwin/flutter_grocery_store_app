@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_grocery_store/controller/screens/product_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/favorite_button.dart';
@@ -101,23 +102,36 @@ class ProductCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Consumer<CartController>(
-                    builder: (BuildContext context, value, Widget? child) =>
-                        AddToCartButton(
-                      count: value.getItemCount(item.id ?? 0),
-                      label: 'ADD',
-                      height: 30,
-                      width: double.infinity,
-                      onTap: () {
-                        value.addItemToCart(item);
-                      },
-                      onAddTap: () {
-                        value.addItemToCart(item);
-                      },
-                      onRemoveTap: () {
-                        value.removeItemFromCart(item);
-                      },
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Consumer<CartController>(
+                        builder: (BuildContext context, value, Widget? child) {
+                          var itemCount = value.getItemCount(item.id ?? 0);
+                          var widget = AddToCartButton(
+                            count: itemCount,
+                            label: 'ADD',
+                            dense: true,
+                            height: 30,
+                            width: double.infinity,
+                            onTap: () {
+                              value.addItemToCart(item);
+                            },
+                            onAddTap: () {
+                              value.addItemToCart(item);
+                            },
+                            onRemoveTap: () {
+                              value.removeItemFromCart(item);
+                            },
+                          );
+                          if (itemCount == 0) {
+                            return widget;
+                          } else {
+                            return Expanded(child: widget);
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
