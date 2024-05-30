@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/firebase/firebase_auth_controller.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/controller/screens/home_screen_controller.dart';
-import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/view/profile_screen/profile_screen.dart';
-import 'package:flutter_grocery_store/view/search_screen/search_screen.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/global_widgets/product_card.dart';

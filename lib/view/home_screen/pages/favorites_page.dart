@@ -10,41 +10,42 @@ class FavoritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AppBar(
-          elevation: 1,
-          shadowColor: ColorConstants.primaryBlack,
-          surfaceTintColor: Colors.transparent,
-          leading: const HomeScreenBackButton(),
-          title: const Text('Favourite Items'),
-        ),
-        Expanded(
-          child: Consumer<FireStoreController>(
-            builder: (context, value, child) {
-              if (value.favouritesList.isEmpty) {
-                return const Text('No items saved as favourites');
-              }
-              return ListView.separated(
-                padding: const EdgeInsets.all(15),
-                itemBuilder: (context, index) {
-                  var product =
-                      value.getProductById(value.favouritesList[index]);
-                  if (product == null) {
-                    return const SizedBox();
-                  }
-                  return ProductListCard(
-                    item: product,
-                  );
-                },
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 10),
-                itemCount: value.favouritesList.length,
-              );
-            },
+    return Scaffold(
+      appBar: AppBar(
+        shadowColor: ColorConstants.primaryBlack,
+        surfaceTintColor: Colors.transparent,
+        leading: const HomeScreenBackButton(),
+        title: const Text('Favourite Items'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Consumer<FireStoreController>(
+              builder: (context, value, child) {
+                if (value.favouritesList.isEmpty) {
+                  return const Text('No items saved as favourites');
+                }
+                return ListView.separated(
+                  padding: const EdgeInsets.all(15),
+                  itemBuilder: (context, index) {
+                    var product =
+                        value.getProductById(value.favouritesList[index]);
+                    if (product == null) {
+                      return const SizedBox();
+                    }
+                    return ProductListCard(
+                      item: product,
+                    );
+                  },
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(height: 10),
+                  itemCount: value.favouritesList.length,
+                );
+              },
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

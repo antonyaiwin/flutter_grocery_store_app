@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColorConstants {
-  static const Color primaryColor = Color.fromARGB(255, 229, 1, 43);
+  static const Color primaryColor = Color.fromARGB(255, 10, 167, 101);
   static const Color primaryRed = Colors.red;
   static const Color primaryWhite = Colors.white;
   static const Color primaryBlack = Colors.black;
@@ -11,7 +11,7 @@ class ColorConstants {
   static const Color snackBarSuccessBackground = Colors.green;
   static const Color hintColor = Color.fromARGB(255, 112, 112, 112);
   static const Color categorySliderBackground =
-      Color.fromARGB(255, 255, 210, 219);
+      Color.fromARGB(255, 167, 241, 210);
 
   // static const Color scaffoldBackgroundColor =
   //     Color.fromARGB(255, 243, 237, 255);
