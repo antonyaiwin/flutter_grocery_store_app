@@ -81,6 +81,34 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
+          outlinedButtonTheme: OutlinedButtonThemeData(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.resolveWith(
+                (states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return ColorConstants.hintColor;
+                  }
+                  return ColorConstants.primaryColor;
+                },
+              ),
+              backgroundColor: MaterialStateProperty.resolveWith(
+                (states) {
+                  if (states.contains(MaterialState.disabled)) {
+                    return ColorConstants.hintColor;
+                  }
+                  return ColorConstants.primaryWhite;
+                },
+              ),
+              shape: MaterialStatePropertyAll(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              overlayColor: MaterialStatePropertyAll(
+                ColorConstants.primaryColor.withOpacity(0.2),
+              ),
+            ),
+          ),
           bottomSheetTheme: const BottomSheetThemeData(
               backgroundColor: ColorConstants.scaffoldBackgroundColor),
         ),

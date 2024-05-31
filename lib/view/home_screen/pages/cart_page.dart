@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:flutter_grocery_store/utils/functions/widget_route_functions.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/home_screen_back_button.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/product_list_card.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -6,6 +8,9 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/cart_controller.dart';
+import '../../../controller/screens/add_address_screen_controller.dart';
+import '../../add_address_screen/add_address_screen.dart';
+import '../widgets/bill_details_card.dart';
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -17,11 +22,17 @@ class CartPage extends StatelessWidget {
         leading: const HomeScreenBackButton(),
         title: const Text('My Cart'),
         actions: [
-          IconButton(
-            onPressed: () {
-              context.read<CartController>().clearItems();
-            },
-            icon: const Icon(Iconsax.trash_outline),
+          Consumer<CartController>(
+            builder:
+                (BuildContext context, CartController value, Widget? child) =>
+                    IconButton(
+              onPressed: context.read<CartController>().cartItemList.isEmpty
+                  ? null
+                  : () {
+                      context.read<CartController>().clearItems();
+                    },
+              icon: const Icon(Iconsax.trash_outline),
+            ),
           ),
         ],
       ),
@@ -64,97 +75,7 @@ class CartPage extends StatelessWidget {
                             itemCount: cart.cartItemList.length,
                           ),
                           const SizedBox(height: 25),
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadiusDirectional.circular(15),
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Subtotal (${cart.totalCartCount} items)',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                              color: Colors.black
-                                                  .withOpacity(0.7)),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '₹${cart.totalCartPrice.toStringAsFixed(2)}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 15),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Shipping',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                              color: Colors.black
-                                                  .withOpacity(0.7)),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '₹20.00',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyLarge
-                                          ?.copyWith(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 20),
-                                Divider(
-                                  color: Colors.black.withOpacity(0.06),
-                                  thickness: 2,
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Total',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                    ),
-                                    const Spacer(),
-                                    Text(
-                                      '₹${(cart.totalCartPrice + 20).toStringAsFixed(2)}',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge
-                                          ?.copyWith(
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 15),
-                              ],
-                            ),
-                          ),
+                          const BillDetailsCard(),
                         ],
                       );
                     },
@@ -164,19 +85,28 @@ class CartPage extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(15).copyWith(top: 0),
-            child: InkWell(
-              onTap: () {},
-              borderRadius: BorderRadius.circular(10),
-              child: Ink(
-                height: 40,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+            padding: const EdgeInsets.all(15).copyWith(
+              top: 0,
+              bottom: 5,
+            ),
+            child: Consumer<CartController>(
+              builder: (BuildContext context, value, Widget? child) =>
+                  ElevatedButton(
+                onPressed: value.cartItemList.isEmpty
+                    ? null
+                    : () {
+                        showMyModalBottomSheet(
+                          context: context,
+                          expand: false,
+                          isScrollControlled: false,
+                          builder: (context, scrollController) {
+                            return const CheckoutBottomSheetContent();
+                          },
+                        );
+                      },
                 child: Center(
                   child: Text(
-                    'Proceed to Checkout',
+                    'Place order',
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium
@@ -188,6 +118,79 @@ class CartPage extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CheckoutBottomSheetContent extends StatelessWidget {
+  const CheckoutBottomSheetContent({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(15.0).copyWith(bottom: 0),
+          child: Text(
+            'Checkout',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Iconsax.personalcard_bold),
+          title: const Text('Address'),
+          trailing: const Icon(
+            Iconsax.arrow_right_3_outline,
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider(
+                  create: (BuildContext context) =>
+                      AddAddressScreenController(),
+                  child: const AddAddressScreen(),
+                ),
+              ),
+            );
+          },
+        ),
+        const ListTile(
+          leading: Icon(
+            Iconsax.moneys_bold,
+          ),
+          title: Text('Payment method'),
+          trailing: Icon(
+            Iconsax.arrow_right_3_outline,
+          ),
+        ),
+        const Spacer(),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ElevatedButton(
+            onPressed: () {},
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'Place Order',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.w900,
+                          color: ColorConstants.primaryWhite,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

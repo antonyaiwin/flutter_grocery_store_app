@@ -54,6 +54,9 @@ dependencies:
   collection: ^1.18.0
   dotted_line: ^3.2.2
   path: ^1.9.0
+  google_maps_flutter: ^2.2.8
+  location: ^6.0.2
+  flutter_polyline_points: ^2.0.0
 
 dev_dependencies:
   flutter_test:
