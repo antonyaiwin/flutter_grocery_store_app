@@ -31,4 +31,8 @@ class ColorConstants {
   static const Color ratingBgGreen = Color.fromRGBO(56, 142, 60, 1);
   static const Color ratingBgAmber = Color.fromRGBO(234, 176, 1, 1);
   static const Color ratingBgRed = Color.fromRGBO(211, 47, 47, 1);
+
+// shimmer colors
+  static const Color shimmerBaseColor = Color.fromRGBO(224, 224, 224, 1);
+  static const Color shimmerHilightColor = Color.fromRGBO(245, 245, 245, 1);
 }

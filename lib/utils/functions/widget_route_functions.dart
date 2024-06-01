@@ -60,7 +60,11 @@ Future<T?> showMyModalBottomSheet<T>({
                       color:
                           Theme.of(context).bottomSheetTheme.backgroundColor),
                   padding: contentPadding,
-                  child: builder(context, scrollController),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                    child: builder(context, scrollController),
+                  ),
                 ),
               ),
             ],

@@ -53,6 +53,8 @@ class MyApp extends StatelessWidget {
           // rubik,
           inputDecorationTheme: InputDecorationTheme(
             isDense: true,
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 12, horizontal: 15),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           ),
           scaffoldBackgroundColor: ColorConstants.scaffoldBackgroundColor,
