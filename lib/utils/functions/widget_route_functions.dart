@@ -25,49 +25,48 @@ Future<T?> showMyModalBottomSheet<T>({
       return GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => Navigator.pop(context),
-        child: DraggableScrollableSheet(
-          initialChildSize: initialChildSize,
-          minChildSize: minChildSize,
-          maxChildSize: maxChildSize,
-          expand: expand,
-          snap: snap,
-          builder: (context, scrollController) => Stack(
-            clipBehavior: Clip.none,
-            children: [
-              Positioned(
-                top: -60,
-                left: 0,
-                right: 0,
-                child: CircleAvatar(
-                  backgroundColor: CupertinoColors.black.withOpacity(0.7),
-                  radius: 23,
-                  child: const Icon(
-                    MingCute.close_fill,
-                    color: ColorConstants.primaryWhite,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          bottomSheet: DraggableScrollableSheet(
+            initialChildSize: initialChildSize,
+            minChildSize: minChildSize,
+            maxChildSize: maxChildSize,
+            expand: expand,
+            snap: snap,
+            builder: (context, scrollController) => Stack(
+              clipBehavior: Clip.none,
+              children: [
+                Positioned(
+                  top: -60,
+                  left: 0,
+                  right: 0,
+                  child: CircleAvatar(
+                    backgroundColor: CupertinoColors.black.withOpacity(0.7),
+                    radius: 23,
+                    child: const Icon(
+                      MingCute.close_fill,
+                      color: ColorConstants.primaryWhite,
+                    ),
                   ),
                 ),
-              ),
-              InkWell(
-                onTap: () {},
-                overlayColor:
-                    const MaterialStatePropertyAll(Colors.transparent),
-                child: Ink(
-                  height: height,
-                  decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(15),
-                      ),
-                      color:
-                          Theme.of(context).bottomSheetTheme.backgroundColor),
-                  padding: contentPadding,
-                  child: Padding(
-                    padding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
+                InkWell(
+                  onTap: () {},
+                  overlayColor:
+                      const MaterialStatePropertyAll(Colors.transparent),
+                  child: Ink(
+                    height: height,
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(15),
+                        ),
+                        color:
+                            Theme.of(context).bottomSheetTheme.backgroundColor),
+                    padding: contentPadding,
                     child: builder(context, scrollController),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );

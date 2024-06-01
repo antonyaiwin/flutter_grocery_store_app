@@ -2,18 +2,24 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/core/constants/image_constants.dart';
+import 'package:flutter_grocery_store/model/address_model.dart';
+import 'package:flutter_grocery_store/utils/functions/functions.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 import '../../utils/functions/debouncer.dart';
 import '../../utils/functions/image_functions.dart';
 
 class AddAddressScreenController extends ChangeNotifier {
+  BuildContext context;
   Uint8List? markerIcon;
   List<geocoding.Placemark> placemarks = [];
   late Debouncer debouncer;
@@ -35,8 +41,10 @@ class AddAddressScreenController extends ChangeNotifier {
       Completer<GoogleMapController>();
   Location location = Location();
 
-  AddAddressScreenController() : debouncer = Debouncer(milliSeconds: 500) {
+  AddAddressScreenController(this.context)
+      : debouncer = Debouncer(milliSeconds: 500) {
     loadMarkerImage();
+    getCurrentLocation();
   }
 
   Future<void> getCurrentLocation() async {
@@ -79,12 +87,12 @@ class AddAddressScreenController extends ChangeNotifier {
 
   void onCameraMoveStarted() {
     mapMoving = true;
+    debouncer.cancel();
     notifyListeners();
   }
 
   void onCameraMove(LatLng target) {
     currentLocation = target;
-    onCameraMoveStopped();
     notifyListeners();
   }
 
@@ -94,20 +102,21 @@ class AddAddressScreenController extends ChangeNotifier {
 
       try {
         if (currentLocation != null) {
-          placemarks = await geocoding.placemarkFromCoordinates(
-              currentLocation!.latitude, currentLocation!.longitude);
+          placemarks = await geocoding
+              .placemarkFromCoordinates(
+                  currentLocation!.latitude, currentLocation!.longitude)
+              .timeout(const Duration(seconds: 5));
         }
       } on Exception catch (e) {
         log(e.toString());
         placemarks.clear();
-
-        // log(placemarks.toString());
-        mapMoving = false;
-        notifyListeners();
       }
+      // log(placemarks.toString());
+      mapMoving = false;
+      var map = getAddressMap();
+      locationController.text = '${map['title'] ?? ''}, ${map['subtitle']}';
+      notifyListeners();
     });
-    var map = getAddressMap();
-    locationController.text = '${map['title'] ?? ''}, ${map['subtitle']}';
   }
 
   Future<void> loadMarkerImage() async {
@@ -140,7 +149,34 @@ class AddAddressScreenController extends ChangeNotifier {
     return value == null || value.isEmpty;
   }
 
-  void saveAddress() {
-    if (formKey.currentState!.validate()) {}
+  Future<void> saveAddress() async {
+    if (formKey.currentState!.validate()) {
+      AddressModel address = AddressModel(
+        name: nameController.text,
+        buildingName: flatController.text,
+        floor: floorController.text,
+        landmark: landmarkController.text,
+        phoneNumber: phoneNoController.text,
+        latitude: currentLocation?.latitude,
+        longitude: currentLocation?.longitude,
+        decodedAddress: locationController.text,
+      );
+      try {
+        await context.read<FireStoreController>().addAddress(address);
+        if (context.mounted) {
+          showSuccessSnackBar(
+            context: context,
+            content: 'Address added successfully.',
+          );
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
+      } on Exception catch (e) {
+        log(e.toString());
+        if (context.mounted) {
+          showErrorSnackBar(context: context, content: 'Something went wrong!');
+        }
+      }
+    }
   }
 }

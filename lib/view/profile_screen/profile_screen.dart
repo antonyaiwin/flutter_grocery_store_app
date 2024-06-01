@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/profile_circle_avatar.dart';
+import 'package:flutter_grocery_store/view/addresses_screen/addresses_screen.dart';
 import 'package:flutter_grocery_store/view/splash_screen/splash_screen.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
@@ -61,10 +62,18 @@ class ProfileScreen extends StatelessWidget {
               title: Text('Change Password'),
               trailing: Icon(Iconsax.arrow_right_outline),
             ),
-            const ListTile(
-              leading: Icon(Iconsax.location_outline),
-              title: Text('My Addresses'),
-              trailing: Icon(Iconsax.arrow_right_outline),
+            ListTile(
+              leading: const Icon(Iconsax.location_outline),
+              title: const Text('My Addresses'),
+              trailing: const Icon(Iconsax.arrow_right_outline),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AddressesScreen(),
+                  ),
+                );
+              },
             ),
             const ListTile(
               leading: Icon(Iconsax.box_1_outline),

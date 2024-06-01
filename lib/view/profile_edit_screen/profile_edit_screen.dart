@@ -109,9 +109,8 @@ class ProfileEditScreen extends StatelessWidget {
   void showImagePickBottomSheet(BuildContext context) {
     showMyModalBottomSheet(
       context: context,
-      height: 210,
-      initialChildSize: 0.25,
-      maxChildSize: 0.25,
+      isScrollControlled: false,
+      expand: false,
       builder: (ctx, scrollController) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
         child: Column(

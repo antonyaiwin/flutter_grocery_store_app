@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/model/address_model.dart';
 
 import 'package:flutter_grocery_store/model/category_model.dart';
 import 'package:flutter_grocery_store/model/product_model.dart';
@@ -13,16 +14,23 @@ class FireStoreController extends ChangeNotifier {
   static const String _productsCollectionName = 'grocery-shop/data/products';
   static const String _userDataCollectionName = 'users';
   static const String _favouritesCollectionName = 'favourites';
+  static const String _addressesCollectionName = 'addresses';
+
+  var uid = FirebaseAuth.instance.currentUser!.uid;
 
   var db = FirebaseFirestore.instance;
   List<CategoryModel> categoryList = [];
   List<ProductModel> productList = [];
   List<String> favouritesList = [];
+  List<AddressModel> addressList = [];
+  String? defaultAddressId;
 
   FireStoreController() {
+    _initUserDataListener();
     _initCategoriesListener();
     _initProductsListener();
     _initFavouritesListener();
+    _initAddressListener();
   }
 
   String? getLastCategoryIndex() {
@@ -33,6 +41,14 @@ class FireStoreController extends ChangeNotifier {
 
   int? getLastProductIndex() {
     return productList.isEmpty ? 0 : productList[productList.length - 1].id;
+  }
+
+  _initUserDataListener() {
+    db.collection(_userDataCollectionName).doc(uid).snapshots().listen((event) {
+      var data = event.data();
+      defaultAddressId = data?['default_address'];
+      notifyListeners();
+    });
   }
 
   _initCategoriesListener() {
@@ -62,13 +78,24 @@ class FireStoreController extends ChangeNotifier {
   }
 
   void _initFavouritesListener() {
-    var uid = FirebaseAuth.instance.currentUser!.uid;
     db
         .collection('$_userDataCollectionName/$uid/$_favouritesCollectionName')
         .orderBy('date_added', descending: true)
         .snapshots()
         .listen((event) {
       favouritesList = event.docs.map((e) => e.id).toList();
+      notifyListeners();
+    });
+  }
+
+  void _initAddressListener() {
+    db
+        .collection('$_userDataCollectionName/$uid/$_addressesCollectionName')
+        .snapshots()
+        .listen((event) {
+      addressList = event.docs
+          .map((e) => AddressModel.fromQueryDocumentSnapshot(e))
+          .toList();
       notifyListeners();
     });
   }
@@ -185,7 +212,6 @@ class FireStoreController extends ChangeNotifier {
   Future<void> addFavorite(
     ProductModel product,
   ) async {
-    var uid = FirebaseAuth.instance.currentUser!.uid;
     var ref = db
         .collection('$_userDataCollectionName/$uid/$_favouritesCollectionName');
     log(ref.path);
@@ -199,12 +225,56 @@ class FireStoreController extends ChangeNotifier {
   Future<void> deleteFavorite(
     ProductModel product,
   ) async {
-    var uid = FirebaseAuth.instance.currentUser!.uid;
     var ref = db
         .collection('$_userDataCollectionName/$uid/$_favouritesCollectionName');
     log(ref.path);
     await ref.doc(product.collectionDocumentId).delete();
 
-    log('Favourites add completed');
+    log('Favourites delete completed');
+  }
+
+  // Addresses CRUD Operation
+
+  Future<void> addAddress(
+    AddressModel address,
+  ) async {
+    var ref = db
+        .collection('$_userDataCollectionName/$uid/$_addressesCollectionName');
+    log(ref.path);
+    await ref.add(address.toMapWithoutNull());
+
+    log('Address add completed');
+  }
+
+  Future<List<AddressModel>> getAddressList() async {
+    var ref = db
+        .collection('$_userDataCollectionName/$uid/$_addressesCollectionName');
+    log(ref.path);
+
+    log('Address reading');
+
+    return (await ref.get())
+        .docs
+        .map((e) => AddressModel.fromQueryDocumentSnapshot(e))
+        .toList();
+  }
+
+  Future<void> deleteAddress(
+    AddressModel address,
+  ) async {
+    var ref = db
+        .collection('$_userDataCollectionName/$uid/$_addressesCollectionName');
+    log(ref.path);
+    await ref.doc(address.collectionDocumentId).delete();
+
+    log('Address delete completed');
+  }
+
+  // User data CRUD operations
+  Future<void> setDefaultAddress(AddressModel address) async {
+    await db
+        .collection(_userDataCollectionName)
+        .doc(uid)
+        .update({'default_address': address.collectionDocumentId});
   }
 }

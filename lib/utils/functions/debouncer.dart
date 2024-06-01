@@ -8,10 +8,17 @@ class Debouncer {
   Timer? _timer;
 
   Debouncer({required this.milliSeconds});
+
   void run(VoidCallback action) {
     if (_timer != null) {
       _timer!.cancel();
     }
     _timer = Timer(Duration(milliseconds: milliSeconds), action);
+  }
+
+  void cancel() {
+    if (_timer != null && _timer!.isActive) {
+      _timer!.cancel();
+    }
   }
 }

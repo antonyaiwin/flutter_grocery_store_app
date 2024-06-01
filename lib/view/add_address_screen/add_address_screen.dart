@@ -55,9 +55,9 @@ class AddAddressScreen extends StatelessWidget {
                     onCameraMoveStarted: () {
                       provider.onCameraMoveStarted();
                     },
-                    // onCameraIdle: () {
-                    //   provider.onCameraMoveStopped();
-                    // },
+                    onCameraIdle: () {
+                      provider.onCameraMoveStopped();
+                    },
                     onCameraMove: (position) {
                       provider.onCameraMove(position.target);
                     },
@@ -85,10 +85,7 @@ class AddAddressScreen extends StatelessWidget {
                         children: [
                           Icon(Icons.gps_fixed),
                           SizedBox(width: 10),
-                          Text(
-                            'Go to current location',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          Text('Go to current location'),
                         ],
                       ),
                     ),
@@ -140,6 +137,7 @@ class AddAddressScreen extends StatelessWidget {
       BuildContext context, AddAddressScreenController provider) {
     showMyModalBottomSheet(
       context: context,
+      expand: false,
       builder: (context, scrollController) => ChangeNotifierProvider.value(
         value: provider,
         child: const AddressForm(),

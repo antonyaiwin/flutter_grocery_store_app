@@ -152,7 +152,7 @@ class CheckoutBottomSheetContent extends StatelessWidget {
               MaterialPageRoute(
                 builder: (context) => ChangeNotifierProvider(
                   create: (BuildContext context) =>
-                      AddAddressScreenController(),
+                      AddAddressScreenController(context),
                   child: const AddAddressScreen(),
                 ),
               ),
