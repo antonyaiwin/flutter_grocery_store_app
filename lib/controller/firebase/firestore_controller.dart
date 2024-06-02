@@ -259,6 +259,19 @@ class FireStoreController extends ChangeNotifier {
         .toList();
   }
 
+  Future<void> updateAddress(
+    AddressModel address,
+  ) async {
+    var ref = db
+        .collection('$_userDataCollectionName/$uid/$_addressesCollectionName');
+    log(ref.path);
+    await ref
+        .doc(address.collectionDocumentId)
+        .update(address.toMapWithoutNull());
+
+    log('Address update completed');
+  }
+
   Future<void> deleteAddress(
     AddressModel address,
   ) async {
@@ -272,9 +285,17 @@ class FireStoreController extends ChangeNotifier {
 
   // User data CRUD operations
   Future<void> setDefaultAddress(AddressModel address) async {
-    await db
-        .collection(_userDataCollectionName)
-        .doc(uid)
-        .update({'default_address': address.collectionDocumentId});
+    await db.collection(_userDataCollectionName).doc(uid).update(
+      {'default_address': address.collectionDocumentId},
+    );
+  }
+
+  Future<AddressModel?> getDefaultAddress() async {
+    if (defaultAddressId == null) {
+      return null;
+    } else {
+      return addressList.firstWhereOrNull(
+          (element) => element.collectionDocumentId == defaultAddressId);
+    }
   }
 }

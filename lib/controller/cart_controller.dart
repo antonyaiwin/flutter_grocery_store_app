@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
+import 'package:provider/provider.dart';
 
+import '../model/address_model.dart';
 import '../model/cart_item_model.dart';
 import '../model/product_model.dart';
 
 class CartController extends ChangeNotifier {
+  AddressModel? selectedAddress;
+  BuildContext context;
+  CartController(
+    this.context, {
+    this.selectedAddress,
+  }) {
+    _initAddress();
+  }
+
   final List<CartItemModel> _cartItemList = [];
 
   List<CartItemModel> get cartItemList => _cartItemList;
@@ -63,5 +75,15 @@ class CartController extends ChangeNotifier {
       }
     }
     return 0;
+  }
+
+  Future<void> _initAddress() async {
+    selectedAddress =
+        await context.read<FireStoreController>().getDefaultAddress();
+  }
+
+  void setSelectedAddress(AddressModel address) {
+    selectedAddress = address;
+    notifyListeners();
   }
 }

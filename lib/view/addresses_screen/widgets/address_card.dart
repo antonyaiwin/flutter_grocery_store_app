@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/model/address_model.dart';
 import 'package:flutter_grocery_store/utils/functions/map_utils.dart';
-import 'package:flutter_grocery_store/utils/global_widgets/elevated_card.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class AddressCard extends StatelessWidget {

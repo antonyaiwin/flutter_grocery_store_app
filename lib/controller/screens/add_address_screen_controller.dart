@@ -19,11 +19,13 @@ import '../../utils/functions/debouncer.dart';
 import '../../utils/functions/image_functions.dart';
 
 class AddAddressScreenController extends ChangeNotifier {
+  AddressModel? savedAddress;
   BuildContext context;
   Uint8List? markerIcon;
   List<geocoding.Placemark> placemarks = [];
   late Debouncer debouncer;
   bool mapMoving = false;
+  bool saving = false;
   bool _serviceEnabled = false;
   LatLng? currentLocation;
   PermissionStatus? _permissionGranted;
@@ -41,10 +43,42 @@ class AddAddressScreenController extends ChangeNotifier {
       Completer<GoogleMapController>();
   Location location = Location();
 
-  AddAddressScreenController(this.context)
-      : debouncer = Debouncer(milliSeconds: 500) {
+  AddAddressScreenController(this.context, {this.savedAddress})
+      : debouncer = Debouncer(milliSeconds: 700) {
     loadMarkerImage();
-    getCurrentLocation();
+    _initCurrentLocation();
+    _initEditMode();
+  }
+
+  bool get isEditMode => savedAddress != null;
+
+  void _initCurrentLocation() {
+    if (savedAddress?.latitude != null && savedAddress?.longitude != null) {
+      gotoLocation(LatLng(savedAddress!.latitude!, savedAddress!.longitude!));
+    } else {
+      getCurrentLocation();
+    }
+  }
+
+  void _initEditMode() {
+    if (!isEditMode) {
+      return;
+    }
+    if (savedAddress?.name != null) {
+      nameController.text = savedAddress!.name!;
+    }
+    if (savedAddress?.buildingName != null) {
+      flatController.text = savedAddress!.buildingName!;
+    }
+    if (savedAddress?.floor != null) {
+      floorController.text = savedAddress!.floor!;
+    }
+    if (savedAddress?.landmark != null) {
+      landmarkController.text = savedAddress!.landmark!;
+    }
+    if (savedAddress?.phoneNumber != null) {
+      phoneNoController.text = savedAddress!.phoneNumber!;
+    }
   }
 
   Future<void> getCurrentLocation() async {
@@ -151,6 +185,8 @@ class AddAddressScreenController extends ChangeNotifier {
 
   Future<void> saveAddress() async {
     if (formKey.currentState!.validate()) {
+      saving = true;
+      notifyListeners();
       AddressModel address = AddressModel(
         name: nameController.text,
         buildingName: flatController.text,
@@ -162,11 +198,20 @@ class AddAddressScreenController extends ChangeNotifier {
         decodedAddress: locationController.text,
       );
       try {
-        await context.read<FireStoreController>().addAddress(address);
+        if (isEditMode) {
+          await context.read<FireStoreController>().updateAddress(
+                address.copyWith(
+                  collectionDocumentId: savedAddress?.collectionDocumentId,
+                ),
+              );
+        } else {
+          await context.read<FireStoreController>().addAddress(address);
+        }
         if (context.mounted) {
           showSuccessSnackBar(
             context: context,
-            content: 'Address added successfully.',
+            content:
+                'Address ${isEditMode ? 'updated' : 'added'} successfully.',
           );
           Navigator.pop(context);
           Navigator.pop(context);
@@ -177,6 +222,8 @@ class AddAddressScreenController extends ChangeNotifier {
           showErrorSnackBar(context: context, content: 'Something went wrong!');
         }
       }
+      saving = false;
+      notifyListeners();
     }
   }
 }

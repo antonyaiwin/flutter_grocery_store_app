@@ -49,6 +49,8 @@ class AddressForm extends StatelessWidget {
                   const SizedBox(height: 15),
                   TextFormField(
                     controller: provider.flatController,
+                    maxLines: 5,
+                    minLines: 1,
                     decoration: const InputDecoration(
                       isDense: true,
                       labelText: 'Flat / House no / Building name *',
@@ -80,6 +82,8 @@ class AddressForm extends StatelessWidget {
                   const SizedBox(height: 15),
                   TextFormField(
                     controller: provider.landmarkController,
+                    maxLines: 5,
+                    minLines: 1,
                     decoration: const InputDecoration(
                       isDense: true,
                       labelText: 'Landmark (optional)',
@@ -101,12 +105,22 @@ class AddressForm extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.all(10),
-            child: ElevatedButton(
-              onPressed: () {
-                provider.saveAddress();
-              },
-              child: const Center(
-                child: Text('Save Address'),
+            child: Consumer<AddAddressScreenController>(
+              builder: (context, value, child) => ElevatedButton(
+                onPressed: value.saving
+                    ? null
+                    : () {
+                        provider.saveAddress();
+                      },
+                child: Center(
+                  child: value.saving
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(),
+                        )
+                      : Text('${value.isEditMode ? 'Update' : 'Save'} Address'),
+                ),
               ),
             ),
           ),

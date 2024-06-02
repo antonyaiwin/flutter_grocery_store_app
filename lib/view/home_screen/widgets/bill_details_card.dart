@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:provider/provider.dart';
 
 import '../../../controller/cart_controller.dart';
 
 class BillDetailsCard extends StatelessWidget {
   const BillDetailsCard({
     super.key,
+    required this.cart,
   });
-
+  final CartController cart;
   @override
   Widget build(BuildContext context) {
-    var cart = context.read<CartController>();
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(

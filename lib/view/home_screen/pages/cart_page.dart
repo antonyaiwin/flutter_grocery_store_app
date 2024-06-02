@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:flutter_grocery_store/utils/functions/functions.dart';
 import 'package:flutter_grocery_store/utils/functions/widget_route_functions.dart';
+import 'package:flutter_grocery_store/view/addresses_screen/widgets/address_screen_body.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/home_screen_back_button.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/product_list_card.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -46,6 +50,7 @@ class CartPage extends StatelessWidget {
                 children: [
                   Consumer<CartController>(
                     builder: (context, cart, child) {
+                      log('cart rebuild');
                       if (cart.totalCartCount == 0) {
                         return const Center(
                           child: Text('Your cart is empty!'),
@@ -75,7 +80,9 @@ class CartPage extends StatelessWidget {
                             itemCount: cart.cartItemList.length,
                           ),
                           const SizedBox(height: 25),
-                          const BillDetailsCard(),
+                          BillDetailsCard(
+                            cart: cart,
+                          ),
                         ],
                       );
                     },
@@ -98,9 +105,13 @@ class CartPage extends StatelessWidget {
                         showMyModalBottomSheet(
                           context: context,
                           expand: false,
-                          isScrollControlled: false,
+                          isScrollControlled: true,
+                          initialChildSize: 0.75,
+                          minChildSize: 0.75,
                           builder: (context, scrollController) {
-                            return const CheckoutBottomSheetContent();
+                            return AddressSelectBottomSheetContent(
+                              scrollController: scrollController,
+                            );
                           },
                         );
                       },
@@ -122,11 +133,12 @@ class CartPage extends StatelessWidget {
   }
 }
 
-class CheckoutBottomSheetContent extends StatelessWidget {
-  const CheckoutBottomSheetContent({
+class AddressSelectBottomSheetContent extends StatelessWidget {
+  const AddressSelectBottomSheetContent({
     super.key,
+    this.scrollController,
   });
-
+  final ScrollController? scrollController;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -135,51 +147,32 @@ class CheckoutBottomSheetContent extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(15.0).copyWith(bottom: 0),
           child: Text(
-            'Checkout',
-            style: Theme.of(context).textTheme.headlineMedium,
+            'Select Address',
+            style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
         const Divider(),
-        ListTile(
-          leading: const Icon(Iconsax.personalcard_bold),
-          title: const Text('Address'),
-          trailing: const Icon(
-            Iconsax.arrow_right_3_outline,
-          ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ChangeNotifierProvider(
-                  create: (BuildContext context) =>
-                      AddAddressScreenController(context),
-                  child: const AddAddressScreen(),
-                ),
-              ),
-            );
-          },
-        ),
-        const ListTile(
-          leading: Icon(
-            Iconsax.moneys_bold,
-          ),
-          title: Text('Payment method'),
-          trailing: Icon(
-            Iconsax.arrow_right_3_outline,
-          ),
-        ),
-        const Spacer(),
+        Expanded(
+            child: AddressScreenBody(
+          isAddressScreen: false,
+          scrollController: scrollController,
+        )),
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(8.0).copyWith(top: 0),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              if (context.read<CartController>().selectedAddress == null) {
+                showErrorSnackBar(
+                    context: context, content: 'Please select an address');
+              } else {}
+            },
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Place Order',
+                    'Proceed',
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w900,
                           color: ColorConstants.primaryWhite,

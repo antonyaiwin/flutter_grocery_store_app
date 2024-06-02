@@ -28,9 +28,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => CartController(),
-        ),
-        ChangeNotifierProvider(
           create: (context) => FireStoreController(),
         ),
         ChangeNotifierProvider(
@@ -38,6 +35,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => FirebaseAuthController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => CartController(context),
         ),
       ],
       child: MaterialApp(
