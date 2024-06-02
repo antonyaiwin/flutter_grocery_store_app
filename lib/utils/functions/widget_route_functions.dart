@@ -90,3 +90,43 @@ Future<T?> showMyDialog<T>({
     ),
   );
 }
+
+Future<dynamic> showMyBasicDialog(
+  BuildContext context, {
+  required String title,
+  required String content,
+  required void Function(BuildContext context)? onYesPressed,
+  required void Function(BuildContext context)? onNoPressed,
+  bool barrierDismissible = true,
+}) {
+  return showDialog(
+    context: context,
+    barrierDismissible: barrierDismissible,
+    builder: (context) => AlertDialog.adaptive(
+      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
+      surfaceTintColor: Colors.transparent,
+      backgroundColor: ColorConstants.primaryWhite,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      title: Text(title),
+      content: Text(content),
+      actions: [
+        TextButton(
+          onPressed: onYesPressed == null
+              ? null
+              : () {
+                  onYesPressed(context);
+                },
+          child: const Text('Yes'),
+        ),
+        TextButton(
+          onPressed: onNoPressed == null
+              ? null
+              : () {
+                  onNoPressed(context);
+                },
+          child: const Text('No'),
+        ),
+      ],
+    ),
+  );
+}

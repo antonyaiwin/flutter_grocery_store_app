@@ -12,13 +12,17 @@ class AddressCard extends StatelessWidget {
     this.onDeletePressed,
     this.onEditPressed,
     required this.isDefault,
+    this.displayChangeButton = false,
+    this.onChangePressed,
   });
 
   final AddressModel address;
   final void Function()? onTap;
   final void Function()? onEditPressed;
   final void Function()? onDeletePressed;
+  final void Function()? onChangePressed;
   final bool isDefault;
+  final bool displayChangeButton;
 
   @override
   Widget build(BuildContext context) {
@@ -101,32 +105,36 @@ class AddressCard extends StatelessWidget {
             const SizedBox(height: 5),
             Row(
               children: [
-                IconButton(
-                  onPressed: onEditPressed,
-                  icon: const Icon(Iconsax.edit_outline),
-                  iconSize: 20,
-                  color: ColorConstants.primaryColor,
-                  style: const ButtonStyle(
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                if (onEditPressed != null) ...[
+                  IconButton(
+                    onPressed: onEditPressed,
+                    icon: const Icon(Iconsax.edit_outline),
+                    iconSize: 20,
+                    color: ColorConstants.primaryColor,
+                    style: const ButtonStyle(
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    constraints:
+                        const BoxConstraints(maxHeight: 40, maxWidth: 40),
+                    padding: const EdgeInsets.all(5),
                   ),
-                  constraints:
-                      const BoxConstraints(maxHeight: 40, maxWidth: 40),
-                  padding: const EdgeInsets.all(5),
-                ),
-                const SizedBox(width: 10),
-                IconButton(
-                  onPressed: onDeletePressed,
-                  icon: const Icon(Iconsax.trash_outline),
-                  iconSize: 20,
-                  color: ColorConstants.primaryColor,
-                  style: const ButtonStyle(
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  const SizedBox(width: 10),
+                ],
+                if (onDeletePressed != null) ...[
+                  IconButton(
+                    onPressed: onDeletePressed,
+                    icon: const Icon(Iconsax.trash_outline),
+                    iconSize: 20,
+                    color: ColorConstants.primaryColor,
+                    style: const ButtonStyle(
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    constraints:
+                        const BoxConstraints(maxHeight: 40, maxWidth: 40),
+                    padding: const EdgeInsets.all(5),
                   ),
-                  constraints:
-                      const BoxConstraints(maxHeight: 40, maxWidth: 40),
-                  padding: const EdgeInsets.all(5),
-                ),
-                const SizedBox(width: 10),
+                  const SizedBox(width: 10),
+                ],
                 IconButton(
                   onPressed: () {
                     MapUtils.openMap(
@@ -145,9 +153,25 @@ class AddressCard extends StatelessWidget {
                 if (isDefault) ...[
                   const Spacer(),
                   const Icon(
-                    Icons.radio_button_checked,
+                    Iconsax.tick_circle_bold,
                     color: ColorConstants.primaryColor,
-                  )
+                  ),
+                ],
+                if (displayChangeButton) ...[
+                  const Spacer(),
+                  ElevatedButton(
+                    style: const ButtonStyle(
+                      padding: MaterialStatePropertyAll(
+                        EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      ),
+                      minimumSize: MaterialStatePropertyAll(
+                        Size(0, 0),
+                      ),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    onPressed: onChangePressed,
+                    child: const Text('Change'),
+                  ),
                 ],
               ],
             ),

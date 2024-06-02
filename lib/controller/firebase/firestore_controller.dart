@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/model/address_model.dart';
 
 import 'package:flutter_grocery_store/model/category_model.dart';
+import 'package:flutter_grocery_store/model/order_model.dart';
 import 'package:flutter_grocery_store/model/product_model.dart';
 
 class FireStoreController extends ChangeNotifier {
@@ -15,6 +16,7 @@ class FireStoreController extends ChangeNotifier {
   static const String _userDataCollectionName = 'users';
   static const String _favouritesCollectionName = 'favourites';
   static const String _addressesCollectionName = 'addresses';
+  static const String _ordersCollectionName = 'orders';
 
   var uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -231,6 +233,14 @@ class FireStoreController extends ChangeNotifier {
     await ref.doc(product.collectionDocumentId).delete();
 
     log('Favourites delete completed');
+  }
+
+  // Orders CRUD Operation
+  Future<DocumentReference<Map<String, dynamic>>> addOrder(
+      OrderModel order) async {
+    var ref = await db.collection(_ordersCollectionName).add(order.toMap());
+    log('order added completed');
+    return ref;
   }
 
   // Addresses CRUD Operation

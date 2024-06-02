@@ -3,6 +3,7 @@ import 'package:flutter_grocery_store/controller/cart_controller.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/controller/screens/add_address_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:flutter_grocery_store/utils/functions/widget_route_functions.dart';
 import 'package:flutter_grocery_store/view/add_address_screen/add_address_screen.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
@@ -91,7 +92,21 @@ class AddressScreenBody extends StatelessWidget {
                         );
                       },
                       onDeletePressed: () {
-                        fireStore.deleteAddress(address);
+                        showMyBasicDialog(
+                          context,
+                          title: 'Sure to delete?',
+                          content:
+                              'Are you sure to delete this address?.\nYou cannot undo this action!',
+                          onYesPressed: (context) async {
+                            await fireStore.deleteAddress(address);
+                            if (context.mounted) {
+                              Navigator.pop(context);
+                            }
+                          },
+                          onNoPressed: (context) {
+                            Navigator.pop(context);
+                          },
+                        );
                       },
                       onTap: () {
                         if (isAddressScreen) {

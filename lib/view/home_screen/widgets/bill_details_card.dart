@@ -1,3 +1,4 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -39,9 +40,8 @@ class BillDetailsCard extends StatelessWidget {
               title: 'Delivery charge',
               subtitle: '₹20.00'),
           const SizedBox(height: 20),
-          Divider(
-            color: Colors.black.withOpacity(0.06),
-            thickness: 2,
+          const DottedLine(
+            dashColor: ColorConstants.hintColor,
           ),
           const SizedBox(height: 10),
           Row(

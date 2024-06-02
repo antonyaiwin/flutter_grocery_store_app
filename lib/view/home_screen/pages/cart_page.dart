@@ -1,10 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_grocery_store/core/constants/color_constants.dart';
-import 'package:flutter_grocery_store/utils/functions/functions.dart';
-import 'package:flutter_grocery_store/utils/functions/widget_route_functions.dart';
-import 'package:flutter_grocery_store/view/addresses_screen/widgets/address_screen_body.dart';
+import 'package:flutter_grocery_store/view/checkout_screen/checkout_screen.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/home_screen_back_button.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/product_list_card.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -12,8 +9,6 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controller/cart_controller.dart';
-import '../../../controller/screens/add_address_screen_controller.dart';
-import '../../add_address_screen/add_address_screen.dart';
 import '../widgets/bill_details_card.dart';
 
 class CartPage extends StatelessWidget {
@@ -102,22 +97,16 @@ class CartPage extends StatelessWidget {
                 onPressed: value.cartItemList.isEmpty
                     ? null
                     : () {
-                        showMyModalBottomSheet(
-                          context: context,
-                          expand: false,
-                          isScrollControlled: true,
-                          initialChildSize: 0.75,
-                          minChildSize: 0.75,
-                          builder: (context, scrollController) {
-                            return AddressSelectBottomSheetContent(
-                              scrollController: scrollController,
-                            );
-                          },
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CheckoutScreen(),
+                          ),
                         );
                       },
                 child: Center(
                   child: Text(
-                    'Place order',
+                    'Continue',
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium
@@ -129,61 +118,6 @@ class CartPage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class AddressSelectBottomSheetContent extends StatelessWidget {
-  const AddressSelectBottomSheetContent({
-    super.key,
-    this.scrollController,
-  });
-  final ScrollController? scrollController;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(15.0).copyWith(bottom: 0),
-          child: Text(
-            'Select Address',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
-        const Divider(),
-        Expanded(
-            child: AddressScreenBody(
-          isAddressScreen: false,
-          scrollController: scrollController,
-        )),
-        Padding(
-          padding: const EdgeInsets.all(8.0).copyWith(top: 0),
-          child: ElevatedButton(
-            onPressed: () {
-              if (context.read<CartController>().selectedAddress == null) {
-                showErrorSnackBar(
-                    context: context, content: 'Please select an address');
-              } else {}
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Proceed',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.w900,
-                          color: ColorConstants.primaryWhite,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }
