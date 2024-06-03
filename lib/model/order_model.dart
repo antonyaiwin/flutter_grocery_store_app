@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -71,7 +70,7 @@ class OrderModel {
       paymentMethod:
           map['paymentMethod'] != null ? map['paymentMethod'] as String : null,
       cartItems: map['cartItems'] != null
-          ? (map['cartItems'] as List<Map<String, dynamic>>)
+          ? (map['cartItems'] as List<dynamic>)
               .map<CartItemModel>(
                 (x) => CartItemModel.fromMap(x),
               )

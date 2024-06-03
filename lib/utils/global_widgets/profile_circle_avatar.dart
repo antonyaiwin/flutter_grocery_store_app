@@ -27,14 +27,21 @@ class ProfileCircleAvatar extends StatelessWidget {
                 fit: BoxFit.cover,
               )
             : auth.currentUser?.displayName == null
-                ? const SizedBox()
-                : Center(
-                    child: Text(
-                      auth.currentUser?.displayName != null &&
-                              auth.currentUser!.displayName!.isNotEmpty
-                          ? auth.currentUser!.displayName![0]
-                          : 'U',
-                      style: Theme.of(context).textTheme.headlineMedium,
+                ? SizedBox(
+                    height: (radius ?? 22) * 2,
+                    width: (radius ?? 22) * 2,
+                  )
+                : SizedBox(
+                    height: (radius ?? 22) * 2,
+                    width: (radius ?? 22) * 2,
+                    child: Center(
+                      child: Text(
+                        auth.currentUser?.displayName != null &&
+                                auth.currentUser!.displayName!.isNotEmpty
+                            ? auth.currentUser!.displayName![0]
+                            : 'U',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
                     ),
                   ),
       ),

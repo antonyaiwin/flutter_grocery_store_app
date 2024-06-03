@@ -152,7 +152,9 @@ class FireStoreController extends ChangeNotifier {
 
   Future<DocumentReference<Map<String, dynamic>>> addProduct(
       ProductModel product) async {
-    var ref = await db.collection(_productsCollectionName).add(product.toMap());
+    var ref = await db
+        .collection(_productsCollectionName)
+        .add(product.toMapWithoutNull());
     log('addProduct completed');
     return ref;
   }

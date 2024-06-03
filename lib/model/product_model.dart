@@ -108,6 +108,7 @@ class ProductModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'collectionDocumentId': collectionDocumentId,
       'id': id,
       'name': name,
       'description': description,
@@ -142,6 +143,9 @@ class ProductModel {
 
   factory ProductModel.fromMap(Map<String, dynamic> map) {
     return ProductModel(
+      collectionDocumentId: map['collectionDocumentId'] != null
+          ? map['collectionDocumentId'] as String
+          : null,
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] != null ? map['name'] as String : null,
       description:

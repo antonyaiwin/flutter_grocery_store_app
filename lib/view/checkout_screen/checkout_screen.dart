@@ -41,16 +41,21 @@ class CheckoutScreen extends StatelessWidget {
                   Consumer2<FireStoreController, CartController>(
                     builder: (context, firestore, cart, child) {
                       if (cart.selectedAddress == null) {
-                        return Row(
-                          children: [
-                            const Text('Address not selected'),
-                            ElevatedButton(
-                              onPressed: () {
-                                _showAddressBottomSheet(context);
-                              },
-                              child: const Text('select'),
+                        return GestureDetector(
+                          onTap: () {
+                            _showAddressBottomSheet(context);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: ColorConstants.primaryWhite,
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          ],
+                            padding: const EdgeInsets.all(10),
+                            child: const Center(
+                              child: Text(
+                                  'Address not selected. Click to select.'),
+                            ),
+                          ),
                         );
                       }
                       return AddressCard(
