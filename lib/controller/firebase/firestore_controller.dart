@@ -297,9 +297,17 @@ class FireStoreController extends ChangeNotifier {
 
   // User data CRUD operations
   Future<void> setDefaultAddress(AddressModel address) async {
-    await db.collection(_userDataCollectionName).doc(uid).update(
-      {'default_address': address.collectionDocumentId},
-    );
+    var ref = db.collection(_userDataCollectionName).doc(uid);
+    log('${(await ref.get()).data()}');
+    if ((await ref.get()).data() == null) {
+      await ref.set(
+        {'default_address': address.collectionDocumentId},
+      );
+    } else {
+      await ref.update(
+        {'default_address': address.collectionDocumentId},
+      );
+    }
   }
 
   Future<AddressModel?> getDefaultAddress() async {

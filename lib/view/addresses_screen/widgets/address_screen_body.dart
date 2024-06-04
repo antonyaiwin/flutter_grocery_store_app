@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/cart_controller.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
@@ -110,7 +112,11 @@ class AddressScreenBody extends StatelessWidget {
                       },
                       onTap: () {
                         if (isAddressScreen) {
-                          fireStore.setDefaultAddress(address);
+                          try {
+                            fireStore.setDefaultAddress(address);
+                          } on Exception catch (e) {
+                            log(e.toString());
+                          }
                         } else {
                           cart.setSelectedAddress(address);
                         }

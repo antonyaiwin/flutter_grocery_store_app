@@ -110,24 +110,27 @@ class ProductListCard extends StatelessWidget {
                           children: [
                             if (item.getOffer() != null)
                               OfferTag(text: item.getOffer()!),
-                            const Icon(
-                              Icons.star,
-                              color: Colors.amber,
-                              size: 15,
-                            ),
-                            Expanded(
-                              child: Text(
-                                '${item.rating ?? 'No ratings yet'}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodySmall
-                                    ?.copyWith(
-                                      color: ColorConstants.hintColor,
-                                    ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
+                            // TODO: implement this
+
+                            // const Icon(
+                            //   Icons.star,
+                            //   color: Colors.amber,
+                            //   size: 15,
+                            // ),
+                            // Expanded(
+                            //   child: Text(
+                            //     '${item.rating ?? 'No ratings yet'}',
+                            //     style: Theme.of(context)
+                            //         .textTheme
+                            //         .bodySmall
+                            //         ?.copyWith(
+                            //           color: ColorConstants.hintColor,
+                            //         ),
+                            //     maxLines: 1,
+                            //     overflow: TextOverflow.ellipsis,
+                            //   ),
+                            // ),
+                            const Spacer(),
                             SizedBox(
                               width: 90,
                               child: Consumer<CartController>(
