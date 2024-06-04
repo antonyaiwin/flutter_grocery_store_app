@@ -23,7 +23,8 @@ class FavoritesPage extends StatelessWidget {
             child: Consumer<FireStoreController>(
               builder: (context, value, child) {
                 if (value.favouritesList.isEmpty) {
-                  return const Text('No items saved as favourites');
+                  return const Center(
+                      child: Text('No items saved as favourites'));
                 }
                 return ListView.separated(
                   padding: const EdgeInsets.all(15),

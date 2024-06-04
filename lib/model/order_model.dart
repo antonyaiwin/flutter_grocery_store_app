@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_grocery_store/core/enum/order_status.dart';
 
 import 'package:flutter_grocery_store/model/address_model.dart';
 import 'package:flutter_grocery_store/model/cart_item_model.dart';
@@ -156,5 +157,22 @@ class OrderModel {
       orderDeliveredTime: orderDeliveredTime ?? this.orderDeliveredTime,
       orderCancelledTime: orderCancelledTime ?? this.orderCancelledTime,
     );
+  }
+
+  OrderStatus getOrderStatus() {
+    if (orderCancelledTime != null) {
+      return OrderStatus.orderCancelled;
+    } else if (orderDeliveredTime != null) {
+      return OrderStatus.orderCancelled;
+    } else if (orderOutForDeliveryTime != null) {
+      return OrderStatus.orderOutForDelivery;
+    } else if (orderPackedTime != null) {
+      return OrderStatus.orderPacked;
+    } else if (orderAcceptedTime != null) {
+      return OrderStatus.orderAccepted;
+    } else if (orderCreatedTime != null) {
+      return OrderStatus.orderCreated;
+    }
+    return OrderStatus.unknown;
   }
 }
