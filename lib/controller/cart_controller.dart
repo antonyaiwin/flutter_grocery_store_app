@@ -12,6 +12,7 @@ import '../model/product_model.dart';
 import '../utils/functions/functions.dart';
 
 class CartController extends ChangeNotifier {
+  bool creatingOrder = false;
   late Box<dynamic> box;
   AddressModel? selectedAddress;
   String? selectedPaymentMethod;
@@ -124,7 +125,14 @@ class CartController extends ChangeNotifier {
     return selectedAddress != null && selectedPaymentMethod != null;
   }
 
-  Future<void> placeOrder(BuildContext context) async {
+  void clearCart() {
+    cartItemList.clear();
+  }
+
+  Future<bool> placeOrder(BuildContext context) async {
+    bool orderSuccess = false;
+    creatingOrder = true;
+    notifyListeners();
     var firestore = context.read<FireStoreController>();
     OrderModel order = OrderModel(
       createdUserId: firestore.uid,
@@ -139,11 +147,17 @@ class CartController extends ChangeNotifier {
     );
     try {
       await firestore.addOrder(order);
+      clearCart();
+      orderSuccess = true;
     } on Exception catch (e) {
       log(e.toString());
       if (context.mounted) {
         showErrorSnackBar(context: context, content: 'Something went wrong!');
       }
+      orderSuccess = false;
     }
+    creatingOrder = false;
+    notifyListeners();
+    return orderSuccess;
   }
 }

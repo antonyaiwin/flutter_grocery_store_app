@@ -5,6 +5,7 @@ import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/core/constants/image_constants.dart';
 import 'package:flutter_grocery_store/view/addresses_screen/widgets/address_card.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/bill_details_card.dart';
+import 'package:flutter_grocery_store/view/order_success_screen/order_success_screen.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -116,19 +117,34 @@ class CheckoutScreen extends StatelessWidget {
             child: Consumer<CartController>(
               builder: (context, cart, child) {
                 return ElevatedButton(
-                    onPressed: !cart.canCheckout()
-                        ? null
-                        : () {
-                            cart.placeOrder(context);
-                          },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(cart.selectedPaymentMethod != 'razorpay'
-                            ? 'Place Order'
-                            : 'Goto Payment'),
-                      ],
-                    ));
+                  onPressed: !cart.canCheckout() || cart.creatingOrder
+                      ? null
+                      : () async {
+                          if (await cart.placeOrder(context) &&
+                              context.mounted) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const OrderSuccessScreen(),
+                              ),
+                            );
+                          }
+                        },
+                  child: Center(
+                    child: cart.creatingOrder
+                        ? const SizedBox(
+                            height: 19,
+                            width: 19,
+                            child: CircularProgressIndicator(),
+                          )
+                        : Text(
+                            cart.selectedPaymentMethod != 'razorpay'
+                                ? 'Place Order'
+                                : 'Goto Payment',
+                          ),
+                  ),
+                );
               },
             ),
           ),
