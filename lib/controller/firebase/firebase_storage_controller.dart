@@ -7,7 +7,7 @@ import 'package:path/path.dart';
 import 'package:flutter_grocery_store/utils/functions/image_functions.dart';
 
 class FirebaseStorageController extends ChangeNotifier {
-  final storgeRef = FirebaseStorage.instance.ref();
+  Reference get storgeRef => FirebaseStorage.instance.ref();
   static const String baseStoragePath = 'grocery-store';
   static const String categoryStoragePath =
       '$baseStoragePath/categories/images/';

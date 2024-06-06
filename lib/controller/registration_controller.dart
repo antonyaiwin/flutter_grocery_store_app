@@ -60,6 +60,7 @@ class RegistrationController extends ChangeNotifier {
           password: passwordController.text,
         );
         await user.user?.updateDisplayName(nameController.text);
+        await FirebaseAuth.instance.signOut();
         if (context.mounted) {
           showDialog(
             context: context,

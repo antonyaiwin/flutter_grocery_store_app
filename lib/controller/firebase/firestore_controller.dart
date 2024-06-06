@@ -18,9 +18,9 @@ class FireStoreController extends ChangeNotifier {
   static const String _addressesCollectionName = 'addresses';
   static const String _ordersCollectionName = 'orders';
 
-  var uid = FirebaseAuth.instance.currentUser!.uid;
+  String get uid => FirebaseAuth.instance.currentUser!.uid;
 
-  var db = FirebaseFirestore.instance;
+  FirebaseFirestore get db => FirebaseFirestore.instance;
   List<CategoryModel> categoryList = [];
   List<ProductModel> productList = [];
   List<String> favouritesList = [];
