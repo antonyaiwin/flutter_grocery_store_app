@@ -35,6 +35,16 @@ class FireStoreController extends ChangeNotifier {
     _initAddressListener();
   }
 
+  CollectionReference<OrderModel> get ordersCollection {
+    return db.collection(_ordersCollectionName).withConverter(
+          fromFirestore: (snapshot, options) =>
+              OrderModel.fromMap(snapshot.data()!).copyWith(
+            collectionDocumentId: snapshot.id,
+          ),
+          toFirestore: (value, options) => value.toMap(),
+        );
+  }
+
   String? getLastCategoryIndex() {
     return categoryList.isEmpty
         ? '0'

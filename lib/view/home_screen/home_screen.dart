@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_grocery_store/controller/screens/home_screen_controller.dart';
+import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/home_bottom_nav_bar.dart';
@@ -32,7 +33,17 @@ class HomeScreen extends StatelessWidget {
           children: context.read<HomeScreenController>().pageList,
         ),
       ),
-      bottomNavigationBar: const HomeBottomNavBar(),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: ColorConstants.primaryBlack.withOpacity(0.5),
+              blurRadius: 3,
+            ),
+          ],
+        ),
+        child: const HomeBottomNavBar(),
+      ),
     );
   }
 }
