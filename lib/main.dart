@@ -88,17 +88,9 @@ class MyApp extends StatelessWidget {
               foregroundColor: MaterialStateProperty.resolveWith(
                 (states) {
                   if (states.contains(MaterialState.disabled)) {
-                    return ColorConstants.hintColor;
+                    return ColorConstants.hintColor.withOpacity(0.3);
                   }
                   return ColorConstants.primaryColor;
-                },
-              ),
-              backgroundColor: MaterialStateProperty.resolveWith(
-                (states) {
-                  if (states.contains(MaterialState.disabled)) {
-                    return ColorConstants.hintColor;
-                  }
-                  return ColorConstants.primaryWhite;
                 },
               ),
               shape: MaterialStatePropertyAll(
@@ -108,6 +100,16 @@ class MyApp extends StatelessWidget {
               ),
               overlayColor: MaterialStatePropertyAll(
                 ColorConstants.primaryColor.withOpacity(0.2),
+              ),
+              side: MaterialStateProperty.resolveWith(
+                (states) {
+                  return BorderSide(
+                    width: 2.0,
+                    color: states.contains(MaterialState.disabled)
+                        ? ColorConstants.hintColor.withOpacity(0.3)
+                        : ColorConstants.primaryColor,
+                  );
+                },
               ),
             ),
           ),

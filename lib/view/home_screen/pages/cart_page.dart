@@ -76,7 +76,9 @@ class CartPage extends StatelessWidget {
                           ),
                           const SizedBox(height: 25),
                           BillDetailsCard(
-                            cart: cart,
+                            totalItems: cart.totalCartCount,
+                            subtotal: cart.totalCartPrice,
+                            deliveryCharge: 20.0,
                           ),
                         ],
                       );

@@ -105,7 +105,11 @@ class CheckoutScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   Consumer<CartController>(
                     builder: (context, cart, child) {
-                      return BillDetailsCard(cart: cart);
+                      return BillDetailsCard(
+                        totalItems: cart.totalCartCount,
+                        subtotal: cart.totalCartPrice,
+                        deliveryCharge: 20.0,
+                      );
                     },
                   ),
                 ],

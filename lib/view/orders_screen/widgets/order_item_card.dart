@@ -105,34 +105,42 @@ class OrderItemCard extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: order.cartItems
-                        ?.map(
-                          (e) => Text.rich(
-                            TextSpan(
-                              text: '${e.quantity} x ',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(
-                                    color: ColorConstants.hintColor,
-                                  ),
-                              children: [
-                                TextSpan(
-                                  text:
-                                      '${e.product.name} [${e.product.getFormattedQuantity()}]',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                        color: ColorConstants.primaryBlack,
-                                      ),
-                                ),
-                              ],
+                children: List.generate(
+                  order.cartItems != null && order.cartItems!.length > 4
+                      ? 5
+                      : order.cartItems?.length ?? 0,
+                  (index) {
+                    if (index == 4) {
+                      return Text(
+                        '+ ${order.cartItems!.length - 4} more',
+                        style:
+                            const TextStyle(color: ColorConstants.primaryColor),
+                      );
+                    }
+                    var e = order.cartItems![index];
+
+                    return Text.rich(
+                      TextSpan(
+                        text: '${e.quantity} x ',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: ColorConstants.hintColor,
                             ),
+                        children: [
+                          TextSpan(
+                            text:
+                                '${e.product.name} [${e.product.getFormattedQuantity()}]',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: ColorConstants.primaryBlack,
+                                ),
                           ),
-                        )
-                        .toList() ??
-                    [],
+                        ],
+                      ),
+                    );
+                  },
+                ).toList(),
               ),
             ),
             DottedLine(

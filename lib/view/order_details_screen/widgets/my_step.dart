@@ -29,7 +29,7 @@ class MyStep extends StatelessWidget {
           children: [
             Container(
               margin:
-                  const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 7),
+                  const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 5),
               width: 10,
               height: 10,
               decoration: BoxDecoration(
@@ -58,15 +58,15 @@ class MyStep extends StatelessWidget {
             text: title,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: isCompleted ? null : ColorConstants.hintColor,
+                  height: 1.3,
                 ),
             children: [
-              if (subtitle != null)
-                TextSpan(
-                  text: '\n$subtitle',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: ColorConstants.hintColor,
-                      ),
-                ),
+              TextSpan(
+                text: subtitle != null ? '\n$subtitle' : '\n---',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: ColorConstants.hintColor,
+                    ),
+              ),
             ],
           ),
         ),

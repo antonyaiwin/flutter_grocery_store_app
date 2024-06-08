@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:icons_plus/icons_plus.dart';
 
-import '../../../controller/cart_controller.dart';
-
 class BillDetailsCard extends StatelessWidget {
   const BillDetailsCard({
     super.key,
-    required this.cart,
+    required this.totalItems,
+    required this.subtotal,
+    required this.deliveryCharge,
   });
-  final CartController cart;
+  final int? totalItems;
+  final double? subtotal;
+  final double? deliveryCharge;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,8 +33,8 @@ class BillDetailsCard extends StatelessWidget {
           const SizedBox(height: 10),
           BillDetailsAmountRow(
             icon: Iconsax.note_1_bold,
-            title: 'Subtotal (${cart.totalCartCount} items)',
-            subtitle: '₹${cart.totalCartPrice.toStringAsFixed(2)}',
+            title: 'Subtotal (${totalItems} items)',
+            subtitle: '₹${subtotal?.toStringAsFixed(2)}',
           ),
           const SizedBox(height: 15),
           const BillDetailsAmountRow(
@@ -54,7 +56,7 @@ class BillDetailsCard extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                '₹${(cart.totalCartPrice + 20).toStringAsFixed(2)}',
+                '₹${((subtotal ?? 0) + (deliveryCharge ?? 0)).toStringAsFixed(2)}',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
