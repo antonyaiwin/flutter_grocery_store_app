@@ -41,57 +41,55 @@ class CartPage extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Consumer<CartController>(
-                    builder: (context, cart, child) {
-                      log('cart rebuild');
-                      if (cart.totalCartCount == 0) {
-                        return Column(
-                          children: [
-                            Image.asset(ImageConstants.emptyCart),
-                            Text(
-                              'Your cart is empty!',
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                          ],
-                        );
-                      }
-                      return Column(
+              child: Consumer<CartController>(
+                builder: (context, cart, child) {
+                  log('cart rebuild');
+                  if (cart.totalCartCount == 0) {
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height -
+                          4 * kToolbarHeight,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) => ProductListCard(
-                              item: cart.cartItemList[index].product,
-                              onDelete: () {
-                                context
-                                    .read<CartController>()
-                                    .deleteItemFromCart(
-                                        cart.cartItemList[index].product);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Item removed from cart'),
-                                  ),
-                                );
-                              },
-                            ),
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(height: 10),
-                            itemCount: cart.cartItemList.length,
-                          ),
-                          const SizedBox(height: 25),
-                          BillDetailsCard(
-                            totalItems: cart.totalCartCount,
-                            subtotal: cart.totalCartPrice,
-                            deliveryCharge: 20.0,
+                          Image.asset(ImageConstants.emptyCart),
+                          Text(
+                            'Your cart is empty!',
+                            style: Theme.of(context).textTheme.headlineMedium,
                           ),
                         ],
-                      );
-                    },
-                  ),
-                ],
+                      ),
+                    );
+                  }
+                  return Column(
+                    children: [
+                      ListView.separated(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) => ProductListCard(
+                          item: cart.cartItemList[index].product,
+                          onDelete: () {
+                            context.read<CartController>().deleteItemFromCart(
+                                cart.cartItemList[index].product);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Item removed from cart'),
+                              ),
+                            );
+                          },
+                        ),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 10),
+                        itemCount: cart.cartItemList.length,
+                      ),
+                      const SizedBox(height: 25),
+                      BillDetailsCard(
+                        totalItems: cart.totalCartCount,
+                        subtotal: cart.totalCartPrice,
+                        deliveryCharge: 20.0,
+                      ),
+                    ],
+                  );
+                },
               ),
             ),
           ),
