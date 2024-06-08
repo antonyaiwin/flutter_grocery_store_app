@@ -45,6 +45,16 @@ class FireStoreController extends ChangeNotifier {
         );
   }
 
+  CollectionReference<ProductModel> get productsCollection {
+    return db.collection(_productsCollectionName).withConverter(
+          fromFirestore: (snapshot, options) =>
+              ProductModel.fromMap(snapshot.data()!).copyWith(
+            collectionDocumentId: snapshot.id,
+          ),
+          toFirestore: (value, options) => value.toMap(),
+        );
+  }
+
   String? getLastCategoryIndex() {
     return categoryList.isEmpty
         ? '0'

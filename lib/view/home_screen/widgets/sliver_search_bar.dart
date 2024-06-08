@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:provider/provider.dart';
 
+import '../../../controller/screens/search_screen_controller.dart';
 import '../../../core/constants/color_constants.dart';
 import '../../search_screen/search_screen.dart';
 
@@ -37,7 +39,13 @@ class SliverSearchBar extends StatelessWidget {
                   onTap: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const SearchScreen(),
+                      builder: (context) => ChangeNotifierProvider(
+                        create: (BuildContext context) =>
+                            SearchScreenController(
+                          context: context,
+                        ),
+                        child: const SearchScreen(),
+                      ),
                     ),
                   ),
                   child: Row(
