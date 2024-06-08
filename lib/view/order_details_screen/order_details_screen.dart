@@ -12,12 +12,14 @@ import '../../utils/global_widgets/my_network_image.dart';
 import 'widgets/my_stepper.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
-  const OrderDetailsScreen({super.key});
+  // ignore: prefer_const_constructors_in_immutables
+  OrderDetailsScreen({super.key});
+  late final OrderDetailsScreenController provider;
+  OrderModel get order => provider.order;
 
   @override
   Widget build(BuildContext context) {
-    var provider = context.read<OrderDetailsScreenController>();
-    OrderModel order = provider.order;
+    provider = context.read<OrderDetailsScreenController>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Summary'),
@@ -48,10 +50,14 @@ class OrderDetailsScreen extends StatelessWidget {
                               color: ColorConstants.hintColor,
                             ),
                           ),
-                          child: MyNetworkImage(
-                              imageUrl: order.cartItems?.first.product.imageUrl
-                                      ?.first ??
-                                  ''),
+                          child: Consumer<OrderDetailsScreenController>(
+                            builder:
+                                (BuildContext context, value, Widget? child) =>
+                                    MyNetworkImage(
+                                        imageUrl: order.cartItems?.first.product
+                                                .imageUrl?.first ??
+                                            ''),
+                          ),
                         ),
                         const SizedBox(width: 10),
                         Column(
@@ -61,17 +67,21 @@ class OrderDetailsScreen extends StatelessWidget {
                               'Order',
                               style: Theme.of(context).textTheme.titleMedium,
                             ),
-                            Text.rich(
-                              TextSpan(
-                                text: 'Total amount - ',
-                                children: [
-                                  TextSpan(
-                                    text:
-                                        '₹${order.finalPrice?.toStringAsFixed(2) ?? ''}',
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
+                            Consumer<OrderDetailsScreenController>(
+                              builder: (BuildContext context, value,
+                                      Widget? child) =>
+                                  Text.rich(
+                                TextSpan(
+                                  text: 'Total amount - ',
+                                  children: [
+                                    TextSpan(
+                                      text:
+                                          '₹${order.finalPrice?.toStringAsFixed(2) ?? ''}',
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -89,37 +99,42 @@ class OrderDetailsScreen extends StatelessWidget {
                         MyDivider(),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: order.cartItems
-                                    ?.map(
-                                      (e) => Text.rich(
-                                        TextSpan(
-                                          text: '${e.quantity} x ',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyMedium
-                                              ?.copyWith(
-                                                color: ColorConstants.hintColor,
+                          child: Consumer<OrderDetailsScreenController>(
+                            builder:
+                                (BuildContext context, value, Widget? child) =>
+                                    Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: order.cartItems
+                                      ?.map(
+                                        (e) => Text.rich(
+                                          TextSpan(
+                                            text: '${e.quantity} x ',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.copyWith(
+                                                  color:
+                                                      ColorConstants.hintColor,
+                                                ),
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    '${e.product.name} [${e.product.getFormattedQuantity()}]',
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                      color: ColorConstants
+                                                          .primaryBlack,
+                                                    ),
                                               ),
-                                          children: [
-                                            TextSpan(
-                                              text:
-                                                  '${e.product.name} [${e.product.getFormattedQuantity()}]',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyMedium
-                                                  ?.copyWith(
-                                                    color: ColorConstants
-                                                        .primaryBlack,
-                                                  ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                    .toList() ??
-                                [],
+                                      )
+                                      .toList() ??
+                                  [],
+                            ),
                           ),
                         ),
                       ],
@@ -143,13 +158,16 @@ class OrderDetailsScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  BillDetailsCard(
-                    totalItems: order.cartItems?.fold<int>(
-                        0,
-                        (previousValue, element) =>
-                            previousValue += element.quantity),
-                    subtotal: order.totalPrice,
-                    deliveryCharge: 20.0,
+                  Consumer<OrderDetailsScreenController>(
+                    builder: (BuildContext context, value, Widget? child) =>
+                        BillDetailsCard(
+                      totalItems: order.cartItems?.fold<int>(
+                          0,
+                          (previousValue, element) =>
+                              previousValue += element.quantity),
+                      subtotal: order.totalPrice,
+                      deliveryCharge: 20.0,
+                    ),
                   ),
                 ],
               ),

@@ -30,7 +30,7 @@ class OrderItemCard extends StatelessWidget {
             builder: (context) => ChangeNotifierProvider(
               create: (context) =>
                   OrderDetailsScreenController(context: context, order: order),
-              child: const OrderDetailsScreen(),
+              child: OrderDetailsScreen(),
             ),
           ),
         );

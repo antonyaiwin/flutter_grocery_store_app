@@ -1,10 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/controller/screens/order_details_screen_controller/order_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:flutter_grocery_store/view/order_details_screen/order_details_screen.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
+
+import '../../model/order_model.dart';
 
 class OrderSuccessScreen extends StatelessWidget {
-  const OrderSuccessScreen({super.key});
-
+  const OrderSuccessScreen({super.key, required this.order});
+  final DocumentReference<OrderModel> order;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,14 +51,31 @@ class OrderSuccessScreen extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
-              child: const Center(child: Text('Track Order')),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider(
+                      create: (context) => OrderDetailsScreenController(
+                        context: context,
+                        order: OrderModel(collectionDocumentId: order.id),
+                      ),
+                      child: OrderDetailsScreen(),
+                    ),
+                  ),
+                );
+              },
+              child: const Center(
+                child: Text('Track Order'),
+              ),
             ),
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context, true);
               },
-              child: const Center(child: Text('Back to Home')),
+              child: const Center(
+                child: Text('Back to Home'),
+              ),
             ),
           ],
         ),

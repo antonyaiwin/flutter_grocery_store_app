@@ -248,10 +248,10 @@ class FireStoreController extends ChangeNotifier {
   }
 
   // Orders CRUD Operation
-  Future<DocumentReference<Map<String, dynamic>>> addOrder(
-      OrderModel order) async {
-    var ref = await db.collection(_ordersCollectionName).add(order.toMap());
+  Future<DocumentReference<OrderModel>> addOrder(OrderModel order) async {
+    var ref = await ordersCollection.add(order);
     log('order added completed');
+
     return ref;
   }
 

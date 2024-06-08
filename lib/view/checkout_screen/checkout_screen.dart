@@ -124,13 +124,14 @@ class CheckoutScreen extends StatelessWidget {
                   onPressed: !cart.canCheckout() || cart.creatingOrder
                       ? null
                       : () async {
-                          if (await cart.placeOrder(context) &&
-                              context.mounted) {
+                          var order = await cart.placeOrder(context);
+                          if (order != null && context.mounted) {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    const OrderSuccessScreen(),
+                                builder: (context) => OrderSuccessScreen(
+                                  order: order,
+                                ),
                               ),
                             );
                           }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/model/order_model.dart';
@@ -129,8 +130,8 @@ class CartController extends ChangeNotifier {
     cartItemList.clear();
   }
 
-  Future<bool> placeOrder(BuildContext context) async {
-    bool orderSuccess = false;
+  Future<DocumentReference<OrderModel>?> placeOrder(
+      BuildContext context) async {
     creatingOrder = true;
     notifyListeners();
     var firestore = context.read<FireStoreController>();
@@ -145,19 +146,18 @@ class CartController extends ChangeNotifier {
       finalPrice: finalCartPrice,
       itemCount: totalCartCount,
     );
+    DocumentReference<OrderModel>? doc;
     try {
-      await firestore.addOrder(order);
+      doc = await firestore.addOrder(order);
       clearCart();
-      orderSuccess = true;
     } on Exception catch (e) {
       log(e.toString());
       if (context.mounted) {
         showErrorSnackBar(context: context, content: 'Something went wrong!');
       }
-      orderSuccess = false;
     }
     creatingOrder = false;
     notifyListeners();
-    return orderSuccess;
+    return doc;
   }
 }
