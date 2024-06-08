@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/core/constants/image_constants.dart';
 import 'package:flutter_grocery_store/view/checkout_screen/checkout_screen.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/home_screen_back_button.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/product_list_card.dart';
@@ -47,8 +48,14 @@ class CartPage extends StatelessWidget {
                     builder: (context, cart, child) {
                       log('cart rebuild');
                       if (cart.totalCartCount == 0) {
-                        return const Center(
-                          child: Text('Your cart is empty!'),
+                        return Column(
+                          children: [
+                            Image.asset(ImageConstants.emptyCart),
+                            Text(
+                              'Your cart is empty!',
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                          ],
                         );
                       }
                       return Column(
@@ -95,27 +102,27 @@ class CartPage extends StatelessWidget {
             ),
             child: Consumer<CartController>(
               builder: (BuildContext context, value, Widget? child) =>
-                  ElevatedButton(
-                onPressed: value.cartItemList.isEmpty
-                    ? null
-                    : () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CheckoutScreen(),
+                  value.cartItemList.isEmpty
+                      ? const SizedBox()
+                      : ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CheckoutScreen(),
+                              ),
+                            );
+                          },
+                          child: Center(
+                            child: Text(
+                              'Continue',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleMedium
+                                  ?.copyWith(color: Colors.white),
+                            ),
                           ),
-                        );
-                      },
-                child: Center(
-                  child: Text(
-                    'Continue',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium
-                        ?.copyWith(color: Colors.white),
-                  ),
-                ),
-              ),
+                        ),
             ),
           ),
         ],
