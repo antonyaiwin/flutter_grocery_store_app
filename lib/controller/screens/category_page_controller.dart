@@ -22,8 +22,8 @@ class CategoryPageController extends ChangeNotifier {
     if (categoryList.isEmpty) {
       return;
     }
-    selectedCategoryId = categoryList[0].collectionDocumentId ?? '';
-    changeCategory(selectedCategoryId);
+    var selectedCategory = categoryList[0].collectionDocumentId ?? '';
+    changeCategory(selectedCategory);
   }
 
   void changeCategory(String categoryId) {
@@ -37,11 +37,14 @@ class CategoryPageController extends ChangeNotifier {
     filteredProducts = productsList
         .where((element) => element.categoryId == selectedCategoryId)
         .toList();
-    productsScrollController.animateTo(
-      0,
-      duration: Durations.medium4,
-      curve: Curves.easeInOut,
-    );
+    if (productsScrollController.hasClients) {
+      productsScrollController.animateTo(
+        0,
+        duration: Durations.medium4,
+        curve: Curves.easeInOut,
+      );
+    }
+
     isLoading = false;
     notifyListeners();
   }
