@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/product_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/string_constants.dart';
+import 'package:flutter_grocery_store/utils/global_widgets/floating_cart_widget.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/product_card.dart';
 import 'package:provider/provider.dart';
 
@@ -401,6 +402,7 @@ class ProductDetailsScreen extends StatelessWidget {
           );
         },
       ),
+      bottomNavigationBar: const FloatingCartWidget.basic(),
     );
   }
 }

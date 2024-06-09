@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
             const SizedBox(width: 15),
           ],
         ),
-        const SliverSearchBar(),
+        SliverSearchBar(),
         SliverLabelText(
           label: 'Shop by category',
           onSeeAllPressed: () {

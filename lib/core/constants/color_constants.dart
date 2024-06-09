@@ -25,6 +25,7 @@ class ColorConstants {
   // textField colors
   static const Color textFieldFill = Color(0xffFAFAFA);
   static const Color searchFieldFill = Color(0xff767680);
+  static const Color searchFieldFill2 = Color(0xffF2F3F2);
   static const Color black3c = Color(0xff3C3C43);
 
   static const Color black12 = Color(0xff121212);

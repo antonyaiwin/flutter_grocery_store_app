@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/search_screen_controller.dart';
+import 'package:flutter_grocery_store/utils/global_widgets/floating_cart_widget.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/product_list_card.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +37,11 @@ class SearchScreen extends StatelessWidget {
             itemCount: value.productList.length,
           );
         },
+      ),
+      bottomNavigationBar: Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: const FloatingCartWidget.basic(),
       ),
     );
   }

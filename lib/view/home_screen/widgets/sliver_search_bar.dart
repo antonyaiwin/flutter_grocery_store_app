@@ -7,9 +7,10 @@ import '../../../core/constants/color_constants.dart';
 import '../../search_screen/search_screen.dart';
 
 class SliverSearchBar extends StatelessWidget {
-  const SliverSearchBar({
+  SliverSearchBar({
     super.key,
   });
+  final BorderRadius borderRadius = BorderRadius.circular(15);
 
   @override
   Widget build(BuildContext context) {
@@ -24,28 +25,28 @@ class SliverSearchBar extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: ColorConstants.primaryWhite,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(
-                    color: ColorConstants.hintColor.withOpacity(0.15),
-                  ),
-                ),
-                padding: const EdgeInsets.only(),
-                child: InkWell(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ChangeNotifierProvider(
-                        create: (BuildContext context) =>
-                            SearchScreenController(
-                          context: context,
-                        ),
-                        child: const SearchScreen(),
+              child: InkWell(
+                borderRadius: borderRadius,
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider(
+                      create: (BuildContext context) => SearchScreenController(
+                        context: context,
                       ),
+                      child: const SearchScreen(),
                     ),
                   ),
+                ),
+                child: Ink(
+                  decoration: BoxDecoration(
+                    color: ColorConstants.searchFieldFill2,
+                    borderRadius: borderRadius,
+                    border: Border.all(
+                      color: ColorConstants.hintColor.withOpacity(0.15),
+                    ),
+                  ),
+                  padding: const EdgeInsets.only(),
                   child: Row(
                     children: [
                       const Padding(
@@ -70,17 +71,18 @@ class SliverSearchBar extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Container(
-              width: 50,
-              decoration: BoxDecoration(
-                color: ColorConstants.primaryWhite,
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(
-                  color: ColorConstants.hintColor.withOpacity(0.15),
+            InkWell(
+              borderRadius: borderRadius,
+              onTap: () {},
+              child: Ink(
+                width: 50,
+                decoration: BoxDecoration(
+                  color: ColorConstants.searchFieldFill2,
+                  borderRadius: borderRadius,
+                  border: Border.all(
+                    color: ColorConstants.hintColor.withOpacity(0.15),
+                  ),
                 ),
-              ),
-              child: InkWell(
-                onTap: () {},
                 child: Ink(
                   padding: const EdgeInsets.all(12),
                   child: const Icon(Iconsax.scanning_bold),

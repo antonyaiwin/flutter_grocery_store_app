@@ -13,13 +13,17 @@ import '../../../controller/cart_controller.dart';
 import '../widgets/bill_details_card.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage({super.key});
+  const CartPage({
+    super.key,
+    this.popOnBack = false,
+  });
+  final bool popOnBack;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const HomeScreenBackButton(),
+        leading: popOnBack ? null : const HomeScreenBackButton(),
         title: const Text('My Cart'),
         actions: [
           Consumer<CartController>(
