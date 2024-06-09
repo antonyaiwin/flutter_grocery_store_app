@@ -292,7 +292,8 @@ class FireStoreController extends ChangeNotifier {
 
   // Orders CRUD Operation
   Future<DocumentReference<OrderModel>> addOrder(OrderModel order) async {
-    var ref = await ordersCollection.add(order);
+    var ref =
+        await ordersCollection.add(order).timeout(const Duration(seconds: 30));
     log('order added completed');
 
     return ref;
