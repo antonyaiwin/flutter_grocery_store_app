@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 
 class ElevatedCard extends StatelessWidget {
   const ElevatedCard({
@@ -32,6 +33,10 @@ class ElevatedCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: borderRadius ?? BorderRadius.circular(15),
+          border: Border.all(
+            color: ColorConstants.hintColor.withOpacity(0.5),
+            width: 0.5,
+          ),
         ),
         child: child,
       ),

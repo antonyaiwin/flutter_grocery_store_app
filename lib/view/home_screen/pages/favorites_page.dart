@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
-import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/home_screen_back_button.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/product_list_card.dart';
 import 'package:provider/provider.dart';
@@ -12,8 +11,6 @@ class FavoritesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shadowColor: ColorConstants.primaryBlack,
-        surfaceTintColor: Colors.transparent,
         leading: const HomeScreenBackButton(),
         title: const Text('Favourite Items'),
       ),

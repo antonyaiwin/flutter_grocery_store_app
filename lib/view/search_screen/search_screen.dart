@@ -1,8 +1,5 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/search_screen_controller.dart';
-import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/product_list_card.dart';
 import 'package:provider/provider.dart';
 
@@ -17,11 +14,7 @@ class SearchScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: ColorConstants.primaryWhite,
-        elevation: 1,
-        surfaceTintColor: Colors.transparent,
-        shadowColor: ColorConstants.primaryBlack,
-        title: MySearchBar(),
+        title: const MySearchBar(),
       ),
       body: Consumer<SearchScreenController>(
         builder: (context, value, child) {
@@ -33,10 +26,10 @@ class SearchScreen extends StatelessWidget {
               ),
             );
           } else if (value.productList.isEmpty && value.text.isEmpty) {
-            return SearchPlaceholder();
+            return const SearchPlaceholder();
           }
           return ListView.separated(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             itemBuilder: (context, index) =>
                 ProductListCard(item: value.productList[index]),
             separatorBuilder: (context, index) => const SizedBox(height: 10),

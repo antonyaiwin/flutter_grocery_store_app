@@ -15,7 +15,8 @@ class ColorConstants {
 
   // static const Color scaffoldBackgroundColor =
   //     Color.fromARGB(255, 243, 237, 255);
-  static const Color scaffoldBackgroundColor =
+  static const Color scaffoldBackgroundColor = primaryWhite;
+  static const Color scaffoldBackgroundColor2 =
       Color.fromARGB(255, 245, 246, 251);
 
   static const Color black26 = Color(0xff262626);

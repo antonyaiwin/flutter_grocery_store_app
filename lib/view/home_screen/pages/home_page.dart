@@ -21,6 +21,8 @@ class HomePage extends StatelessWidget {
         SliverAppBar(
           floating: true,
           surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          shadowColor: Colors.transparent,
           automaticallyImplyLeading: false,
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

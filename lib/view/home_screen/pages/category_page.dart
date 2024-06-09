@@ -101,6 +101,7 @@ class CategoryPage extends StatelessWidget {
                       AppBar(
                         title: Text(value.getCurrentCategoryName()),
                         surfaceTintColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
                       ),
                       if (value.isLoading)
                         const Center(

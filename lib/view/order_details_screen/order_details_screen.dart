@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/order_details_screen_controller/order_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
@@ -23,10 +21,6 @@ class OrderDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Summary'),
-        backgroundColor: ColorConstants.primaryWhite,
-        elevation: 1,
-        surfaceTintColor: Colors.transparent,
-        shadowColor: ColorConstants.primaryBlack,
       ),
       body: Column(
         children: [
@@ -37,66 +31,19 @@ class OrderDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ElevatedCard(
-                    padding: EdgeInsets.all(10),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: ColorConstants.primaryWhite,
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                              color: ColorConstants.hintColor,
-                            ),
-                          ),
-                          child: Consumer<OrderDetailsScreenController>(
-                            builder:
-                                (BuildContext context, value, Widget? child) =>
-                                    MyNetworkImage(
-                                        imageUrl: order.cartItems?.first.product
-                                                .imageUrl?.first ??
-                                            ''),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Order',
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                            Consumer<OrderDetailsScreenController>(
-                              builder: (BuildContext context, value,
-                                      Widget? child) =>
-                                  Text.rich(
-                                TextSpan(
-                                  text: 'Total amount - ',
-                                  children: [
-                                    TextSpan(
-                                      text:
-                                          '₹${order.finalPrice?.toStringAsFixed(2) ?? ''}',
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                    padding: const EdgeInsets.all(10),
+                    child: Consumer<OrderDetailsScreenController>(
+                        builder: (BuildContext context, value, Widget? child) =>
+                            OrderHeader(order: order)),
                   ),
                   const SizedBox(height: 10),
                   ElevatedCard(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        MySubtitle('Items'),
-                        MyDivider(),
+                        const MySubtitle('Items'),
+                        const MyDivider(),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Consumer<OrderDetailsScreenController>(
@@ -142,12 +89,12 @@ class OrderDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   ElevatedCard(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        MySubtitle('Order Status'),
-                        MyDivider(),
+                        const MySubtitle('Order Status'),
+                        const MyDivider(),
                         const SizedBox(height: 5),
                         Consumer<OrderDetailsScreenController>(
                           builder:
@@ -179,14 +126,14 @@ class OrderDetailsScreen extends StatelessWidget {
               Expanded(
                 child: OutlinedButton(
                   onPressed: () {},
-                  child: Text('Cancel Order'),
+                  child: const Text('Cancel Order'),
                 ),
               ),
               const SizedBox(width: 10),
               Expanded(
                 child: ElevatedButton(
                   onPressed: () {},
-                  child: Text('Call Shop'),
+                  child: const Text('Call Shop'),
                 ),
               ),
               const SizedBox(width: 10),
@@ -194,6 +141,59 @@ class OrderDetailsScreen extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class OrderHeader extends StatelessWidget {
+  const OrderHeader({
+    super.key,
+    required this.order,
+  });
+
+  final OrderModel order;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          height: 50,
+          width: 50,
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            color: ColorConstants.primaryWhite,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(
+              color: ColorConstants.hintColor,
+              strokeAlign: BorderSide.strokeAlignOutside,
+            ),
+          ),
+          child: MyNetworkImage(
+              imageUrl: order.cartItems?.first.product.imageUrl?.first ?? ''),
+        ),
+        const SizedBox(width: 10),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Order',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            Text.rich(
+              TextSpan(
+                text: 'Total amount - ',
+                children: [
+                  TextSpan(
+                    text: '₹${order.finalPrice?.toStringAsFixed(2) ?? ''}',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -222,7 +222,7 @@ class MyDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Divider(
+    return const Divider(
       color: ColorConstants.hintColor,
       thickness: 0.2,
     );

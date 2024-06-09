@@ -18,9 +18,6 @@ class AddAddressScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('${provider.isEditMode ? 'Edit' : 'Add'} Address'),
-        elevation: 1.5,
-        surfaceTintColor: Colors.transparent,
-        shadowColor: ColorConstants.primaryBlack,
       ),
       body: Column(
         children: [

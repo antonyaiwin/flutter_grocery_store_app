@@ -60,6 +60,9 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: ColorConstants.scaffoldBackgroundColor,
           appBarTheme: const AppBarTheme(
             backgroundColor: ColorConstants.scaffoldBackgroundColor,
+            elevation: 1,
+            shadowColor: ColorConstants.primaryBlack,
+            surfaceTintColor: Colors.transparent,
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ButtonStyle(

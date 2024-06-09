@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/orders_screen_controller.dart';
 import 'package:provider/provider.dart';
 
-import '../../core/constants/color_constants.dart';
 import 'widgets/order_item_card.dart';
 
 class OrdersScreen extends StatelessWidget {
@@ -15,10 +14,6 @@ class OrdersScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Orders'),
-        backgroundColor: ColorConstants.primaryWhite,
-        elevation: 1,
-        surfaceTintColor: Colors.transparent,
-        shadowColor: ColorConstants.primaryBlack,
       ),
       body: Consumer<OrdersScreenController>(
         builder: (context, ordersProvider, child) {

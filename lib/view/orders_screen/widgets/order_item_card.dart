@@ -58,48 +58,7 @@ class OrderItemCard extends StatelessWidget {
                   ),
                 ),
               ),
-              child: Row(
-                children: [
-                  Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: ColorConstants.primaryWhite,
-                      borderRadius: BorderRadius.circular(5),
-                      border: Border.all(
-                        color: ColorConstants.hintColor,
-                      ),
-                    ),
-                    child: MyNetworkImage(
-                        imageUrl:
-                            order.cartItems?.first.product.imageUrl?.first ??
-                                ''),
-                  ),
-                  const SizedBox(width: 10),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Order',
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      Text.rich(
-                        TextSpan(
-                          text: 'Total amount - ',
-                          children: [
-                            TextSpan(
-                              text:
-                                  '₹${order.finalPrice?.toStringAsFixed(2) ?? ''}',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+              child: OrderHeader(order: order),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),

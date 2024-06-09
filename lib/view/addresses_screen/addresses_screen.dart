@@ -9,12 +9,9 @@ class AddressesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ColorConstants.scaffoldBackgroundColor2,
       appBar: AppBar(
         title: const Text('My addresses'),
-        backgroundColor: ColorConstants.primaryWhite,
-        elevation: 1,
-        surfaceTintColor: Colors.transparent,
-        shadowColor: ColorConstants.primaryBlack,
       ),
       body: const AddressScreenBody(),
     );

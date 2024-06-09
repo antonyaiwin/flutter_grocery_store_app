@@ -17,10 +17,8 @@ class SliverSearchBar extends StatelessWidget {
       clipBehavior: Clip.none,
       pinned: true,
       primary: true,
-      surfaceTintColor: Colors.transparent,
       titleSpacing: 0,
       collapsedHeight: kToolbarHeight + 5,
-      shadowColor: ColorConstants.primaryBlack,
       title: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20).copyWith(top: 0),
         child: Row(
