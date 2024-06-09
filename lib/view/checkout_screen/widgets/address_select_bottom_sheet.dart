@@ -26,10 +26,11 @@ class AddressSelectBottomSheetContent extends StatelessWidget {
         ),
         const Divider(),
         Expanded(
-            child: AddressScreenBody(
-          isAddressScreen: false,
-          scrollController: scrollController,
-        )),
+          child: AddressScreenBody(
+            isAddressScreen: false,
+            scrollController: scrollController,
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(8.0).copyWith(top: 0),
           child: ElevatedButton(

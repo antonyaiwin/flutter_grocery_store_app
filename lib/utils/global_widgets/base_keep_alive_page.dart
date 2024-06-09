@@ -24,6 +24,5 @@ class _BaseKeepAlivePageState extends State<BaseKeepAlivePage>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

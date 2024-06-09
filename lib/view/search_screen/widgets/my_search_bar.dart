@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/search_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
@@ -47,16 +45,16 @@ class MySearchBar extends StatelessWidget {
                             Icons.close,
                             size: 15,
                           ),
-                          padding: EdgeInsets.all(2),
+                          padding: const EdgeInsets.all(2),
                           style: ButtonStyle(
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             backgroundColor: MaterialStatePropertyAll(
                               ColorConstants.hintColor.withOpacity(0.4),
                             ),
-                            foregroundColor: MaterialStatePropertyAll(
+                            foregroundColor: const MaterialStatePropertyAll(
                                 ColorConstants.primaryWhite),
                           ),
-                          constraints: BoxConstraints(),
+                          constraints: const BoxConstraints(),
                         ),
             ),
             const SizedBox(width: 5),

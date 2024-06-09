@@ -117,7 +117,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
           bottomSheetTheme: const BottomSheetThemeData(
-              backgroundColor: ColorConstants.scaffoldBackgroundColor),
+              backgroundColor: ColorConstants.scaffoldBackgroundColor2),
         ),
         home: const SplashScreen(),
       ),

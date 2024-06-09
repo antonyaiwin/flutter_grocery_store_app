@@ -1,6 +1,7 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:flutter_grocery_store/utils/global_widgets/elevated_card.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class BillDetailsCard extends StatelessWidget {
@@ -15,12 +16,8 @@ class BillDetailsCard extends StatelessWidget {
   final double? deliveryCharge;
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ElevatedCard(
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadiusDirectional.circular(15),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -33,7 +30,7 @@ class BillDetailsCard extends StatelessWidget {
           const SizedBox(height: 10),
           BillDetailsAmountRow(
             icon: Iconsax.note_1_bold,
-            title: 'Subtotal (${totalItems} items)',
+            title: 'Subtotal ($totalItems items)',
             subtitle: '₹${subtotal?.toStringAsFixed(2)}',
           ),
           const SizedBox(height: 15),

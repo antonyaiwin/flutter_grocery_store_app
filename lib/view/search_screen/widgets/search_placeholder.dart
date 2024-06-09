@@ -1,7 +1,4 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_grocery_store/controller/screens/category_view_screen_controller.dart';
 import 'package:flutter_grocery_store/controller/screens/search_screen_controller.dart';
 import 'package:flutter_grocery_store/view/category_view_screen/category_view_screen.dart';
@@ -18,7 +15,7 @@ class SearchPlaceholder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       child: Column(
         children: [
           RecentSearchWidget(),
@@ -42,7 +39,7 @@ class ProductCategoryList extends StatelessWidget {
               SizedBox(
         height: 500,
         child: ListView.separated(
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             var item = value.productCategoryList[index];
@@ -64,7 +61,7 @@ class ProductCategoryList extends StatelessWidget {
                               category:
                                   value.getCategory(item.first.categoryId)!,
                             ),
-                            child: CategoryViewScreen(),
+                            child: const CategoryViewScreen(),
                           ),
                         ),
                       );
@@ -72,7 +69,7 @@ class ProductCategoryList extends StatelessWidget {
                   ),
                   ListView.separated(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, i) => ProductListCard(item: item[i]),
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 10),
