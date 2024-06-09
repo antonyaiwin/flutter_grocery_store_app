@@ -6,6 +6,9 @@ import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/product_list_card.dart';
 import 'package:provider/provider.dart';
 
+import 'widgets/my_search_bar.dart';
+import 'widgets/search_placeholder.dart';
+
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
@@ -18,19 +21,19 @@ class SearchScreen extends StatelessWidget {
         elevation: 1,
         surfaceTintColor: Colors.transparent,
         shadowColor: ColorConstants.primaryBlack,
-        title: SearchBar(),
+        title: MySearchBar(),
       ),
       body: Consumer<SearchScreenController>(
         builder: (context, value, child) {
-          if (value.productList.isEmpty) {
+          if (value.productList.isEmpty && value.text.isNotEmpty) {
             return Center(
               child: Text(
-                value.text.isEmpty
-                    ? 'Search for a product'
-                    : 'No items found for search term \'${value.text}\'',
+                'No items found for search term \'${value.text}\'',
                 textAlign: TextAlign.center,
               ),
             );
+          } else if (value.productList.isEmpty && value.text.isEmpty) {
+            return SearchPlaceholder();
           }
           return ListView.separated(
             padding: EdgeInsets.all(10),
@@ -41,62 +44,6 @@ class SearchScreen extends StatelessWidget {
           );
         },
       ),
-    );
-  }
-}
-
-class SearchBar extends StatelessWidget {
-  const SearchBar({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            autofocus: true,
-            controller: context.read<SearchScreenController>().searchController,
-            decoration: InputDecoration(
-              hintText: 'Search for rice, dal, pepsi and more',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: ColorConstants.hintColor.withOpacity(0.25),
-                ),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              prefixIcon: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                  size: 24,
-                ),
-              ),
-              suffixIcon: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    height: 35,
-                    child: VerticalDivider(
-                      width: 1,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.mic,
-                      size: 24,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

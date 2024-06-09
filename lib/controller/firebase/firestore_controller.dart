@@ -9,12 +9,16 @@ import 'package:flutter_grocery_store/model/address_model.dart';
 import 'package:flutter_grocery_store/model/category_model.dart';
 import 'package:flutter_grocery_store/model/order_model.dart';
 import 'package:flutter_grocery_store/model/product_model.dart';
+import 'package:flutter_grocery_store/model/user_data_model.dart';
+
+import '../../model/recent_search_model.dart';
 
 class FireStoreController extends ChangeNotifier {
   static const String _categoryCollectionName = 'categories';
   static const String _productsCollectionName = 'grocery-shop/data/products';
   static const String _userDataCollectionName = 'users';
   static const String _favouritesCollectionName = 'favourites';
+  static const String _recentSearchCollectionName = 'recent_searches';
   static const String _addressesCollectionName = 'addresses';
   static const String _ordersCollectionName = 'orders';
 
@@ -25,7 +29,9 @@ class FireStoreController extends ChangeNotifier {
   List<ProductModel> productList = [];
   List<String> favouritesList = [];
   List<AddressModel> addressList = [];
-  String? defaultAddressId;
+  List<QueryDocumentSnapshot<RecentSearchModel>> recentSearchList = [];
+  String? get defaultAddressId => userData?.defaultAddressId;
+  UserDataModel? userData;
 
   FireStoreController() {
     _initUserDataListener();
@@ -33,12 +39,13 @@ class FireStoreController extends ChangeNotifier {
     _initProductsListener();
     _initFavouritesListener();
     _initAddressListener();
+    _initRecentSearchesListener();
   }
 
   CollectionReference<OrderModel> get ordersCollection {
     return db.collection(_ordersCollectionName).withConverter(
           fromFirestore: (snapshot, options) =>
-              OrderModel.fromMap(snapshot.data()!).copyWith(
+              OrderModel.fromMap(snapshot.data() ?? {}).copyWith(
             collectionDocumentId: snapshot.id,
           ),
           toFirestore: (value, options) => value.toMap(),
@@ -48,9 +55,29 @@ class FireStoreController extends ChangeNotifier {
   CollectionReference<ProductModel> get productsCollection {
     return db.collection(_productsCollectionName).withConverter(
           fromFirestore: (snapshot, options) =>
-              ProductModel.fromMap(snapshot.data()!).copyWith(
+              ProductModel.fromMap(snapshot.data() ?? {}).copyWith(
             collectionDocumentId: snapshot.id,
           ),
+          toFirestore: (value, options) => value.toMap(),
+        );
+  }
+
+  CollectionReference<UserDataModel> get userDataCollection {
+    return db.collection(_userDataCollectionName).withConverter(
+          fromFirestore: (snapshot, options) =>
+              UserDataModel.fromMap(snapshot.data() ?? {}),
+          toFirestore: (value, options) => value.toMap(),
+        );
+  }
+
+  CollectionReference<RecentSearchModel> get recentSearchesCollection {
+    return db
+        .collection(_userDataCollectionName)
+        .doc(uid)
+        .collection(_recentSearchCollectionName)
+        .withConverter(
+          fromFirestore: (snapshot, options) =>
+              RecentSearchModel.fromMap(snapshot.data() ?? {}),
           toFirestore: (value, options) => value.toMap(),
         );
   }
@@ -66,9 +93,8 @@ class FireStoreController extends ChangeNotifier {
   }
 
   _initUserDataListener() {
-    db.collection(_userDataCollectionName).doc(uid).snapshots().listen((event) {
-      var data = event.data();
-      defaultAddressId = data?['default_address'];
+    userDataCollection.doc(uid).snapshots().listen((event) {
+      userData = event.data();
       notifyListeners();
     });
   }
@@ -118,6 +144,13 @@ class FireStoreController extends ChangeNotifier {
       addressList = event.docs
           .map((e) => AddressModel.fromQueryDocumentSnapshot(e))
           .toList();
+      notifyListeners();
+    });
+  }
+
+  void _initRecentSearchesListener() {
+    recentSearchesCollection.snapshots().listen((event) {
+      recentSearchList = event.docs;
       notifyListeners();
     });
   }
@@ -330,6 +363,31 @@ class FireStoreController extends ChangeNotifier {
     }
   }
 
+  // Recent Searches User data CRUD operations
+  Future<void> addRecentSearch(String text) async {
+    var recentList =
+        recentSearchList.where((element) => element.data().text == text);
+    if (recentList.isNotEmpty) {
+      return;
+    }
+    await recentSearchesCollection.add(
+      RecentSearchModel(
+        text: text,
+        createdData: DateTime.now(),
+      ),
+    );
+    log('recent search added');
+  }
+
+  Future<void> clearRecentSearch() async {
+    var batch = FirebaseFirestore.instance.batch();
+    for (var item in recentSearchList) {
+      batch.delete(item.reference);
+    }
+    await batch.commit();
+  }
+
+  //Retrieve default address
   Future<AddressModel?> getDefaultAddress() async {
     if (defaultAddressId == null) {
       return null;
