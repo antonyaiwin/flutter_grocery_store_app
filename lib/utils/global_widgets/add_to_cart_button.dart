@@ -3,7 +3,7 @@ import 'package:flutter_grocery_store/controller/cart_controller.dart';
 import 'package:flutter_grocery_store/model/product_model.dart';
 import 'package:provider/provider.dart';
 
-const int _durationInMilliseconds = 350;
+const int _durationInMilliseconds = 450;
 
 class AddToCartButton extends StatelessWidget {
   const AddToCartButton({
@@ -89,18 +89,19 @@ class AddToCartButton extends StatelessWidget {
     return Row(
       mainAxisSize: count != 0 ? MainAxisSize.max : MainAxisSize.min,
       children: [
-        AnimatedOpacity(
+        AnimatedScale(
           duration: const Duration(milliseconds: _durationInMilliseconds),
-          opacity: count == 0 ? 0 : 1,
+          scale: count == 0 ? 0 : 1,
           child: AnimatedContainer(
             width: count == 0 ? 0 : height - 2,
+            height: count == 0 ? 0 : height - 2,
             duration: const Duration(milliseconds: _durationInMilliseconds),
             child: Padding(
               padding: const EdgeInsets.all(1),
               child: ColoredAddButton(
                 onTap: this.onRemoveTap ?? onRemoveTap,
                 icon: Icons.remove,
-                size: height - 4,
+                size: count == 0 ? 0 : height - 4,
               ),
             ),
           ),
@@ -167,9 +168,13 @@ class ColoredAddButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
         ),
         child: Center(
-          child: Icon(
-            icon,
-            color: Colors.white,
+          child: AnimatedScale(
+            duration: const Duration(milliseconds: _durationInMilliseconds),
+            scale: size == 0 ? 0 : 1,
+            child: Icon(
+              icon,
+              color: Colors.white,
+            ),
           ),
         ),
       ),

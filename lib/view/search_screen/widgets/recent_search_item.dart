@@ -22,6 +22,7 @@ class RecentSearchItem extends StatelessWidget {
             .read<SearchScreenController>()
             .setTextAndSearch(item.text ?? '');
       },
+      borderRadius: BorderRadius.circular(8),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
