@@ -30,9 +30,13 @@ class FavoriteButton extends StatelessWidget {
               value.addFavorite(item);
             }
           },
-          child: Icon(
-            favorite ? Iconsax.heart_bold : Iconsax.heart_outline,
-            color: favorite ? ColorConstants.primaryRed : null,
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            child: Icon(
+              key: GlobalKey(),
+              favorite ? Iconsax.heart_bold : Iconsax.heart_outline,
+              color: favorite ? ColorConstants.primaryRed : null,
+            ),
           ),
         );
       },

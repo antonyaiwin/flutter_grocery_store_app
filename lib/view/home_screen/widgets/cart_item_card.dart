@@ -90,21 +90,8 @@ class CartItemCard extends StatelessWidget {
                       ],
                     ),
                     const Spacer(),
-                    Consumer<CartController>(
-                      builder: (context, value, child) {
-                        return AddToCartButton(
-                          count: value.getItemCount(item.id ?? 0),
-                          onTap: () {
-                            value.addItemToCart(item);
-                          },
-                          onAddTap: () {
-                            value.addItemToCart(item);
-                          },
-                          onRemoveTap: () {
-                            value.removeItemFromCart(item);
-                          },
-                        );
-                      },
+                    AddToCartButton(
+                      item: item,
                     ),
                   ],
                 ),

@@ -18,11 +18,14 @@ class HomeBottomNavBar extends StatelessWidget {
       children: [
         Consumer2<HomeScreenController, CartController>(
           builder: (context, home, cart, child) {
-            if (cart.cartItemList.isEmpty || home.selectedPageIndex == 3) {
-              return const SizedBox();
-            }
-            return FloatingCartWidget(
-              cart: cart,
+            return AnimatedContainer(
+              height: home.selectedPageIndex == 3 || cart.cartItemList.isEmpty
+                  ? 0
+                  : kToolbarHeight,
+              duration: const Duration(milliseconds: 500),
+              child: FloatingCartWidget(
+                cart: cart,
+              ),
             );
           },
         ),

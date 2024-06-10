@@ -9,7 +9,6 @@ import 'package:flutter_grocery_store/controller/custom_page_indicator_controlle
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/offer_tag.dart';
 
-import '../../controller/cart_controller.dart';
 import '../../core/constants/color_constants.dart';
 import '../../model/product_model.dart';
 import '../../utils/global_widgets/add_to_cart_button.dart';
@@ -379,21 +378,8 @@ class ProductDetailsScreen extends StatelessWidget {
                       ],
                     ),
                     const Spacer(),
-                    Consumer<CartController>(
-                      builder: (context, value, child) {
-                        return AddToCartButton(
-                          count: value.getItemCount(item.id!),
-                          onTap: () {
-                            value.addItemToCart(item);
-                          },
-                          onAddTap: () {
-                            value.addItemToCart(item);
-                          },
-                          onRemoveTap: () {
-                            value.removeItemFromCart(item);
-                          },
-                        );
-                      },
+                    AddToCartButton(
+                      item: item,
                     ),
                   ],
                 ),

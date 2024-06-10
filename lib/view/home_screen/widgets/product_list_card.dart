@@ -5,7 +5,6 @@ import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controller/cart_controller.dart';
 import '../../../model/product_model.dart';
 import '../../../utils/global_widgets/favorite_button.dart';
 import '../../product_details_screen/product_details_screen.dart';
@@ -133,24 +132,11 @@ class ProductListCard extends StatelessWidget {
                             const Spacer(),
                             SizedBox(
                               width: 90,
-                              child: Consumer<CartController>(
-                                builder: (BuildContext context, value,
-                                        Widget? child) =>
-                                    AddToCartButton(
-                                  count: value.getItemCount(item.id ?? 0),
-                                  label: 'ADD',
-                                  height: 30,
-                                  width: double.infinity,
-                                  onTap: () {
-                                    value.addItemToCart(item);
-                                  },
-                                  onAddTap: () {
-                                    value.addItemToCart(item);
-                                  },
-                                  onRemoveTap: () {
-                                    value.removeItemFromCart(item);
-                                  },
-                                ),
+                              child: AddToCartButton(
+                                item: item,
+                                label: 'ADD',
+                                height: 30,
+                                width: double.infinity,
                               ),
                             ),
                           ],

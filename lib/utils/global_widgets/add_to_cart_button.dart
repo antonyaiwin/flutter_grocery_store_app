@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/controller/cart_controller.dart';
+import 'package:flutter_grocery_store/model/product_model.dart';
+import 'package:provider/provider.dart';
+
+const int _durationInMilliseconds = 350;
 
 class AddToCartButton extends StatelessWidget {
   const AddToCartButton({
     super.key,
-    required this.count,
     this.onTap,
     this.onAddTap,
     this.onRemoveTap,
@@ -11,8 +15,9 @@ class AddToCartButton extends StatelessWidget {
     this.height = 40,
     this.label,
     this.dense = false,
+    required this.item,
   });
-  final int count;
+  final ProductModel item;
   final double height;
   final double width;
   final String? label;
@@ -23,51 +28,87 @@ class AddToCartButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: count == 0 ? onTap : null,
-      borderRadius: BorderRadius.circular(10),
-      child: ClipRRect(
-        clipBehavior: Clip.antiAlias,
-        borderRadius: BorderRadius.circular(50),
-        child: Material(
-          child: Ink(
-            height: height,
-            width: dense && count == 0 ? null : width,
-            decoration: BoxDecoration(
-              color:
-                  count == 0 && !dense ? Theme.of(context).primaryColor : null,
-              border: count == 0 && !dense
-                  ? null
-                  : Border.all(
-                      color: Theme.of(context).primaryColor,
-                      width: 1,
-                      strokeAlign: BorderSide.strokeAlignInside,
-                    ),
-              borderRadius: BorderRadius.circular(50),
+    return Consumer<CartController>(
+      builder: (BuildContext context, value, Widget? child) {
+        var count = value.getItemCount(item.id ?? 0);
+        return InkWell(
+          onTap: count == 0
+              ? onTap ??
+                  () {
+                    value.addItemToCart(item);
+                  }
+              : null,
+          borderRadius: BorderRadius.circular(10),
+          child: ClipRRect(
+            clipBehavior: Clip.antiAlias,
+            borderRadius: BorderRadius.circular(50),
+            child: Material(
+              child: AnimatedContainer(
+                height: height,
+                width: dense && count == 0 ? height : width,
+                duration: const Duration(milliseconds: _durationInMilliseconds),
+                decoration: BoxDecoration(
+                  color: count == 0 && !dense
+                      ? Theme.of(context).primaryColor
+                      : null,
+                  border: count == 0 && !dense
+                      ? null
+                      : Border.all(
+                          color: Theme.of(context).primaryColor,
+                          width: 1,
+                          strokeAlign: BorderSide.strokeAlignInside,
+                        ),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: count == 0 && !dense
+                    ? addToCartChild(context)
+                    : addRemoveButtons(
+                        context,
+                        count: count,
+                        onAddTap: () {
+                          value.addItemToCart(item);
+                        },
+                        onRemoveTap: () {
+                          value.removeItemFromCart(item);
+                        },
+                      ),
+              ),
             ),
-            child: count == 0 && !dense
-                ? addToCartChild(context)
-                : addRemoveButtons(context),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget addRemoveButtons(BuildContext context) {
+  Widget addRemoveButtons(
+    BuildContext context, {
+    required int count,
+    void Function()? onAddTap,
+    void Function()? onRemoveTap,
+  }) {
     return Row(
       mainAxisSize: count != 0 ? MainAxisSize.max : MainAxisSize.min,
       children: [
-        if (count != 0) ...[
-          Padding(
-            padding: const EdgeInsets.all(1),
-            child: ColoredAddButton(
-              onTap: onRemoveTap,
-              icon: Icons.remove,
-              size: height - 4,
+        AnimatedOpacity(
+          duration: const Duration(milliseconds: _durationInMilliseconds),
+          opacity: count == 0 ? 0 : 1,
+          child: AnimatedContainer(
+            width: count == 0 ? 0 : height - 2,
+            duration: const Duration(milliseconds: _durationInMilliseconds),
+            child: Padding(
+              padding: const EdgeInsets.all(1),
+              child: ColoredAddButton(
+                onTap: this.onRemoveTap ?? onRemoveTap,
+                icon: Icons.remove,
+                size: height - 4,
+              ),
             ),
           ),
-          Expanded(
+        ),
+        Expanded(
+          child: AnimatedScale(
+            scale: count == 0 ? 0 : 1,
+            duration: const Duration(milliseconds: _durationInMilliseconds),
             child: Text(
               textAlign: TextAlign.center,
               count.toString(),
@@ -75,12 +116,12 @@ class AddToCartButton extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-          )
-        ],
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.all(1),
           child: ColoredAddButton(
-            onTap: onAddTap,
+            onTap: this.onAddTap ?? onAddTap,
             icon: Icons.add,
             size: height - 4,
           ),

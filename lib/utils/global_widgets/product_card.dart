@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/product_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
@@ -5,7 +7,6 @@ import 'package:flutter_grocery_store/utils/global_widgets/favorite_button.dart'
 import 'package:flutter_grocery_store/utils/global_widgets/my_network_image.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/cart_controller.dart';
 import '../../model/product_model.dart';
 import '../../view/product_details_screen/product_details_screen.dart';
 import 'add_to_cart_button.dart';
@@ -101,36 +102,25 @@ class ProductCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Consumer<CartController>(
-                        builder: (BuildContext context, value, Widget? child) {
-                          var itemCount = value.getItemCount(item.id ?? 0);
-                          var widget = AddToCartButton(
-                            count: itemCount,
-                            label: 'ADD',
-                            dense: true,
-                            height: 30,
-                            width: double.infinity,
-                            onTap: () {
-                              value.addItemToCart(item);
-                            },
-                            onAddTap: () {
-                              value.addItemToCart(item);
-                            },
-                            onRemoveTap: () {
-                              value.removeItemFromCart(item);
-                            },
-                          );
-                          if (itemCount == 0) {
-                            return widget;
-                          } else {
-                            return Expanded(child: widget);
-                          }
-                        },
-                      ),
-                    ],
+                  LayoutBuilder(
+                    builder:
+                        (BuildContext context, BoxConstraints constraints) {
+                      log(constraints.toString());
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Flexible(
+                            child: AddToCartButton(
+                              item: item,
+                              label: 'ADD',
+                              dense: true,
+                              height: 30,
+                              width: constraints.maxWidth,
+                            ),
+                          )
+                        ],
+                      );
+                    },
                   ),
                 ],
               ),

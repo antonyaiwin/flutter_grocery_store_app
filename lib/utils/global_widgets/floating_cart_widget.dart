@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/cart_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
@@ -21,24 +23,26 @@ class FloatingCartWidget extends StatelessWidget {
     if (cart == null) {
       return Consumer<CartController>(
         builder: (context, cart, child) {
-          if (cart.cartItemList.isEmpty) {
-            return const SizedBox();
-          }
           return _bodyContent(context, cart);
+          // if (cart.cartItemList.isEmpty) {
+          //   return const SizedBox();
+          // }
+          // return ;
         },
       );
     }
     return _bodyContent(context, cart!);
   }
 
-  Container _bodyContent(BuildContext context, CartController cart) {
-    return Container(
+  Widget _bodyContent(BuildContext context, CartController cart) {
+    return AnimatedContainer(
       padding: const EdgeInsets.symmetric(
         horizontal: 10,
         vertical: 4,
       ),
       color: ColorConstants.scaffoldBackgroundColor2,
-      height: kToolbarHeight,
+      height: cart.cartItemList.isEmpty ? 0 : kToolbarHeight,
+      duration: const Duration(milliseconds: 400),
       child: Row(
         children: [
           Expanded(
@@ -80,62 +84,84 @@ class ImageStackView extends StatelessWidget {
     required this.cart,
   });
   final CartController cart;
+  static const Duration animationDuration = Duration(milliseconds: 300);
+
   @override
   Widget build(BuildContext context) {
     final BorderSide borderSide = BorderSide(
       color: ColorConstants.hintColor.withOpacity(0.4),
       strokeAlign: BorderSide.strokeAlignOutside,
     );
-    return SizedBox(
-      width: kToolbarHeight * 0.8 +
-          (cart.cartItemList.length > 4 ? 3 : cart.cartItemList.length - 1) * 7,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          ...List.generate(
-            cart.cartItemList.length > 4 ? 3 : cart.cartItemList.length - 1,
-            (index) => AnimatedPositioned(
-              duration: Durations.extralong4,
+    return AnimatedSize(
+      clipBehavior: Clip.none,
+      duration: animationDuration,
+      child: SizedBox(
+        width: kToolbarHeight * 0.8 +
+            (cart.cartItemList.length > 4
+                    ? 3
+                    : max(cart.cartItemList.length - 1, 0)) *
+                7,
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            ...List.generate(
+              3,
+              // cart.cartItemList.length > 4 ? 3 : cart.cartItemList.length - 1,
+              (index) {
+                var factor = ((cart.cartItemList.length > 4
+                        ? 3
+                        : cart.cartItemList.length - 1) -
+                    index);
+                var width = kToolbarHeight * 0.8 +
+                    (factor == cart.cartItemList.length ? 0 : factor) * 7;
+                return Positioned(
+                  // duration: animationDuration,
+                  right: 0,
+                  child: AnimatedSize(
+                    clipBehavior: Clip.none,
+                    duration: animationDuration,
+                    child: Container(
+                      width: width > kToolbarHeight * 0.8
+                          ? width
+                          : kToolbarHeight * 0.8,
+                      height: kToolbarHeight * 0.8,
+                      decoration: BoxDecoration(
+                        border: Border(
+                          left: borderSide,
+                          top: borderSide,
+                          bottom: borderSide,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            Positioned(
+              // duration: animationDuration,
               right: 0,
               child: Container(
-                width: kToolbarHeight * 0.8 +
-                    ((cart.cartItemList.length > 4
-                                ? 3
-                                : cart.cartItemList.length - 1) -
-                            index) *
-                        7,
+                clipBehavior: Clip.hardEdge,
                 height: kToolbarHeight * 0.8,
+                width: kToolbarHeight * 0.8,
                 decoration: BoxDecoration(
-                  border: Border(
-                    left: borderSide,
-                    top: borderSide,
-                    bottom: borderSide,
+                  border: Border.all(
+                    color: ColorConstants.hintColor.withOpacity(0.4),
+                    strokeAlign: BorderSide.strokeAlignOutside,
                   ),
                   borderRadius: BorderRadius.circular(8),
                 ),
+                child: cart.cartItemList.isEmpty
+                    ? null
+                    : MyNetworkImage(
+                        imageUrl:
+                            cart.cartItemList.last.product.imageUrl?.first ??
+                                ''),
               ),
             ),
-          ),
-          AnimatedPositioned(
-            duration: Durations.extralong4,
-            right: 0,
-            child: Container(
-              clipBehavior: Clip.hardEdge,
-              height: kToolbarHeight * 0.8,
-              width: kToolbarHeight * 0.8,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: ColorConstants.hintColor.withOpacity(0.4),
-                  strokeAlign: BorderSide.strokeAlignOutside,
-                ),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: MyNetworkImage(
-                  imageUrl:
-                      cart.cartItemList.last.product.imageUrl?.first ?? ''),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
