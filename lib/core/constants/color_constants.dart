@@ -37,4 +37,13 @@ class ColorConstants {
 // shimmer colors
   static const Color shimmerBaseColor = Color.fromRGBO(224, 224, 224, 1);
   static const Color shimmerHilightColor = Color.fromRGBO(245, 245, 245, 1);
+
+  // order status colors
+  static const Color orderCreatedColor = Colors.blue;
+  static const Color orderAcceptedColor = Color(0xFFFF8F00);
+  static const Color orderPackedColor = Color(0xFFFF8F00);
+  static const Color orderOutForDeliveryColor = Color(0xFFFF8F00);
+  static const Color orderDeliveredColor = Colors.green;
+  static const Color orderCancelledColor = Colors.red;
+  static const Color orderUnknownColor = Colors.red;
 }

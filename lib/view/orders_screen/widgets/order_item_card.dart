@@ -4,6 +4,7 @@ import 'package:flutter_grocery_store/controller/screens/order_details_screen_co
 import 'package:flutter_grocery_store/core/constants/image_constants.dart';
 import 'package:flutter_grocery_store/core/enum/order_status.dart';
 import 'package:flutter_grocery_store/model/order_model.dart';
+import 'package:flutter_grocery_store/utils/global_widgets/order_status_indicator.dart';
 import 'package:flutter_grocery_store/view/order_details_screen/order_details_screen.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
@@ -171,7 +172,7 @@ class OrderItemCard extends StatelessWidget {
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
                   children: [
-                    getOrderStatusIndicator(order.getOrderStatus()),
+                    OrderStatusIndicator(orderStatus: order.getOrderStatus()),
                   ],
                 ),
               ),
