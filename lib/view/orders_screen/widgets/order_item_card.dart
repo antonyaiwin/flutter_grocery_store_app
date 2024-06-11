@@ -42,8 +42,8 @@ class OrderItemCard extends StatelessWidget {
           ),
         );
       },
-      child: Container(
-        clipBehavior: Clip.hardEdge,
+      borderRadius: BorderRadius.circular(10),
+      child: Ink(
         decoration: BoxDecoration(
           color: ColorConstants.primaryWhite,
           border: Border.all(
@@ -64,6 +64,8 @@ class OrderItemCard extends StatelessWidget {
                     color: ColorConstants.hintColor.withOpacity(0.3),
                   ),
                 ),
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(10)),
               ),
               child: OrderHeader(
                 order: order,
