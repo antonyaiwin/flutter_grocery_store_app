@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/order_details_screen_controller/order_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:flutter_grocery_store/model/address_model.dart';
 import 'package:flutter_grocery_store/model/order_model.dart';
+import 'package:flutter_grocery_store/view/addresses_screen/widgets/address_card.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/bill_details_card.dart';
 import 'package:provider/provider.dart';
 
@@ -102,6 +104,27 @@ class OrderDetailsScreen extends StatelessWidget {
                                   MyStepper(provider: provider),
                         ),
                       ],
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Consumer<OrderDetailsScreenController>(
+                    builder: (BuildContext context, value, Widget? child) =>
+                        ElevatedCard(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(top: 10, left: 10),
+                            child: MySubtitle('Delivery Address'),
+                          ),
+                          AddressCard(
+                            address: order.deliveryAddress ?? AddressModel(),
+                            isDefault: false,
+                            displayChangeButton: true,
+                            onChangePressed: () {},
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),
