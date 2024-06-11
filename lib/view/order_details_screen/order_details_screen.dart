@@ -44,7 +44,7 @@ class OrderDetailsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const MySubtitle('Items'),
+                        MySubtitle('Items (${order.itemCount})'),
                         const MyDivider(),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -115,7 +115,13 @@ class OrderDetailsScreen extends StatelessWidget {
                         children: [
                           const Padding(
                             padding: EdgeInsets.only(top: 10, left: 10),
-                            child: MySubtitle('Delivery Address'),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                MySubtitle('Delivery Address'),
+                                const MyDivider(),
+                              ],
+                            ),
                           ),
                           AddressCard(
                             address: order.deliveryAddress ?? AddressModel(),

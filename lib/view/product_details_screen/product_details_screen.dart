@@ -10,32 +10,33 @@ import 'package:flutter_grocery_store/controller/firebase/firestore_controller.d
 import 'package:flutter_grocery_store/utils/global_widgets/offer_tag.dart';
 
 import '../../core/constants/color_constants.dart';
-import '../../model/product_model.dart';
 import '../../utils/global_widgets/add_to_cart_button.dart';
 import '../../utils/global_widgets/favorite_button.dart';
 import '../../utils/global_widgets/my_network_image.dart';
 import 'widgets/carousel_image_view.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
-  const ProductDetailsScreen({super.key, required this.item});
-  final ProductModel item;
+  const ProductDetailsScreen({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var offer = item.getOffer();
+    var provider = context.read<ProductDetailsScreenController>();
+    var product = provider.product;
+    var offer = product.getOffer();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Product Details'),
         actions: [
-          FavoriteButton(item: item),
+          FavoriteButton(item: product),
           const SizedBox(width: 15),
         ],
       ),
       body: Consumer<FireStoreController>(
         builder: (context, myType, child) {
-          var item =
-              myType.getProductById(this.item.collectionDocumentId ?? '');
+          var item = myType.getProductById(product.collectionDocumentId ?? '');
           if (item == null) {
             return const Center(
               child: Text('Failed to fetch details!'),

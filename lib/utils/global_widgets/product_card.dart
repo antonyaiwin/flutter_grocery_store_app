@@ -32,7 +32,7 @@ class ProductCard extends StatelessWidget {
             builder: (context) => ChangeNotifierProvider(
               create: (BuildContext context) =>
                   ProductDetailsScreenController(context, item),
-              child: ProductDetailsScreen(item: item),
+              child: const ProductDetailsScreen(),
             ),
           ),
         ),
