@@ -163,7 +163,7 @@ class OrderModel {
     if (orderCancelledTime != null) {
       return OrderStatus.orderCancelled;
     } else if (orderDeliveredTime != null) {
-      return OrderStatus.orderCancelled;
+      return OrderStatus.orderDelivered;
     } else if (orderOutForDeliveryTime != null) {
       return OrderStatus.orderOutForDelivery;
     } else if (orderPackedTime != null) {

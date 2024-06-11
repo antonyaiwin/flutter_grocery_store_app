@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/firebase/firebase_auth_controller.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/controller/screens/home_screen_controller.dart';
+import 'package:flutter_grocery_store/view/home_screen/widgets/sliver_pending_orders_view.dart';
 import 'package:flutter_grocery_store/view/profile_screen/profile_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -57,6 +58,7 @@ class HomePage extends StatelessWidget {
           ],
         ),
         SliverSearchBar(),
+        const SliverPendingOrdersView(),
         SliverLabelText(
           label: 'Shop by category',
           onSeeAllPressed: () {
