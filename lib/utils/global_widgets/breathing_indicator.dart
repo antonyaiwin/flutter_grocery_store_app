@@ -44,7 +44,7 @@ class BreathingIndicatorState extends State<BreathingIndicator>
     animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 2));
     animationController.repeat(reverse: true);
-    animation = Tween(begin: 2.0, end: 5.0).animate(animationController)
+    animation = Tween(begin: 0.0, end: 5.0).animate(animationController)
       ..addListener(() {
         setState(() {});
       });
@@ -68,7 +68,7 @@ class BreathingIndicatorState extends State<BreathingIndicator>
         boxShadow: [
           BoxShadow(
             color: glowColor,
-            blurRadius: animation.value,
+            blurRadius: 0.5,
             spreadRadius: animation.value,
           ),
         ],
