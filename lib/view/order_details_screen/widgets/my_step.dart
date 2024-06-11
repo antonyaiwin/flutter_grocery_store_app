@@ -7,13 +7,14 @@ class MyStep extends StatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
-    required this.isLast,
+    this.isLast = false,
+    this.isFirst = false,
     required this.isCompleted,
   });
 
-  // final OrderDetailsScreenController provider;
   final String title;
   final String? subtitle;
+  final bool isFirst;
   final bool isLast;
   final bool isCompleted;
 
@@ -23,10 +24,18 @@ class MyStep extends StatelessWidget {
         ? ColorConstants.primaryColor
         : ColorConstants.hintColor.withOpacity(0.25);
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Column(
           children: [
+            if (!isFirst)
+              SizedBox(
+                height: 10,
+                child: VerticalDivider(
+                  color: color,
+                  thickness: 3,
+                ),
+              ),
             Container(
               margin:
                   const EdgeInsets.symmetric(horizontal: 15).copyWith(top: 5),
@@ -43,14 +52,16 @@ class MyStep extends StatelessWidget {
                 ],
               ),
             ),
-            if (!isLast)
-              SizedBox(
-                height: 30,
-                child: VerticalDivider(
-                  indent: 5,
-                  color: color,
-                ),
-              ),
+            SizedBox(
+              height: 22,
+              child: isLast
+                  ? null
+                  : VerticalDivider(
+                      indent: 5,
+                      color: color,
+                      thickness: 3,
+                    ),
+            ),
           ],
         ),
         Text.rich(

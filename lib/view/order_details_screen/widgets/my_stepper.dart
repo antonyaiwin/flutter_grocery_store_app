@@ -24,7 +24,7 @@ class MyStepper extends StatelessWidget {
                 )
               : null,
           isCompleted: provider.order.orderCreatedTime != null,
-          isLast: false,
+          isFirst: true,
         ),
         MyStep(
           title: 'Order Accepted\t\t\t',
@@ -34,7 +34,6 @@ class MyStepper extends StatelessWidget {
                 )
               : null,
           isCompleted: provider.order.orderAcceptedTime != null,
-          isLast: false,
         ),
         MyStep(
           title: 'Order packed\t\t\t',
@@ -44,7 +43,6 @@ class MyStepper extends StatelessWidget {
                 )
               : null,
           isCompleted: provider.order.orderPackedTime != null,
-          isLast: false,
         ),
         MyStep(
           title: 'Order out for delivery\t\t\t',
@@ -54,7 +52,6 @@ class MyStepper extends StatelessWidget {
                 )
               : null,
           isCompleted: provider.order.orderOutForDeliveryTime != null,
-          isLast: false,
         ),
         MyStep(
           title: 'Order delivered\t\t\t',
