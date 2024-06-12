@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/login_controller.dart';
+import 'package:flutter_grocery_store/controller/screens/forgot_password_screen_controller/forgot_password_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
+import 'package:flutter_grocery_store/view/forgot_password_screen/forgot_password_screen.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -85,7 +87,18 @@ class LoginScreen extends StatelessWidget {
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChangeNotifierProvider(
+                                create: (context) =>
+                                    ForgotPasswordScreenController(),
+                                child: const ForgotPasswordScreen(),
+                              ),
+                            ),
+                          );
+                        },
                         child: const Text('Forgot Password?'),
                       ),
                     ),
