@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/product_details_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
@@ -105,7 +103,7 @@ class ProductCard extends StatelessWidget {
                   LayoutBuilder(
                     builder:
                         (BuildContext context, BoxConstraints constraints) {
-                      log(constraints.toString());
+                      // log(constraints.toString());
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [

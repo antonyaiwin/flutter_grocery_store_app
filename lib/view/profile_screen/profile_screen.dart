@@ -107,10 +107,13 @@ class ProfileScreen extends StatelessWidget {
                 );
               },
             ),
-            const ListTile(
-              leading: Icon(Iconsax.info_circle_outline),
-              title: Text('About us'),
-              trailing: Icon(Iconsax.arrow_right_outline),
+            ListTile(
+              leading: const Icon(Iconsax.info_circle_outline),
+              title: const Text('About us'),
+              trailing: const Icon(Iconsax.arrow_right_outline),
+              onTap: () {
+                showAboutDialog(context: context);
+              },
             ),
             const ListTile(
               leading: Icon(Iconsax.star_outline),
