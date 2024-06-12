@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/login_controller.dart';
@@ -17,32 +16,6 @@ class RegistrationController extends ChangeNotifier {
 
   bool obscurePassword = true;
   bool loading = false;
-
-  String? nameValidator(String? value) {
-    if ((value?.length ?? 0) > 3) {
-      return null;
-    } else {
-      return 'Enter valid name!';
-    }
-  }
-
-  String? emailValidator(String? value) {
-    if (EmailValidator.validate(value ?? '')) {
-      return null;
-    } else {
-      return 'Enter valid email address!';
-    }
-  }
-
-  String? passwordValidator(String? value) {
-    if (value == null || value.length < 8) {
-      return 'Enter a valid password with minimum 8 characters!';
-    } else if (value.length > 15) {
-      return 'Enter a valid password with maximum 15 characters!';
-    } else {
-      return null;
-    }
-  }
 
   void togglePasswordVisibility() {
     obscurePassword = !obscurePassword;

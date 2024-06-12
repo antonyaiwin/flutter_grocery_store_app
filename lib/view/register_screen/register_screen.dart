@@ -5,6 +5,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/constants/color_constants.dart';
+import '../../utils/functions/validators.dart';
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -54,8 +55,7 @@ class RegisterScreen extends StatelessWidget {
                     labelText: 'Name',
                     isDense: true,
                   ),
-                  validator:
-                      context.read<RegistrationController>().nameValidator,
+                  validator: nameValidator,
                 ),
                 const SizedBox(height: 15),
                 TextFormField(
@@ -66,8 +66,7 @@ class RegisterScreen extends StatelessWidget {
                     labelText: 'Email',
                     isDense: true,
                   ),
-                  validator:
-                      context.read<RegistrationController>().emailValidator,
+                  validator: emailValidator,
                 ),
                 const SizedBox(height: 15),
                 Consumer<RegistrationController>(
@@ -90,9 +89,7 @@ class RegisterScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    validator: context
-                        .read<RegistrationController>()
-                        .passwordValidator,
+                    validator: passwordValidator,
                   ),
                 ),
                 const SizedBox(height: 20),
