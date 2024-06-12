@@ -33,24 +33,7 @@ class ForgotPasswordScreen extends StatelessWidget {
               const Text('Please enter the email address'),
               const SizedBox(height: 10),
               Consumer<ForgotPasswordScreenController>(
-                builder: (context, value, child) {
-                  if (value.otpConfirmed) {
-                    return _newPasswordWidget(value);
-                  } else if (value.otpSend) {
-                    return Column(
-                      children: [
-                        Text(
-                          'One Time Password has been send to ${value.emailController.text}',
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                        const SizedBox(height: 10),
-                        const Pinput(),
-                      ],
-                    );
-                  } else {
-                    return _emailFieldWidget(value);
-                  }
-                },
+                builder: (context, value, child) => _emailFieldWidget(value),
               ),
               const SizedBox(height: 10),
               Consumer<ForgotPasswordScreenController>(
@@ -60,13 +43,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   onPressed: value.loading
                       ? null
                       : () {
-                          if (value.otpConfirmed) {
-                            provider.updatePassword(context);
-                          } else if (value.otpSend) {
-                            provider.confirmOtp(context);
-                          } else {
-                            provider.sendOtp(context);
-                          }
+                          provider.sendPasswordResetEmail(context);
                         },
                   child: Center(
                     child: value.loading
@@ -75,7 +52,9 @@ class ForgotPasswordScreen extends StatelessWidget {
                             width: 20,
                             child: CircularProgressIndicator(),
                           )
-                        : Text(value.otpSend ? 'Confirm' : 'Send OTP'),
+                        : const Text(
+                            'Reset Password',
+                          ),
                   ),
                 ),
               ),
@@ -95,89 +74,6 @@ class ForgotPasswordScreen extends StatelessWidget {
         prefixIcon: Icon(Iconsax.sms_outline),
       ),
       validator: emailValidator,
-    );
-  }
-
-  Column _newPasswordWidget(ForgotPasswordScreenController provider) {
-    return Column(
-      children: [
-        Consumer<ForgotPasswordScreenController>(
-          builder: (BuildContext context, ForgotPasswordScreenController value,
-                  Widget? child) =>
-              TextFormField(
-            controller: provider.currentPasswordController,
-            decoration: InputDecoration(
-              labelText: 'Current Password',
-              prefixIcon: const Icon(Iconsax.lock_1_outline),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  value.toggleCurrentPasswordVisibility();
-                },
-                icon: Icon(
-                  value.obscureCurrentPassword
-                      ? Iconsax.eye_slash_outline
-                      : Iconsax.eye_outline,
-                ),
-              ),
-            ),
-            obscureText: value.obscureCurrentPassword,
-            validator: passwordValidator,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Consumer<ForgotPasswordScreenController>(
-          builder: (BuildContext context, ForgotPasswordScreenController value,
-                  Widget? child) =>
-              TextFormField(
-            controller: provider.newPasswordController,
-            decoration: InputDecoration(
-              labelText: 'New Password',
-              prefixIcon: const Icon(Iconsax.lock_1_outline),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  value.toggleNewPasswordVisibility();
-                },
-                icon: Icon(
-                  value.obscureNewPassword
-                      ? Iconsax.eye_slash_outline
-                      : Iconsax.eye_outline,
-                ),
-              ),
-            ),
-            obscureText: value.obscureNewPassword,
-            validator: passwordValidator,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Consumer<ForgotPasswordScreenController>(
-          builder: (BuildContext context, ForgotPasswordScreenController value,
-                  Widget? child) =>
-              TextFormField(
-            controller: provider.confirmPasswordController,
-            decoration: InputDecoration(
-              labelText: 'Confirm New Password',
-              prefixIcon: const Icon(Iconsax.lock_1_outline),
-              suffixIcon: IconButton(
-                onPressed: () {
-                  value.toggleConfirmPasswordVisibility();
-                },
-                icon: Icon(
-                  value.obscureConfirmPassword
-                      ? Iconsax.eye_slash_outline
-                      : Iconsax.eye_outline,
-                ),
-              ),
-            ),
-            obscureText: value.obscureConfirmPassword,
-            validator: (value) {
-              return passwordConfirmValidator(
-                provider.newPasswordController.text,
-                provider.confirmPasswordController.text,
-              );
-            },
-          ),
-        ),
-      ],
     );
   }
 }
