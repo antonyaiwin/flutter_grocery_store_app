@@ -5,4 +5,6 @@ class ImageConstants {
 
   static const String locationPinIcon = 'assets/icons/location_pin.png';
   static const String razorpayLogo = 'assets/icons/razorpay_logo.png';
+
+  static const String privacyImage = 'assets/images/privacy.svg';
 }

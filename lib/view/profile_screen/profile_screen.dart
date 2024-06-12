@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/controller/screens/change_password_screen_controller.dart';
 import 'package:flutter_grocery_store/controller/screens/orders_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/color_constants.dart';
 import 'package:flutter_grocery_store/utils/global_widgets/profile_circle_avatar.dart';
 import 'package:flutter_grocery_store/view/addresses_screen/addresses_screen.dart';
+import 'package:flutter_grocery_store/view/change_password_screen/change_password_screen.dart';
 import 'package:flutter_grocery_store/view/orders_screen/orders_screen.dart';
 import 'package:flutter_grocery_store/view/splash_screen/splash_screen.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -60,10 +62,21 @@ class ProfileScreen extends StatelessWidget {
                 );
               },
             ),
-            const ListTile(
-              leading: Icon(Iconsax.lock_1_outline),
-              title: Text('Change Password'),
-              trailing: Icon(Iconsax.arrow_right_outline),
+            ListTile(
+              leading: const Icon(Iconsax.lock_1_outline),
+              title: const Text('Change Password'),
+              trailing: const Icon(Iconsax.arrow_right_outline),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChangeNotifierProvider(
+                      create: (context) => ChangePasswordScreenController(),
+                      child: const ChangePasswordScreen(),
+                    ),
+                  ),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Iconsax.location_outline),
