@@ -106,6 +106,7 @@ class CheckoutScreen extends StatelessWidget {
                         totalItems: cart.totalCartCount,
                         subtotal: cart.totalCartPrice,
                         deliveryCharge: 20.0,
+                        discount: cart.totalDiscountPrice,
                       );
                     },
                   ),

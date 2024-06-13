@@ -135,15 +135,20 @@ class OrderDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
                   Consumer<OrderDetailsScreenController>(
-                    builder: (BuildContext context, value, Widget? child) =>
-                        BillDetailsCard(
-                      totalItems: order.cartItems?.fold<int>(
-                          0,
-                          (previousValue, element) =>
-                              previousValue += element.quantity),
-                      subtotal: order.totalPrice,
-                      deliveryCharge: 20.0,
-                    ),
+                    builder: (BuildContext context, value, Widget? child) {
+                      double? discount = ((order.totalPrice ?? 0) -
+                          ((order.finalPrice ?? 0) -
+                              (order.deliveryPrice ?? 0)));
+                      return BillDetailsCard(
+                        totalItems: order.cartItems?.fold<int>(
+                            0,
+                            (previousValue, element) =>
+                                previousValue += element.quantity),
+                        subtotal: order.totalPrice,
+                        deliveryCharge: 20.0,
+                        discount: discount != 0 ? discount : null,
+                      );
+                    },
                   ),
                 ],
               ),

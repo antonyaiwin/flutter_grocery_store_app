@@ -10,10 +10,12 @@ class BillDetailsCard extends StatelessWidget {
     required this.totalItems,
     required this.subtotal,
     required this.deliveryCharge,
+    required this.discount,
   });
   final int? totalItems;
   final double? subtotal;
   final double? deliveryCharge;
+  final double? discount;
   @override
   Widget build(BuildContext context) {
     return ElevatedCard(
@@ -35,9 +37,18 @@ class BillDetailsCard extends StatelessWidget {
           ),
           const SizedBox(height: 15),
           const BillDetailsAmountRow(
-              icon: Iconsax.truck_fast_bold,
-              title: 'Delivery charge',
-              subtitle: '₹20.00'),
+            icon: Iconsax.truck_fast_bold,
+            title: 'Delivery charge',
+            subtitle: '₹20.00',
+          ),
+          if (discount != null) ...[
+            const SizedBox(height: 15),
+            BillDetailsAmountRow(
+              icon: Iconsax.discount_shape_bold,
+              title: 'Discount',
+              subtitle: '-₹${discount?.toStringAsFixed(2) ?? '-'}',
+            ),
+          ],
           const SizedBox(height: 20),
           const DottedLine(
             dashColor: ColorConstants.hintColor,
@@ -53,7 +64,7 @@ class BillDetailsCard extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                '₹${((subtotal ?? 0) + (deliveryCharge ?? 0)).toStringAsFixed(2)}',
+                '₹${((subtotal ?? 0) + (deliveryCharge ?? 0) - (discount ?? 0)).toStringAsFixed(2)}',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),

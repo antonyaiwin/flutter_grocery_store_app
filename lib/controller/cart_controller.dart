@@ -93,10 +93,20 @@ class CartController extends ChangeNotifier {
   // returns total price of all items in the cart
   double get totalCartPrice => _cartItemList.fold(
       0.0,
-      (previousValue, element) => previousValue +=
-          (element.product.priceSelling ?? 0) * element.quantity);
+      (previousValue, element) =>
+          previousValue += (element.product.priceMRP ?? 0) * element.quantity);
 
-  double get finalCartPrice => totalCartPrice + deliveryCharge;
+  // returns discount price of all items in the cart(not discounted price)
+  double get totalDiscountPrice => _cartItemList.fold(
+        0.0,
+        (previousValue, element) => previousValue +=
+            ((element.product.priceMRP ?? 0) -
+                    (element.product.priceSelling ?? 0)) *
+                element.quantity,
+      );
+
+  double get finalCartPrice =>
+      totalCartPrice - totalDiscountPrice + deliveryCharge;
 
   int getItemCount(int id) {
     for (var element in _cartItemList) {
