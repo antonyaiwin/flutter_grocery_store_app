@@ -8,4 +8,8 @@ class ImageConstants {
 
   static const String privacyImage = 'assets/images/privacy.svg';
   static const String forgotPassword = 'assets/images/forgot_password.png';
+
+// carousel images
+  static const String banner1 = 'assets/images/banner/banner_1.jpg';
+  static const String banner2 = 'assets/images/banner/banner_2.jpg';
 }

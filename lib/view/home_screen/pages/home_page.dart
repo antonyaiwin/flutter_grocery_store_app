@@ -1,7 +1,9 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/firebase/firebase_auth_controller.dart';
 import 'package:flutter_grocery_store/controller/firebase/firestore_controller.dart';
 import 'package:flutter_grocery_store/controller/screens/home_screen_controller.dart';
+import 'package:flutter_grocery_store/core/constants/image_constants.dart';
 import 'package:flutter_grocery_store/view/home_screen/widgets/sliver_pending_orders_view.dart';
 import 'package:flutter_grocery_store/view/profile_screen/profile_screen.dart';
 import 'package:provider/provider.dart';
@@ -59,6 +61,34 @@ class HomePage extends StatelessWidget {
         ),
         SliverSearchBar(),
         const SliverPendingOrdersView(),
+        SliverPadding(
+          padding: const EdgeInsets.all(20),
+          sliver: SliverToBoxAdapter(
+            child: CarouselSlider.builder(
+              itemBuilder: (context, index, realIndex) => ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: AspectRatio(
+                  aspectRatio: 900 / 235,
+                  child: Image.asset(
+                    index == 0
+                        ? ImageConstants.banner1
+                        : ImageConstants.banner2,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              options: CarouselOptions(
+                clipBehavior: Clip.none,
+                viewportFraction: 0.99,
+                aspectRatio: 900 / 235,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                enlargeFactor: 0.2,
+              ),
+              itemCount: 2,
+            ),
+          ),
+        ),
         SliverLabelText(
           label: 'Shop by category',
           onSeeAllPressed: () {
