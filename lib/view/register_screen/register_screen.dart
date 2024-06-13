@@ -13,7 +13,9 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        shadowColor: Colors.transparent,
+      ),
       body: SingleChildScrollView(
         child: Form(
           key: context.read<RegistrationController>().formKey,

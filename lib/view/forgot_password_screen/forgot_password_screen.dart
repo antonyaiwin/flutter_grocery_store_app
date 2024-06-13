@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_grocery_store/controller/screens/forgot_password_screen_controller/forgot_password_screen_controller.dart';
 import 'package:flutter_grocery_store/core/constants/image_constants.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
 import '../../utils/functions/validators.dart';
@@ -17,6 +16,7 @@ class ForgotPasswordScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Forgot Password'),
+        shadowColor: Colors.transparent,
       ),
       body: Form(
         key: provider.formKey,
