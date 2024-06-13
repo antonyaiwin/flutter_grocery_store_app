@@ -15,12 +15,19 @@ class SearchScreenController extends ChangeNotifier {
   late final Debouncer debouncer = Debouncer(milliSeconds: 4000);
   List<ProductModel> productList = [];
   List<List<ProductModel>> productCategoryList = [];
+  final String? barcode;
 
   String get text => searchController.text.toLowerCase();
-  SearchScreenController({required this.context}) {
+  SearchScreenController({
+    required this.context,
+    this.barcode,
+  }) {
     firestore = context.read<FireStoreController>();
     searchController.addListener(onTextChanged);
     _initproductCategoryList();
+    if (barcode != null) {
+      searchController.text = barcode!;
+    }
   }
 
   onTextChanged() {
@@ -43,6 +50,15 @@ class SearchScreenController extends ChangeNotifier {
           (element) => (element.name?.toLowerCase().contains(text) ?? false),
         )
         .toList();
+
+    if (barcode != null) {
+      // search in product barcode
+      productList.addAll(
+        firestore.productList.where(
+          (element) => element.barcode == barcode,
+        ),
+      );
+    }
 
     // search in product description
     productList.addAll(

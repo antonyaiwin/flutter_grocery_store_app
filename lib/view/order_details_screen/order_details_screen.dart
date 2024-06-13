@@ -35,8 +35,9 @@ class OrderDetailsScreen extends StatelessWidget {
                   ElevatedCard(
                     padding: const EdgeInsets.all(10),
                     child: Consumer<OrderDetailsScreenController>(
-                        builder: (BuildContext context, value, Widget? child) =>
-                            OrderHeader(order: order)),
+                      builder: (BuildContext context, value, Widget? child) =>
+                          OrderHeader(order: order),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   ElevatedCard(
@@ -44,7 +45,11 @@ class OrderDetailsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        MySubtitle('Items (${order.itemCount})'),
+                        Consumer(
+                          builder: (BuildContext context, value,
+                                  Widget? child) =>
+                              MySubtitle('Items (${order.itemCount ?? ''})'),
+                        ),
                         const MyDivider(),
                         Padding(
                           padding: const EdgeInsets.all(10.0),
@@ -119,7 +124,7 @@ class OrderDetailsScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 MySubtitle('Delivery Address'),
-                                const MyDivider(),
+                                MyDivider(),
                               ],
                             ),
                           ),
@@ -172,7 +177,8 @@ class OrderDetailsScreen extends StatelessWidget {
               ),
               const SizedBox(width: 10),
             ],
-          )
+          ),
+          const SizedBox(height: 10),
         ],
       ),
     );

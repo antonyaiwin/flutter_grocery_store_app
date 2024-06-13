@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_grocery_store/controller/screens/home_screen_controller.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -73,7 +74,9 @@ class SliverSearchBar extends StatelessWidget {
             const SizedBox(width: 10),
             InkWell(
               borderRadius: borderRadius,
-              onTap: () {},
+              onTap: () {
+                context.read<HomeScreenController>().scanBarcode(context);
+              },
               child: Ink(
                 width: 50,
                 decoration: BoxDecoration(
