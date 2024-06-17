@@ -11,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../core/constants/color_constants.dart';
+import '../../../utils/global_widgets/order_header.dart';
 
 class OrderItemCard extends StatelessWidget {
   const OrderItemCard({
